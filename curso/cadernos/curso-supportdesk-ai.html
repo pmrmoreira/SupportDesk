@@ -19,6 +19,103 @@
 
 
 [data-page]{scroll-margin-top:150px}
+
+/* Course map: the same quiet palette, with a clearer learning hierarchy. */
+.course-dashboard-header{display:grid;grid-template-columns:minmax(0,1fr) 290px;gap:42px;align-items:center;padding:54px 0 36px}
+.course-dashboard-header .eyebrow{margin-bottom:20px;letter-spacing:1.6px}
+.course-dashboard-header h1{font-size:clamp(35px,3.25vw,47px);line-height:1.16;letter-spacing:-1.8px;font-weight:620;margin:0 0 21px}
+.course-dashboard-header h1 span{color:var(--accent)}
+.course-dashboard-header>div>p:last-child{font-size:14px;line-height:1.85;color:var(--muted);max-width:480px;margin:0}
+.resume-card{background:#173f33;color:#fff;border-radius:12px;padding:24px;box-shadow:0 8px 24px #173f330c;position:relative;overflow:hidden}
+.resume-card-top{display:flex;justify-content:space-between;align-items:center;color:#c3d8ce;font-size:9px;font-weight:650;letter-spacing:1.35px;margin-bottom:23px}
+.resume-dot{width:7px;height:7px;border-radius:50%;background:#c0d88e;box-shadow:0 0 0 4px #c0d88e12}
+.resume-number{font-family:Consolas,monospace;font-size:11px;color:#bdd5c9;letter-spacing:1px}
+.resume-card h2{font-size:21px;letter-spacing:-.5px;font-weight:600;line-height:1.3;margin:9px 0}
+.resume-card p{font-size:12px;line-height:1.75;color:#c3d8ce;margin:0 0 23px}
+.resume-card .primary-link{display:flex;justify-content:space-between;background:#edf4e9;color:#183f32;border:1px solid #edf4e9;padding:11px 14px;font-size:12px}
+.resume-card .primary-link:hover{background:#dcebcf}
+.course-stats{display:grid;grid-template-columns:1fr 1fr 1.2fr 1.8fr;padding:23px 0;border-block:1px solid var(--line);gap:20px;margin-bottom:44px}
+.course-stats>div{display:flex;align-items:center;gap:12px;border-right:1px solid var(--line);min-width:0}
+.course-stats>div:last-child{border:0;padding-left:4px}
+.course-stats strong{font-size:27px;font-weight:550;letter-spacing:-1px;line-height:1}
+.course-stats span{font-size:11px;line-height:1.5;color:var(--muted)}
+.course-stat-product strong{display:block;font-size:13px;letter-spacing:0;line-height:1.7;font-weight:650;color:var(--ink)}
+.course-stat-product .product-symbol{display:grid;place-items:center;font-weight:650;font-size:22px;letter-spacing:-2px;width:36px;height:38px;flex-shrink:0;border-radius:7px;background:var(--accent-soft);color:var(--accent)}
+.section-heading{display:flex;align-items:flex-end;justify-content:space-between;gap:20px;margin-bottom:24px}
+.section-heading .eyebrow{margin:0 0 8px;font-size:9px;letter-spacing:1.3px}
+.section-heading h2{margin:0;font-size:25px;font-weight:620;letter-spacing:-.7px;line-height:1.3}
+.section-note{font-size:11px;line-height:1.65;color:var(--muted);text-align:right;max-width:200px;padding-bottom:3px}
+.path-overview{margin-bottom:48px}
+.path-steps{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:10px;position:relative;padding-top:5px}
+.path-steps:before{content:"";position:absolute;left:calc(100% / 12);right:calc(100% / 12);top:24px;border-top:1px solid #cfd9ce}
+.map-step{display:flex;flex-direction:column;align-items:center;gap:12px;text-decoration:none;font-size:11px;font-weight:600;color:var(--muted);position:relative;text-align:center;border-radius:7px;padding:0 0 5px;line-height:1.5}
+.step-dot{display:grid;place-items:center;width:39px;height:39px;border-radius:50%;background:var(--paper);border:1px solid #cbd7cc;color:var(--module-tone);font-family:Consolas,monospace;font-size:12px;box-shadow:0 0 0 7px var(--paper)}
+.map-step:hover{color:var(--module-tone)}.map-step:hover .step-dot{background:var(--module-tone);border-color:var(--module-tone);color:#fff}
+.available-section{margin-bottom:46px}
+.available-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.lesson-card{display:flex;flex-direction:column;min-width:0;padding:22px 21px 0;background:#fff;border:1px solid #d7e1d6;border-radius:10px;text-decoration:none;color:var(--ink);box-shadow:0 3px 10px #1e423005;transition:border-color .15s,box-shadow .15s}
+.lesson-card:hover{border-color:#84a58e;box-shadow:0 6px 20px #1e423010}
+.lesson-card-meta{display:flex;gap:10px;justify-content:space-between;align-items:center;font-size:9px;letter-spacing:.75px;color:var(--muted);margin-bottom:28px}
+.availability{font-size:9px;letter-spacing:0;display:inline-flex;align-items:center;gap:5px;color:var(--accent)}
+.availability i{width:5px;height:5px;background:#50856a;border-radius:50%}
+.lesson-card-tag{font-size:10px;color:var(--accent);margin:0 0 9px;font-weight:600}
+.lesson-card h3{font-size:21px;line-height:1.3;letter-spacing:-.6px;margin:0 0 12px;font-weight:620}
+.lesson-card-description{font-size:12px;line-height:1.85;margin:0 0 19px;color:var(--muted);flex:1}
+.lesson-card-detail{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;font-size:10px;color:var(--muted);padding-bottom:17px;border-bottom:1px solid #e9ede6}
+.card-progress{padding:16px 0 20px;font-size:10px;color:#5b6d62}
+.card-progress progress{height:4px;margin-top:10px}
+.lesson-card-action{display:flex;justify-content:space-between;align-items:center;padding:14px 0 16px;border-top:1px solid #e9ede6;font-size:11px;font-weight:650;color:var(--accent)}
+.lesson-card-action>span:last-child{font-size:18px;font-weight:400}
+.progress-explainer{font-size:10px;line-height:1.75;color:var(--muted);margin:13px 0 0}
+.modules-section{margin-bottom:30px}
+.modules-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px;align-items:start}
+.module-card{background:#fff;border:1px solid var(--line);border-radius:11px;overflow:hidden;scroll-margin-top:24px}
+.module-card:target{border-color:var(--module-tone);box-shadow:0 0 0 3px #12614a0b}
+.module-card-head{display:flex;align-items:center;gap:15px;padding:25px 23px 0}
+.module-number{color:var(--module-tone);border:1px solid #e1e7e0;background:#f7f9f5;border-radius:8px;font-family:Consolas,monospace;font-size:18px;display:grid;place-items:center;width:45px;height:46px;flex-shrink:0}
+.module-kicker{font-size:9px;letter-spacing:.6px;color:var(--module-tone);font-weight:650;margin:0 0 6px;line-height:1.5}
+.module-kicker span{color:var(--muted);font-weight:400}
+.module-card h3{font-size:20px;letter-spacing:-.55px;line-height:1.3;margin:0;font-weight:620}
+.module-description{font-size:12px;line-height:1.85;color:var(--muted);padding:0 23px;margin:16px 0 13px;min-height:44px}
+.module-meta{display:flex;align-items:center;gap:10px;margin:0 23px 19px;font-size:10px;color:var(--muted)}
+.module-available,.module-planned{font-size:9px;line-height:1.5;border-radius:4px;padding:3px 7px;background:#f0f2ee;border:1px solid #e8ece6;color:#647060}
+.module-available{color:var(--accent);background:#edf5eb;border-color:#e0ebdc}
+.module-lessons{border-top:1px solid #e9ede6;margin:0 23px}
+.module-lesson,.planned-lesson>summary{display:flex;align-items:center;gap:10px;min-height:53px;padding:13px 0;border-bottom:1px solid #e9ede6;font-size:12px;text-decoration:none;line-height:1.55}
+.module-lesson:hover .module-lesson-title{color:var(--accent);text-decoration:underline;text-underline-offset:3px}
+.module-lesson .module-lesson-title{font-weight:600}
+.lesson-order{font-family:Consolas,monospace;font-size:10px;color:var(--muted);flex:0 0 20px}
+.module-lesson-title{flex:1;color:var(--ink)}
+.module-lesson-state{font-size:9px;color:var(--accent);display:flex;align-items:center;gap:7px;white-space:nowrap}
+.planned-lesson .module-lesson-state{color:var(--muted)}
+.planned-lesson>summary{list-style:none}.planned-lesson>summary::-webkit-details-marker,.course-reference>summary::-webkit-details-marker{display:none}
+.planned-lesson>summary:hover .module-lesson-title{color:var(--module-tone)}
+.disclosure-icon{display:inline-block;font-size:17px;font-weight:400;line-height:1;color:var(--muted)}
+.planned-lesson[open]>summary .disclosure-icon,.course-reference[open]>summary .disclosure-icon{transform:rotate(45deg)}
+.planned-lesson[open]>summary{border-bottom-color:transparent}
+.planned-description{background:#f7f9f5;padding:15px 16px;border:1px solid #e8ece5;border-radius:6px;margin:0 0 13px;font-size:11px;line-height:1.8;color:#536458;overflow-wrap:anywhere}
+.planned-description p{margin:0 0 11px}.planned-description strong{display:block;font-size:10px;color:var(--ink);margin-bottom:4px;font-weight:650}
+.planned-description>span{display:block;font-size:10px;color:var(--muted);border-top:1px solid var(--line);padding-top:10px}
+.planned-description code{font-family:Consolas,monospace;font-size:inherit}
+.module-outcome{margin-top:21px;padding:17px 23px 20px;background:#f8faf6;border-top:1px solid #edf0e9}
+.module-outcome>span{font-size:8px;letter-spacing:1.15px;color:var(--module-tone);font-weight:700}
+.module-outcome p{font-size:11px;line-height:1.8;color:#526456;margin:6px 0 0}
+.course-study-note{display:flex;gap:20px;align-items:flex-start;border-left:3px solid var(--accent);background:var(--accent-soft);border-radius:0 8px 8px 0;padding:22px 25px;margin:35px 0}
+.course-study-note>span{font-size:24px;line-height:1.1;color:var(--accent)}
+.course-study-note strong{font-size:13px;font-weight:650}.course-study-note p{font-size:12px;line-height:1.8;color:#526b58;margin:5px 0 0}
+.course-reference{border-block:1px solid var(--line);margin:30px 0 20px}
+.course-reference>summary{padding:22px 0;display:flex;align-items:center;justify-content:space-between;gap:20px;list-style:none}
+.course-reference>summary strong{font-size:13px;font-weight:600}.course-reference>summary small{display:block;font-size:11px;line-height:1.7;color:var(--muted);margin-top:5px}
+.course-reference .prose{padding:20px 0 10px}.course-reference .prose>h2:first-child{padding-top:0;border-top:0}
+.restart-course{font-size:12px;text-align:right;margin-top:25px}.restart-course a{text-decoration:none}.restart-course a:hover{text-decoration:underline}.restart-course span{margin-left:10px}
+.lesson-breadcrumb{display:flex;gap:8px;align-items:center;flex-wrap:wrap;padding-top:28px;font-size:10px;line-height:1.7;color:var(--muted)}
+.lesson-breadcrumb a{text-decoration:none;color:var(--muted)}.lesson-breadcrumb a:hover{color:var(--accent);text-decoration:underline}.lesson-breadcrumb>span{color:#738172}
+.lesson-breadcrumb+.hero{padding-top:30px}
+@media(max-width:1150px){.course-dashboard-header{grid-template-columns:minmax(0,1fr) 250px;gap:26px}.course-dashboard-header h1{font-size:36px}.resume-card{padding:21px}.course-stats{gap:14px}.course-stats>div{gap:8px}.course-stats strong{font-size:24px}.course-stat-product strong{font-size:12px}.lesson-card{padding:18px 16px 0}.lesson-card h3{font-size:19px}.lesson-card-meta{flex-wrap:wrap;gap:6px}.module-card-head{padding-inline:18px;gap:11px}.module-card h3{font-size:18px}.module-kicker{font-size:8px}.module-description{padding-inline:18px}.module-meta{margin-inline:18px}.module-lessons{margin-inline:18px}.module-outcome{padding-inline:18px}}
+@media(min-width:761px) and (max-width:960px){.course-dashboard-header{grid-template-columns:1fr}.resume-card{display:grid;grid-template-columns:1fr 1fr;column-gap:25px}.resume-card-top{grid-column:1/-1;margin-bottom:15px}.resume-number,.resume-card h2{grid-column:1}.resume-card p{grid-column:2;grid-row:2/4;margin:0}.resume-card .primary-link{grid-column:1/-1;margin-top:18px}.course-stats{grid-template-columns:repeat(3,1fr)}.course-stats>div:nth-child(3){border-right:0}.course-stat-product{display:none!important}.available-grid,.modules-grid{grid-template-columns:1fr}.lesson-card-meta{margin-bottom:18px}.lesson-card h3{font-size:22px}.module-description{min-height:0}.path-steps{grid-template-columns:repeat(3,1fr);gap:22px 12px}.path-steps:before{display:none}.section-note{max-width:155px}}
+@media(max-width:760px){.course-dashboard-header{grid-template-columns:1fr;gap:25px;padding:34px 0 25px}.course-dashboard-header .eyebrow{font-size:9px;margin-bottom:15px}.course-dashboard-header h1{font-size:36px;letter-spacing:-1.4px;margin-bottom:16px}.course-dashboard-header>div>p:last-child{font-size:13px}.resume-card{padding:22px}.resume-card-top{margin-bottom:18px}.resume-card h2{font-size:21px}.resume-card p{margin-bottom:18px}.course-stats{grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;padding:19px 0;margin-bottom:33px}.course-stats>div{display:block}.course-stats>div:nth-child(3){border:0}.course-stats strong{font-size:25px;display:block;margin-bottom:6px}.course-stats span{font-size:10px;line-height:1.5;display:block}.course-stat-product{display:none!important}.section-heading{gap:10px;margin-bottom:21px;align-items:flex-start;flex-direction:column}.section-heading h2{font-size:24px}.section-heading .eyebrow{font-size:8px;letter-spacing:1.1px}.section-note{max-width:none;text-align:left;font-size:11px;padding:0}.path-overview{margin-bottom:34px}.path-steps{grid-template-columns:repeat(3,minmax(0,1fr));gap:23px 10px;padding-top:4px}.path-steps:before{display:none}.map-step{font-size:10px;gap:9px}.step-dot{height:35px;width:35px;font-size:11px}.available-grid,.modules-grid{grid-template-columns:1fr;gap:16px}.lesson-card{padding:21px 22px 0}.lesson-card-meta{margin-bottom:22px;font-size:10px}.availability{font-size:10px}.lesson-card-tag{font-size:11px}.lesson-card h3{font-size:23px}.lesson-card-description{font-size:13px;margin-bottom:20px}.lesson-card-detail{font-size:11px}.card-progress{font-size:11px}.lesson-card-action{font-size:12px}.available-section{margin-bottom:34px}.progress-explainer{font-size:11px}.module-card{scroll-margin-top:90px}.module-card-head{padding:24px 21px 0;gap:13px}.module-card h3{font-size:20px}.module-kicker{font-size:9px}.module-description{padding:0 21px;min-height:0;font-size:13px}.module-meta{margin-inline:21px;font-size:11px}.module-lessons{margin-inline:21px}.module-lesson,.planned-lesson>summary{min-height:57px;font-size:12px}.module-lesson-state{font-size:9px;gap:6px}.module-outcome{padding:17px 21px 20px}.module-outcome>span{font-size:9px}.module-outcome p{font-size:12px}.planned-description{font-size:12px}.planned-description strong,.planned-description>span{font-size:11px}.course-study-note{padding:20px 18px;gap:14px}.course-study-note p{font-size:12px}.course-reference>summary strong{font-size:13px}.course-reference>summary small{font-size:11px}.lesson-breadcrumb{padding-top:21px;font-size:10px}.lesson-breadcrumb+.hero{padding-top:24px}}
+@media(max-width:360px){#percurso .course-dashboard-header h1{font-size:32px}.module-card-head{gap:10px}.module-number{width:37px;height:39px;font-size:16px}.module-card h3{font-size:18px}.module-kicker{font-size:8px}.module-lesson-state{font-size:8px;gap:4px}.module-lesson,.planned-lesson>summary{gap:7px}.lesson-order{flex-basis:16px}}
+@media print{.course-dashboard-header{display:block;padding:0 0 25px}.course-dashboard-header h1{font-size:30pt}.resume-card,.path-overview,.restart-course,.lesson-breadcrumb{display:none!important}.course-stats{margin-bottom:25px}.available-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.lesson-card{break-inside:avoid;box-shadow:none}.modules-grid{grid-template-columns:1fr 1fr}.module-card{break-inside:avoid}.section-heading{break-after:avoid}.section-note{display:none}.planned-lesson>summary{font-size:9pt}.module-lesson-state{display:none}.course-reference[open]{break-before:page}.course-dashboard-header h1 span{color:inherit}}
 </style>
 </head>
 <body>
@@ -28,9 +125,10 @@
   <div id="sidebar-content" class="sidebar-content">
     <div class="nav-label">O teu espaço de aprendizagem</div>
     <nav class="main-nav" aria-label="Cadernos">
-      <a href="#percurso" data-view-link="percurso"><span class="nav-icon" aria-hidden="true">≡</span>O percurso<span class="nav-count">24</span></a>
+      <a href="#percurso" data-view-link="percurso"><span class="nav-icon" aria-hidden="true">≡</span>Mapa do curso<span class="nav-count">24</span></a>
       <a href="#aula-01" data-view-link="aula-01"><span class="nav-icon" aria-hidden="true">01</span>Primeira aplicação web</a>
       <a href="#aula-02" data-view-link="aula-02"><span class="nav-icon" aria-hidden="true">02</span>HTTP, controllers e Git</a>
+      <a href="#aula-03" data-view-link="aula-03"><span class="nav-icon" aria-hidden="true">03</span>Criar pedidos e validar</a>
     </nav>
     <div class="lesson-navigation" hidden><div class="nav-label">Nesta aula</div><nav id="lesson-toc" aria-label="Secções da aula"></nav></div>
     <div class="sidebar-foot"><span class="status-dot"></span> Uma aula de cada vez<p>Lê. Experimenta. Explica com as tuas palavras.</p></div>
@@ -39,15 +137,37 @@
 <div class="shell">
   <header class="toolbar"><span class="toolbar-context">C# <span aria-hidden="true">/</span> .NET <span aria-hidden="true">/</span> IA</span><div class="toolbar-actions"><button id="export-notes">Exportar respostas</button><button id="import-notes">Importar respostas</button><input id="import-file" type="file" accept="application/json,.json" hidden><button id="print" class="print-button">Imprimir</button></div></header>
   <main id="main">
-    <section data-page="course" id="percurso">
-      <header class="hero"><p class="eyebrow">O PERCURSO · C# COMO PONTO DE PARTIDA</p><h1>Do C# ao<br><span>SupportDesk AI.</span></h1><p class="hero-description">Aprende desenvolvimento web e engenharia de IA enquanto constróis um projeto que consegues explicar.</p><div class="hero-meta"><span>24 aulas planeadas</span><span>2 cadernos disponíveis</span><span>Ao teu ritmo</span></div><a class="primary-link" href="#aula-01">Começar a primeira aula <span aria-hidden="true">↗</span></a> <a class="primary-link" href="#aula-02">Abrir a aula 2 <span aria-hidden="true">↗</span></a></header>
-      <div class="intro-note"><span class="intro-number">01</span><div><strong>Primeiro, compreender.</strong><p>Os exercícios ficam para ti. As pistas ajudam quando precisas e as soluções ficam recolhidas até as abrires.</p></div></div>
-      <article class="prose course-content"><p><strong>Aluno:</strong> Pedro · <strong>Ponto de partida:</strong> programação em C# · <strong>Ambiente:</strong> Windows, Visual Studio 2026 ou PowerShell</p>
+    <section data-page="course" id="percurso" data-title="Mapa do curso — SupportDesk AI">
+      <header class="course-dashboard-header"><div><p class="eyebrow">O TEU PLANO DE ESTUDO</p><h1>Um percurso.<br><span>Um projeto para mostrar.</span></h1><p>Constrói o SupportDesk AI, dos fundamentos de .NET à integração de IA, com uma entrega concreta em cada etapa.</p></div><aside class="resume-card"><div class="resume-card-top"><span>CONTINUAR A ESTUDAR</span><span class="resume-dot" aria-hidden="true"></span></div><span class="resume-number" data-resume-number>AULA 03</span><h2 data-resume-title>Criar pedidos e validar</h2><p data-resume-description>Recebe JSON, valida os dados e cria pedidos através de POST.</p><a href="#aula-03" class="primary-link" data-resume-link>Abrir aula 3<span aria-hidden="true">↗</span></a></aside></header>
+    <div class="course-stats" aria-label="Estrutura do percurso"><div><strong>06</strong><span>Módulos</span></div><div><strong>24</strong><span>Aulas no plano</span></div><div><strong>03</strong><span>Aulas disponíveis</span></div><div class="course-stat-product"><span class="product-symbol" aria-hidden="true">S·</span><span>Um projeto de portefólio<strong>SupportDesk AI</strong></span></div></div>
+    <section class="path-overview" aria-labelledby="path-title"><div class="section-heading"><div><p class="eyebrow">DO PRIMEIRO ENDPOINT À DEMONSTRAÇÃO</p><h2 id="path-title">O mapa do teu percurso</h2></div><span class="section-note">Segue a ordem dos módulos</span></div><nav class="path-steps" aria-label="Módulos do curso"><a class="map-step" href="#modulo-01" style="--module-tone:#12614a"><span class="step-dot">01</span><span>Fundamentos</span></a><a class="map-step" href="#modulo-02" style="--module-tone:#326d7a"><span class="step-dot">02</span><span>Dados e interface</span></a><a class="map-step" href="#modulo-03" style="--module-tone:#4b6087"><span class="step-dot">03</span><span>Segurança</span></a><a class="map-step" href="#modulo-04" style="--module-tone:#735c8c"><span class="step-dot">04</span><span>IA aplicada</span></a><a class="map-step" href="#modulo-05" style="--module-tone:#86653e"><span class="step-dot">05</span><span>RAG e avaliação</span></a><a class="map-step" href="#modulo-06" style="--module-tone:#4c6962"><span class="step-dot">06</span><span>Portefólio</span></a></nav></section>
+    <section class="available-section" aria-labelledby="available-title"><div class="section-heading"><div><p class="eyebrow">OS TEUS CADERNOS</p><h2 id="available-title">Disponíveis para estudar</h2></div><span class="section-note">Ao teu ritmo</span></div><div class="available-grid"><a class="lesson-card" href="#aula-01" data-lesson-card="aula-01">
+    <div class="lesson-card-meta"><span>AULA 01</span><span class="availability"><i aria-hidden="true"></i>Disponível</span></div>
+    <p class="lesson-card-tag">Fundamentos web</p><h3>Primeira aplicação web</h3><p class="lesson-card-description">Cria a aplicação, responde a pedidos e devolve o primeiro JSON.</p>
+    <div class="lesson-card-detail"><span>2h30–3h30 com prática</span><span>11 etapas</span></div>
+    <div class="card-progress"><span data-map-count="aula-01">0 / 16 critérios assinalados</span><progress data-map-progress="aula-01" value="0" max="16" aria-label="Critérios assinalados da aula 1"></progress></div>
+    <div class="lesson-card-action"><span>Abrir aula</span><span aria-hidden="true">↗</span></div>
+  </a><a class="lesson-card" href="#aula-02" data-lesson-card="aula-02">
+    <div class="lesson-card-meta"><span>AULA 02</span><span class="availability"><i aria-hidden="true"></i>Disponível</span></div>
+    <p class="lesson-card-tag">API e organização</p><h3>HTTP, controllers e Git</h3><p class="lesson-card-description">Consulta pedidos por ID, interpreta respostas e guarda versões com Git.</p>
+    <div class="lesson-card-detail"><span>2h30–3h30 com prática</span><span>11 etapas</span></div>
+    <div class="card-progress"><span data-map-count="aula-02">0 / 12 critérios assinalados</span><progress data-map-progress="aula-02" value="0" max="12" aria-label="Critérios assinalados da aula 2"></progress></div>
+    <div class="lesson-card-action"><span>Abrir aula</span><span aria-hidden="true">↗</span></div>
+  </a><a class="lesson-card" href="#aula-03" data-lesson-card="aula-03">
+    <div class="lesson-card-meta"><span>AULA 03</span><span class="availability"><i aria-hidden="true"></i>Disponível</span></div>
+    <p class="lesson-card-tag">Entrada e validação</p><h3>Criar pedidos e validar</h3><p class="lesson-card-description">Recebe JSON, valida os dados e cria pedidos através de POST.</p>
+    <div class="lesson-card-detail"><span>Cerca de 3h com prática</span><span>11 etapas</span></div>
+    <div class="card-progress"><span data-map-count="aula-03">0 / 12 critérios assinalados</span><progress data-map-progress="aula-03" value="0" max="12" aria-label="Critérios assinalados da aula 3"></progress></div>
+    <div class="lesson-card-action"><span>Abrir aula</span><span aria-hidden="true">↗</span></div>
+  </a></div><p class="progress-explainer">O progresso reflete os critérios que assinalaste em cada aula. Podes rever e continuar a qualquer momento.</p></section>
+    <section class="modules-section" aria-labelledby="modules-title"><div class="section-heading"><div><p class="eyebrow">24 AULAS · 6 ENTREGAS</p><h2 id="modules-title">Explora os módulos</h2></div><span class="section-note">Abre uma aula planeada para ver o objetivo</span></div><div class="modules-grid"><article class="module-card" id="modulo-01" style="--module-tone:#12614a"><header class="module-card-head"><span class="module-number">01</span><div><p class="module-kicker">MÓDULO 01 <span>· AULAS 01–04</span></p><h3>Fundamentos e API</h3></div></header><p class="module-description">Do primeiro pedido HTTP às regras da aplicação.</p><div class="module-meta"><span>4 aulas</span><span class="module-available">3 disponíveis</span></div><div class="module-lessons"><a class="module-lesson" href="#aula-01"><span class="lesson-order">01</span><span class="module-lesson-title">Primeira aplicação web</span><span class="module-lesson-state">Abrir <span aria-hidden="true">↗</span></span></a><a class="module-lesson" href="#aula-02"><span class="lesson-order">02</span><span class="module-lesson-title">HTTP, controllers e Git</span><span class="module-lesson-state">Abrir <span aria-hidden="true">↗</span></span></a><a class="module-lesson" href="#aula-03"><span class="lesson-order">03</span><span class="module-lesson-title">Criar pedidos e validar</span><span class="module-lesson-state">Abrir <span aria-hidden="true">↗</span></span></a><details class="planned-lesson"><summary><span class="lesson-order">04</span><span class="module-lesson-title">Serviços, estados e comentários</span><span class="module-lesson-state">Planeada <span class="disclosure-icon" aria-hidden="true">+</span></span></summary><div class="planned-description"><p><strong>O que vais construir</strong>Regras fora do controller; alteração de estado e adição de comentários.</p><p><strong>O que vais reutilizar</strong>Métodos, interfaces e criação de pedidos</p><span>O caderno será desenvolvido quando chegares a esta aula.</span></div></details></div><footer class="module-outcome"><span>ENTREGA DO MÓDULO</span><p>API de suporte com pedidos, estados e comentários.</p></footer></article><article class="module-card" id="modulo-02" style="--module-tone:#326d7a"><header class="module-card-head"><span class="module-number">02</span><div><p class="module-kicker">MÓDULO 02 <span>· AULAS 05–09</span></p><h3>Dados e interface</h3></div></header><p class="module-description">Guardar informação e construir páginas que a tornam útil.</p><div class="module-meta"><span>5 aulas</span><span class="module-planned">Planeado</span></div><div class="module-lessons"><details class="planned-lesson"><summary><span class="lesson-order">05</span><span class="module-lesson-title">PostgreSQL e SQL</span><span class="module-lesson-state">Planeada <span class="disclosure-icon" aria-hidden="true">+</span></span></summary><div class="planned-description"><p><strong>O que vais construir</strong>Base local de aprendizagem, tabelas relacionadas e consultas sobre dados fictícios.</p><p><strong>O que vais reutilizar</strong>Modelo de pedido e comentário</p><span>O caderno será desenvolvido quando chegares a esta aula.</span></div></details><details class="planned-lesson"><summary><span class="lesson-order">06</span><span class="module-lesson-title">Persistência com EF Core</span><span class="module-lesson-state">Planeada <span class="disclosure-icon" aria-hidden="true">+</span></span></summary><div class="planned-description"><p><strong>O que vais construir</strong>Pedidos e comentários persistem em PostgreSQL após reiniciar a aplicação.</p><p><strong>O que vais reutilizar</strong>SQL básico, relações e serviços</p><span>O caderno será desenvolvido quando chegares a esta aula.</span></div></details><details class="planned-lesson"><summary><span class="lesson-order">07</span><span class="module-lesson-title">Filtros, paginação e erros</span><span class="module-lesson-state">Planeada <span class="disclosure-icon" aria-hidden="true">+</span></span></summary><div class="planned-description"><p><strong>O que vais construir</strong>Lista paginada e filtrada; erros previsíveis para operações inválidas.</p><p><strong>O que vais reutilizar</strong>LINQ, consultas na base e validação</p><span>O caderno será desenvolvido quando chegares a esta aula.</span></div></details><details class="planned-lesson"><summary><span class="lesson-order">08</span><span class="module-lesson-title">Apresentar dados com Razor Pages</span><span class="module-lesson-state">Planeada <span class="disclosure-icon" aria-hidden="true">+</span></span></summary><div class="planned-description"><p><strong>O que vais construir</strong>Páginas de lista e detalhe apresentam os dados reais do projeto.</p><p><strong>O que vais reutilizar</strong>Serviços e listagem de pedidos</p><span>O caderno será desenvolvido quando chegares a esta aula.</span></div></details><details class="planned-lesson"><summary><span class="lesson-order">09</span><span class="module-lesson-title">Formulários e submissões</span><span class="module-lesson-state">Planeada <span class="disclosure-icon" aria-hidden="true">+</span></span></summary><div class="planned-description"><p><strong>O que vais construir</strong>Criar pedidos, comentar e mudar estados na interface.</p><p><strong>O que vais reutilizar</strong>HTML e PageModel</p><span>O caderno será desenvolvido quando chegares a esta aula.</span></div></details></div><footer class="module-outcome"><span>ENTREGA DO MÓDULO</span><p>Pedidos persistentes, listas, detalhes e formulários.</p></footer></article><article class="module-card" id="modulo-03" style="--module-tone:#4b6087"><header class="module-card-head"><span class="module-number">03</span><div><p class="module-kicker">MÓDULO 03 <span>· AULAS 10–13</span></p><h3>Segurança e testes</h3></div></header><p class="module-description">Controlar o acesso e verificar o comportamento do produto.</p><div class="module-meta"><span>4 aulas</span><span class="module-planned">Planeado</span></div><div class="module-lessons"><details class="planned-lesson"><summary><span class="lesson-order">10</span><span class="module-lesson-title">Autenticação e Identity</span><span class="module-lesson-state">Planeada <span class="disclosure-icon" aria-hidden="true">+</span></span></summary><div class="planned-description"><p><strong>O que vais construir</strong>Registo, login e logout; pedidos associados ao utilizador autenticado.</p><p><strong>O que vais reutilizar</strong>Formulários, base de dados e configuração</p><span>O caderno será desenvolvido quando chegares a esta aula.</span></div></details><details class="planned-lesson"><summary><span class="lesson-order">11</span><span class="module-lesson-title">Clientes, técnicos e permissões</span><span class="module-lesson-state">Planeada <span class="disclosure-icon" aria-hidden="true">+</span></span></summary><div class="planned-description"><p><strong>O que vais construir</strong>Cliente vê apenas os próprios pedidos; técnico recebe permissões de suporte.</p><p><strong>O que vais reutilizar</strong>Identidade e relações na base</p><span>O caderno será desenvolvido quando chegares a esta aula.</span></div></details><details class="planned-lesson"><summary><span class="lesson-order">12</span><span class="module-lesson-title">Testes unitários</span><span class="module-lesson-state">Planeada <span class="disclosure-icon" aria-hidden="true">+</span></span></summary><div class="planned-description"><p><strong>O que vais construir</strong>Testes detetam transições de estado proibidas e outras regras quebradas.</p><p><strong>O que vais reutilizar</strong>Regras de estado, validação e serviços</p><span>O caderno será desenvolvido quando chegares a esta aula.</span></div></details><details class="planned-lesson"><summary><span class="lesson-order">13</span><span class="module-lesson-title">Testes de integração</span><span class="module-lesson-state">Planeada <span class="disclosure-icon" aria-hidden="true">+</span></span></summary><div class="planned-description"><p><strong>O que vais construir</strong>Testes verificam persistência e impedem acesso aos pedidos de outro cliente.</p><p><strong>O que vais reutilizar</strong>xUnit, API e autorização</p><span>O caderno será desenvolvido quando chegares a esta aula.</span></div></details></div><footer class="module-outcome"><span>ENTREGA DO MÓDULO</span><p>Clientes e técnicos com permissões verificadas por testes.</p></footer></article><article class="module-card" id="modulo-04" style="--module-tone:#735c8c"><header class="module-card-head"><span class="module-number">04</span><div><p class="module-kicker">MÓDULO 04 <span>· AULAS 14–16</span></p><h3>IA aplicada</h3></div></header><p class="module-description">Introduzir IA em tarefas concretas de suporte.</p><div class="module-meta"><span>3 aulas</span><span class="module-planned">Planeado</span></div><div class="module-lessons"><details class="planned-lesson"><summary><span class="lesson-order">14</span><span class="module-lesson-title">Primeira integração de IA</span><span class="module-lesson-state">Planeada <span class="disclosure-icon" aria-hidden="true">+</span></span></summary><div class="planned-description"><p><strong>O que vais construir</strong>Primeira operação experimental de IA, no servidor, com credenciais protegidas e erro tratado.</p><p><strong>O que vais reutilizar</strong>HTTP, serviços e programação assíncrona</p><span>O caderno será desenvolvido quando chegares a esta aula.</span></div></details><details class="planned-lesson"><summary><span class="lesson-order">15</span><span class="module-lesson-title">Classificar pedidos</span><span class="module-lesson-state">Planeada <span class="disclosure-icon" aria-hidden="true">+</span></span></summary><div class="planned-description"><p><strong>O que vais construir</strong>Categoria e resumo curto sugeridos para um pedido, com revisão pelo técnico.</p><p><strong>O que vais reutilizar</strong>Chamada de IA e validação</p><span>O caderno será desenvolvido quando chegares a esta aula.</span></div></details><details class="planned-lesson"><summary><span class="lesson-order">16</span><span class="module-lesson-title">Resumir conversas</span><span class="module-lesson-state">Planeada <span class="disclosure-icon" aria-hidden="true">+</span></span></summary><div class="planned-description"><p><strong>O que vais construir</strong>Resumo de uma conversa distingue problema, ações realizadas e informação em falta.</p><p><strong>O que vais reutilizar</strong>Comentários, classificação e tokens</p><span>O caderno será desenvolvido quando chegares a esta aula.</span></div></details></div><footer class="module-outcome"><span>ENTREGA DO MÓDULO</span><p>Classificação e resumos com revisão humana.</p></footer></article><article class="module-card" id="modulo-05" style="--module-tone:#86653e"><header class="module-card-head"><span class="module-number">05</span><div><p class="module-kicker">MÓDULO 05 <span>· AULAS 17–21</span></p><h3>Conhecimento e avaliação</h3></div></header><p class="module-description">Usar documentação, medir resultados e tratar falhas.</p><div class="module-meta"><span>5 aulas</span><span class="module-planned">Planeado</span></div><div class="module-lessons"><details class="planned-lesson"><summary><span class="lesson-order">17</span><span class="module-lesson-title">Preparar a base de conhecimento</span><span class="module-lesson-state">Planeada <span class="disclosure-icon" aria-hidden="true">+</span></span></summary><div class="planned-description"><p><strong>O que vais construir</strong>Artigos fictícios, trechos identificados e pesquisa textual para comparação futura.</p><p><strong>O que vais reutilizar</strong>Persistência e consultas</p><span>O caderno será desenvolvido quando chegares a esta aula.</span></div></details><details class="planned-lesson"><summary><span class="lesson-order">18</span><span class="module-lesson-title">Pesquisa semântica</span><span class="module-lesson-state">Planeada <span class="disclosure-icon" aria-hidden="true">+</span></span></summary><div class="planned-description"><p><strong>O que vais construir</strong>Pergunta recupera trechos relevantes; resultado comparável à pesquisa textual.</p><p><strong>O que vais reutilizar</strong>Trechos, SQL e chamadas de IA</p><span>O caderno será desenvolvido quando chegares a esta aula.</span></div></details><details class="planned-lesson"><summary><span class="lesson-order">19</span><span class="module-lesson-title">RAG e referências</span><span class="module-lesson-state">Planeada <span class="disclosure-icon" aria-hidden="true">+</span></span></summary><div class="planned-description"><p><strong>O que vais construir</strong>Rascunho de resposta apresenta fontes verificáveis e pode pedir esclarecimentos.</p><p><strong>O que vais reutilizar</strong>Pesquisa e respostas estruturadas</p><span>O caderno será desenvolvido quando chegares a esta aula.</span></div></details><details class="planned-lesson"><summary><span class="lesson-order">20</span><span class="module-lesson-title">Avaliar a qualidade da IA</span><span class="module-lesson-state">Planeada <span class="disclosure-icon" aria-hidden="true">+</span></span></summary><div class="planned-description"><p><strong>O que vais construir</strong>Conjunto de casos, métricas, análise de falhas e primeiro relatório de qualidade.</p><p><strong>O que vais reutilizar</strong>Classificação, resumos e RAG</p><span>O caderno será desenvolvido quando chegares a esta aula.</span></div></details><details class="planned-lesson"><summary><span class="lesson-order">21</span><span class="module-lesson-title">Tratar falhas e observar o sistema</span><span class="module-lesson-state">Planeada <span class="disclosure-icon" aria-hidden="true">+</span></span></summary><div class="planned-description"><p><strong>O que vais construir</strong>Aplicação continua utilizável quando a IA falha; chamadas têm limites e registos úteis.</p><p><strong>O que vais reutilizar</strong>Testes e avaliação</p><span>O caderno será desenvolvido quando chegares a esta aula.</span></div></details></div><footer class="module-outcome"><span>ENTREGA DO MÓDULO</span><p>Respostas fundamentadas em fontes, avaliadas e observáveis.</p></footer></article><article class="module-card" id="modulo-06" style="--module-tone:#4c6962"><header class="module-card-head"><span class="module-number">06</span><div><p class="module-kicker">MÓDULO 06 <span>· AULAS 22–24</span></p><h3>Entrega e portefólio</h3></div></header><p class="module-description">Preparar uma aplicação que outra pessoa consegue executar.</p><div class="module-meta"><span>3 aulas</span><span class="module-planned">Planeado</span></div><div class="module-lessons"><details class="planned-lesson"><summary><span class="lesson-order">22</span><span class="module-lesson-title">Executar com Docker</span><span class="module-lesson-state">Planeada <span class="disclosure-icon" aria-hidden="true">+</span></span></summary><div class="planned-description"><p><strong>O que vais construir</strong>Aplicação e base arrancam localmente através de instruções reproduzíveis.</p><p><strong>O que vais reutilizar</strong>Aplicação completa, configuração e PostgreSQL</p><span>O caderno será desenvolvido quando chegares a esta aula.</span></div></details><details class="planned-lesson"><summary><span class="lesson-order">23</span><span class="module-lesson-title">Automatizar com GitHub Actions</span><span class="module-lesson-state">Planeada <span class="disclosure-icon" aria-hidden="true">+</span></span></summary><div class="planned-description"><p><strong>O que vais construir</strong>Alterações enviadas para o repositório desencadeiam compilação e testes automáticos.</p><p><strong>O que vais reutilizar</strong>Git, testes e ambiente reproduzível</p><span>O caderno será desenvolvido quando chegares a esta aula.</span></div></details><details class="planned-lesson"><summary><span class="lesson-order">24</span><span class="module-lesson-title">Publicar e apresentar o projeto</span><span class="module-lesson-state">Planeada <span class="disclosure-icon" aria-hidden="true">+</span></span></summary><div class="planned-description"><p><strong>O que vais construir</strong>Demo, README verificável, vídeo curto e explicação das decisões e limitações.</p><p><strong>O que vais reutilizar</strong>Aplicação validada e configuração de produção</p><span>O caderno será desenvolvido quando chegares a esta aula.</span></div></details></div><footer class="module-outcome"><span>ENTREGA DO MÓDULO</span><p>Demo, automatização, documentação e decisões explicáveis.</p></footer></article></div></section>
+    <div class="course-study-note"><span aria-hidden="true">↗</span><div><strong>Construir, testar e saber explicar.</strong><p>Cada aula junta prática, revisão e exercícios. Os próximos cadernos acompanham o teu código e as dúvidas que trazes.</p></div></div>
+      <details class="course-reference"><summary><span><strong>Plano detalhado e notas do curso</strong><small>Pré-requisitos, decisões do projeto e registo de progresso.</small></span><span class="disclosure-icon" aria-hidden="true">+</span></summary><article class="prose course-content"><p><strong>Aluno:</strong> Pedro · <strong>Ponto de partida:</strong> programação em C# · <strong>Ambiente:</strong> Windows, Visual Studio 2026 ou PowerShell</p>
 <p><strong>Projeto:</strong> <code>C:\Users\Pedro Moreira\Documents\Projectos\AI Projects\SupportDesk-AI</code></p>
 <h2>O que já existe e o que muda</h2>
-<p>Na preparação inicial, em 27 de setembro de 2026, a pasta continha <code>README.md</code> e o curso anterior de 16 aulas. Na revisão de 28 de setembro já existe <code>SupportDesk.sln</code>, o projeto SupportDesk.Web, a página personalizada, os três endpoints JSON da aula 1 e o laboratório WebLab. O código foi avaliado numa cópia isolada. O SDK .NET 10.0.401 está instalado.</p>
+<p>Na preparação inicial, em 27 de setembro de 2026, a pasta continha <code>README.md</code> e o curso anterior de 16 aulas. Na revisão de 28 de setembro, o produto já tem a página personalizada, os endpoints da aula 1, um controller com lista, detalhe, título e contagem de pedidos, e um histórico Git inicial. O código da aula 2 foi testado numa cópia isolada; os acertos de tipos, um aviso de nulabilidade e o commit dos últimos exercícios são retomados na aula 3. O SDK .NET 10.0.401 está instalado.</p>
 <p>O material anterior fica preservado. Este índice passa a orientar os novos cadernos. Mantemos o produto, a arquitetura simples e os nomes principais. Dividimos algumas aulas para separar conceitos que exigem prática própria: páginas e formulários, login e permissões, classificação e resumos, preparação de documentos e pesquisa, testes e automatização.</p>
-<p><strong>Há 24 aulas previstas e dois cadernos disponíveis.</strong> A aula 2 inclui a avaliação do código da aula 1 e uma revisão curta antes de avançar. Os seguintes serão escritos quando os pedires, considerando o código que realmente construíste e as dificuldades que encontrámos.</p>
+<p><strong>Há 24 aulas previstas e três cadernos disponíveis.</strong> As aulas 2 e 3 começam pela avaliação do teu trabalho anterior e uma revisão curta. Os seguintes serão escritos quando os pedires, considerando o código que realmente construíste e as dificuldades que encontrámos.</p>
 <h2>Como estudar</h2>
 <p>Cada caderno contém explicação, exemplo guiado, construção no projeto, verificações, exercícios com apoio progressivamente menor, diagnóstico de erros e revisão. Há espaço para escrever previsões e respostas. As pistas e soluções aparecem no fim: tenta primeiro e consulta apenas o apoio necessário.</p>
 <p>Em cada aula, produz duas provas: uma funcionalidade a funcionar e uma explicação tua sobre como funciona. Copiar código não basta para concluir. Se enviares uma solução, a revisão começa por identificar o comportamento e dar uma pista; a correção completa fica para quando a pedires ou para depois da tentativa.</p>
@@ -298,8 +418,9 @@
 <ol>
 <li><a href="#aula-01">Aula 01 — Primeira aplicação web e primeiro endpoint</a></li>
 <li><a href="#aula-02">Aula 02 — HTTP, JSON, controllers e primeiros commits</a></li>
+<li><a href="#aula-03">Aula 03 — Criar pedidos com POST, DTOs e validação</a></li>
 </ol>
-<p>As aulas 3–24 estão planeadas, mas ainda não têm caderno. Não há exercícios implementados por mim na aplicação do aluno.</p>
+<p>As aulas 4–24 estão planeadas, mas ainda não têm caderno. Não há exercícios implementados por mim na aplicação do aluno.</p>
 <h2>Registo de progresso</h2>
 <table>
 <thead>
@@ -333,10 +454,12 @@
 <td></td>
 </tr>
 </tbody></table>
-<p><strong>Como pedir continuidade:</strong> «Terminei a aula 2. Estas são as minhas respostas e este é o meu código. Estes foram os exercícios que saltei.» Vamos rever os critérios de conclusão e preparar a aula seguinte quando a pedires.</p>
-</article>
+<p><strong>Como pedir continuidade:</strong> «Terminei a aula 3. Estas são as minhas respostas e este é o meu código. Estes foram os exercícios que saltei.» Vamos rever os critérios de conclusão e preparar a aula seguinte quando a pedires.</p>
+</article></details>
+      <p class="restart-course"><a href="#aula-01">Começar a primeira aula <span aria-hidden="true">↗</span></a></p>
     </section>
     <section data-page="lesson" id="aula-01" data-title="Aula 01 — SupportDesk AI">
+      <nav class="lesson-breadcrumb" aria-label="Localização no curso"><a href="#percurso">Mapa do curso</a><span aria-hidden="true">/</span><a href="#modulo-01">Módulo 01 · Fundamentos e API</a><span aria-hidden="true">/</span><span aria-current="page">Aula 01</span></nav>
       <header class="hero lesson-hero"><p class="eyebrow">CADERNO 01 · FUNDAMENTOS</p><h1>A tua primeira<br><span>aplicação web.</span></h1><p class="hero-description">Do primeiro pedido no navegador a uma resposta JSON no SupportDesk AI.</p><div class="hero-meta"><span>2h30–3h30 com prática</span><span>11 etapas</span><span>.NET 10</span></div><div class="study-progress"><div><span>Critérios de conclusão</span><strong id="progress-label">0 de 16 marcados</strong></div><progress id="progress" value="0" max="16" aria-label="Critérios de conclusão marcados"></progress></div></header>
       <div class="save-banner"><span class="save-dot" aria-hidden="true"></span><span id="save-status" data-save-status role="status">As respostas ficam neste navegador. Exporta uma cópia para as conservar.</span></div>
       <article class="prose lesson-content"><p><a href="#percurso">Voltar ao índice do curso</a></p>
@@ -1293,6 +1416,7 @@ $data.version
       <footer class="lesson-end"><span class="eyebrow">CONTINUAR A APRENDER</span><h2>Do primeiro endpoint à consulta de pedidos.</h2><p>A aula 2 inclui a avaliação do teu código e uma revisão curta.</p><a href="#aula-02">Abrir a aula 2 <span aria-hidden="true">↗</span></a></footer>
     </section>
     <section data-page="lesson" id="aula-02" data-title="Aula 02 — SupportDesk AI">
+      <nav class="lesson-breadcrumb" aria-label="Localização no curso"><a href="#percurso">Mapa do curso</a><span aria-hidden="true">/</span><a href="#modulo-01">Módulo 01 · Fundamentos e API</a><span aria-hidden="true">/</span><span aria-current="page">Aula 02</span></nav>
       <header class="hero lesson-hero"><p class="eyebrow">CADERNO 02 · HTTP E ORGANIZAÇÃO</p><h1>Os teus primeiros<br><span>pedidos de suporte.</span></h1><p class="hero-description">Uma API para consultar pedidos, respostas que consegues explicar e uma versão guardada com Git.</p><div class="hero-meta"><span>2h30–3h30 com prática</span><span>11 etapas</span><span>Visual Studio + PowerShell</span></div><div class="study-progress"><div><span>Critérios de conclusão</span><strong id="progress-label-aula-02">0 de 12 marcados</strong></div><progress id="progress-aula-02" value="0" max="12" aria-label="Critérios de conclusão da aula 2 marcados"></progress></div></header>
       <div class="save-banner"><span class="save-dot" aria-hidden="true"></span><span data-save-status role="status">As respostas ficam neste navegador. Exporta uma cópia para as conservar.</span></div>
       <article class="prose lesson-content"><p><a href="#percurso">Voltar ao índice do curso</a></p>
@@ -1975,7 +2099,786 @@ git status
 <p>Os exemplos da aula 2 e as soluções comentadas foram extraídos deste caderno e compilados numa cópia separada com .NET 10.0.401, sem erros nem avisos. Foram verificadas as respostas da lista, detalhes, ID inexistente, segmento não inteiro, método POST não permitido, títulos, contagem e exemplo do WebLab, mantendo a página e os endpoints anteriores. Também foi criado um commit apenas na cópia de validação, confirmando que os ficheiros de compilação ficaram excluídos.</p>
 <p>Não foram acrescentados controllers, modelos ou commits ao teu projeto por mim. Os menus do Visual Studio foram conferidos com documentação oficial, sem executar a sequência na tua instalação. O HTML foi verificado com navegação entre aulas, respostas e progresso separados, exportação/importação e preservação dos identificadores das respostas anteriores. No ambiente de validação foi usada uma configuração NuGet local para os testes; não a introduzas no teu projeto.</p>
 </article>
-      <footer class="lesson-end"><span class="eyebrow">QUANDO ESTIVERES PRONTO</span><h2>Mostra o resultado e explica o percurso.</h2><p>Na próxima revisão, traz o código, as dúvidas e os exercícios que escolheste fazer.</p><a href="#percurso">Voltar ao percurso <span aria-hidden="true">↗</span></a></footer>
+      <footer class="lesson-end"><span class="eyebrow">CONTINUAR A APRENDER</span><h2>Da consulta à criação de pedidos.</h2><p>A aula 3 começa pela revisão do teu controller e do histórico Git.</p><a href="#aula-03">Abrir a aula 3 <span aria-hidden="true">↗</span></a></footer>
+    </section>
+    <section data-page="lesson" id="aula-03" data-title="Aula 03 — SupportDesk AI">
+      <nav class="lesson-breadcrumb" aria-label="Localização no curso"><a href="#percurso">Mapa do curso</a><span aria-hidden="true">/</span><a href="#modulo-01">Módulo 01 · Fundamentos e API</a><span aria-hidden="true">/</span><span aria-current="page">Aula 03</span></nav>
+      <header class="hero lesson-hero"><p class="eyebrow">CADERNO 03 · ENTRADA E VALIDAÇÃO</p><h1>Receber dados.<br><span>Criar pedidos.</span></h1><p class="hero-description">Do JSON enviado pelo cliente a um pedido válido, com um ID escolhido pelo servidor e um endereço para o consultar.</p><div class="hero-meta"><span>Cerca de 3h com prática</span><span>11 etapas</span><span>Visual Studio + PowerShell</span></div><div class="study-progress"><div><span>Critérios de conclusão</span><strong id="progress-label-aula-03">0 de 12 marcados</strong></div><progress id="progress-aula-03" value="0" max="12" aria-label="Critérios de conclusão da aula 3 marcados"></progress></div></header>
+      <div class="save-banner"><span class="save-dot" aria-hidden="true"></span><span data-save-status role="status">As respostas ficam neste navegador. Exporta uma cópia para as conservar.</span></div>
+      <article class="prose lesson-content"><p><a href="#percurso">Voltar ao índice do curso</a></p>
+<div class="personal-fields"><label>Nome<input data-save="aula-03-student-name" autocomplete="name"></label><label>Data de início<input type="date" data-save="aula-03-start-date"></label><label>Data de revisão<input type="date" data-save="aula-03-review-date"></label></div>
+
+<p><strong>Ambiente:</strong> Windows, Visual Studio 2026, .NET 10 e PowerShell. <strong>Raiz do projeto:</strong></p>
+<pre><code class="language-text">C:\Users\Pedro Moreira\Documents\Projectos\AI Projects\SupportDesk-AI
+</code></pre>
+<p>Continuas a solução existente. Os exemplos são material de estudo para tu implementares. O caderno começa pelos ajustes encontrados na revisão do teu código, sem apagar os endpoints que já construíste.</p>
+<h2>1. Objetivo e resultado</h2>
+<p>Até agora consultaste pedidos escritos no código. Nesta aula vais enviar dados do cliente e criar um pedido novo através de <strong>POST <code>/api/tickets</code></strong>.</p>
+<p>No fim, deves conseguir:</p>
+<ul>
+<li>Enviar um título e uma descrição em JSON pelo Visual Studio ou PowerShell.</li>
+<li>Receber <strong>201 Created</strong>, o pedido criado e o cabeçalho <strong>Location</strong> com o seu endereço.</li>
+<li>Consultar o novo pedido com GET e vê-lo na lista e na contagem.</li>
+<li>Receber <strong>400 Bad Request</strong> para dados inválidos, sem aumentar a contagem.</li>
+<li>Garantir que o servidor escolhe o ID e o estado inicial <code>Open</code>.</li>
+<li>Guardar a versão verificada num commit local.</li>
+</ul>
+<p><strong>Duração:</strong> cerca de 3 horas, incluindo prática e revisão. Divide em duas sessões: primeiro até à criação funcionar; depois validação, exercícios e Git.</p>
+<p><strong>Matéria nova:</strong> corpo de um pedido HTTP, DTO, desserialização, validação com atributos, resposta 201, <code>Location</code>, <code>List&lt;T&gt;</code> e uma pequena proteção de acesso simultâneo. <strong>Revisão:</strong> classes, propriedades, <code>null</code>, condições, lambdas, estados HTTP e commits.</p>
+<p><strong>Limite assumido:</strong> os dados continuam apenas na memória de um processo. Reiniciar repõe os três pedidos iniciais. Vamos organizar o armazenamento num serviço na aula 4 e torná-lo persistente na aula 6. Não há base de dados, autenticação ou integração de IA nesta aula.</p>
+<h2>2. Antes de começar</h2>
+<h3>Avaliação do teu trabalho da aula 2</h3>
+<p>Revisão de <strong>28 de setembro de 2026</strong>, baseada nos teus ficheiros e em testes de uma cópia isolada.</p>
+<table>
+<thead>
+<tr>
+<th>Parte avaliada</th>
+<th>Evidência e resultado</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Arranque e controllers</td>
+<td><code>AddControllers()</code> e <code>MapControllers()</code> estão nos locais corretos; <code>[Route(&quot;api/tickets&quot;)]</code> está definido.</td>
+</tr>
+<tr>
+<td>Compilação</td>
+<td>Sucesso, com <strong>um aviso CS8618</strong> na propriedade <code>Ticket.Title</code>.</td>
+</tr>
+<tr>
+<td>Listagem e detalhe</td>
+<td>A lista contém os três pedidos; os IDs existentes dão 200; um ID inexistente dá 404.</td>
+</tr>
+<tr>
+<td>Exercícios A, B e C</td>
+<td>O terceiro pedido, a consulta do título e a contagem estão implementados e responderam corretamente.</td>
+</tr>
+<tr>
+<td>Comportamentos anteriores</td>
+<td>Página inicial, endpoints da aula 1 e exemplo <code>/eco/21</code> do WebLab continuam a funcionar.</td>
+</tr>
+<tr>
+<td>Git</td>
+<td>Existem os commits <code>ef92fd1</code> e <code>f4865a8</code>. As alterações dos exercícios em <code>TicketsController.cs</code> ainda estão fora de um commit.</td>
+</tr>
+</tbody></table>
+<p><strong>Parecer:</strong> podes avançar, fazendo os acertos abaixo no início desta aula. A funcionalidade da aula 2 foi demonstrada; as respostas teóricas não foram avaliadas nesta revisão.</p>
+<p><strong>Sobre o 404 anterior:</strong> na cópia do código atual, GET <code>/api/tickets</code> devolveu 200. As tentativas de contactar a aplicação em <code>localhost:5011</code> não receberam resposta dentro do tempo de verificação. Isto não permite identificar a causa daquele 404. Antes de acrescentar POST, confirma a listagem na tua execução; o passo 1 explica como.</p>
+<h3>Três pistas de revisão antes das correções</h3>
+<ol>
+<li>Em <code>GetById</code>, declaraste <code>ActionResult&lt;Ticket[]&gt;</code>, mas devolves um pedido. <strong>Pista:</strong> compara «um objeto» com «um array» e revê o tipo entre <code>&lt; &gt;</code>.</li>
+<li><code>GetTitleById</code> e <code>CountTickets</code> declaram <code>ActionResult&lt;Ticket&gt;</code>, mas devolvem objetos com outros formatos. <strong>Pista:</strong> a aula 2 apresentou um tipo de resultado sem prometer a forma de <code>Ticket</code>.</li>
+<li><code>Title</code> é uma string não anulável sem valor inicial. <strong>Pista:</strong> como inicializavas uma string vazia no exemplo da aula 2? Não desligues os avisos de nulabilidade para esconder a questão.</li>
+</ol>
+<p>Estes tipos de retorno não impediram <code>Ok(...)</code> de enviar JSON: esse método devolve um resultado HTTP que também pode ser aceite por <code>ActionResult&lt;T&gt;</code>. Ainda assim, o tipo declarado deve descrever o contrato; ajuda quem lê o código e a documentação gerada. Os <code>using</code> sem utilização podem ser limpos depois: não são a causa do 404.</p>
+<div class="answer"><label for="aula-03-answer-1">As correções que tentaria</label><textarea id="aula-03-answer-1" data-save="aula-03-answer-1" rows="2" placeholder="Escreve aqui…"></textarea></div>
+
+<h3>Revisão curta</h3>
+<p>Abre <code>SupportDesk.sln</code> no Visual Studio. Mantém .NET 10 e os pacotes atuais; os exemplos deste caderno não exigem instalar uma biblioteca adicional.</p>
+<ol>
+<li><p>Que diferença existe entre consultar com GET e pedir uma criação com POST?</p>
+<div class="answer"><label for="aula-03-answer-2">A minha resposta</label><textarea id="aula-03-answer-2" data-save="aula-03-answer-2" rows="2" placeholder="Escreve aqui…"></textarea></div>
+</li>
+<li><p>Se GET <code>/api/tickets/999</code> dá 404, isso prova que o servidor está desligado?</p>
+<div class="answer"><label for="aula-03-answer-3">A minha resposta</label><textarea id="aula-03-answer-3" data-save="aula-03-answer-3" rows="2" placeholder="Escreve aqui…"></textarea></div>
+</li>
+<li><p>Qual é a diferença entre <code>ActionResult&lt;Ticket&gt;</code> e <code>ActionResult&lt;Ticket[]&gt;</code>?</p>
+<div class="answer"><label for="aula-03-answer-4">A minha resposta</label><textarea id="aula-03-answer-4" data-save="aula-03-answer-4" rows="2" placeholder="Escreve aqui…"></textarea></div>
+</li>
+<li><p>As alterações que guardaste no editor já pertencem ao último commit?</p>
+<div class="answer"><label for="aula-03-answer-5">A minha resposta</label><textarea id="aula-03-answer-5" data-save="aula-03-answer-5" rows="2" placeholder="Escreve aqui…"></textarea></div></li>
+</ol>
+<p><strong>Regra das pastas:</strong> comandos de compilação e Git ficam na raiz <code>SupportDesk-AI</code>. Pedidos <code>Invoke-WebRequest</code> com URL completa podem correr <strong>em qualquer pasta</strong>, mantendo o servidor ativo. O caminho <code>/api/tickets</code> continua a ser uma rota HTTP, não uma pasta do Windows.</p>
+<h2>3. Explicação dos conceitos</h2>
+<h3>3.1. O corpo de um POST</h3>
+<p>O método e o caminho escolhem a operação. O <strong>corpo do pedido</strong> transporta os dados para essa operação. <code>Content-Type: application/json</code> informa o servidor de que o corpo está em JSON.</p>
+<pre><code class="language-http">POST http://localhost:5011/api/tickets
+Content-Type: application/json
+
+{
+  &quot;title&quot;: &quot;Impressora da receção sem ligação&quot;,
+  &quot;description&quot;: &quot;A impressão deixou de funcionar esta manhã.&quot;
+}
+</code></pre>
+<p>A linha vazia separa os cabeçalhos do corpo. No navegador, escrever uma URL na barra de endereços faz um GET; isso não envia este POST. Vamos usar os ficheiros <code>.http</code> do Visual Studio ou PowerShell.</p>
+<h3>3.2. O cliente não decide todos os campos</h3>
+<p>Um <strong>DTO</strong>, de <em>Data Transfer Object</em>, é um tipo que descreve dados trocados numa operação. <code>CreateTicketRequest</code> vai descrever o que aceitamos ao criar: título e descrição. <code>Ticket</code> continua a representar o pedido existente, com ID e estado.</p>
+<table>
+<thead>
+<tr>
+<th>Campo</th>
+<th>Quem o fornece nesta operação?</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>title</code></td>
+<td>Cliente; o servidor valida.</td>
+</tr>
+<tr>
+<td><code>description</code></td>
+<td>Cliente; é opcional nesta versão.</td>
+</tr>
+<tr>
+<td><code>id</code></td>
+<td>Servidor; escolhe o próximo identificador.</td>
+</tr>
+<tr>
+<td><code>status</code></td>
+<td>Servidor; fixa <code>Open</code> na criação.</td>
+</tr>
+</tbody></table>
+<p>Se aceitasses diretamente <code>Ticket</code> e guardasses todas as suas propriedades, poderias permitir ao cliente escolher valores que pertencem às regras da aplicação. O DTO torna explícita a entrada pretendida. Não substitui autenticação ou permissões, que virão mais tarde.</p>
+<p>Na configuração usada, propriedades JSON desconhecidas são ignoradas. Enviar <code>&quot;status&quot;:&quot;Resolved&quot;</code> não provoca necessariamente 400; simplesmente não atribui esse estado ao pedido criado. A action construirá um novo <code>Ticket</code> com <code>Open</code>.</p>
+<h3>3.3. Ler, validar e só depois alterar os dados</h3>
+<p><strong>Desserializar</strong> é transformar JSON num objeto C#. <code>[FromBody]</code> explicita que o parâmetro vem do corpo. Depois são verificadas regras de validação associadas às propriedades. Com <code>[ApiController]</code>, entradas inválidas podem originar 400 <strong>antes de entrar na action</strong>.</p>
+<pre><code class="language-text">JSON → leitura para CreateTicketRequest → validação dos atributos
+                                          |
+                           inválido → 400, sem criar
+                                          |
+                               válido → action → Ticket → 201
+</code></pre>
+<p>Usaremos <code>[Required]</code> para exigir o título e <code>[StringLength]</code> para limitar o seu tamanho. São <strong>Data Annotations</strong>, atributos de validação. Não confundas <code>[Required]</code> com inicializar uma propriedade: <code>string.Empty</code> evita um valor inicial nulo, mas não torna um texto vazio válido.</p>
+<p>O corpo de erro terá normalmente <code>status</code>, <code>title</code> e <code>errors</code>. É uma resposta de validação, não uma exceção que tenhas de mostrar ao utilizador como «servidor avariado». Mensagens para JSON malformado podem vir em inglês; interessa identificar o campo ou o problema indicado.</p>
+<h3>3.4. Normalizar não é o mesmo que validar</h3>
+<p><code>Trim()</code> remove espaços no início e no fim. Vamos usá-lo para guardar um título limpo. Os atributos verificam primeiro o texto recebido. Por isso, <code>&quot;  a  &quot;</code> pode satisfazer um mínimo de cinco caracteres antes de <code>Trim()</code>, mas ficar com apenas um depois.</p>
+<p>Vamos verificar novamente esse mínimo na action, após normalizar, antes de inserir. O limite máximo dos atributos é aplicado ao texto recebido, incluindo espaços nas extremidades. Esta decisão fica explícita nos testes.</p>
+<p><strong>Ponto de verificação P1:</strong> se o título for inválido, deves atribuir um ID e acrescentar o pedido à coleção antes de devolver 400? Explica a ordem que escolherias.</p>
+<div class="answer"><label for="aula-03-answer-6">A minha previsão</label><textarea id="aula-03-answer-6" data-save="aula-03-answer-6" rows="2" placeholder="Escreve aqui…"></textarea></div>
+
+<h3>3.5. A resposta de criação</h3>
+<p><strong>201 Created</strong> comunica que criaste um recurso. <strong>Location</strong> é um cabeçalho que indica onde o cliente pode consultá-lo. <code>CreatedAtAction</code> constrói essa resposta com base numa action de consulta e nos valores da rota.</p>
+<p>Vamos usar <code>nameof(GetById)</code> para obter o nome do método sem o escrever como texto solto. <code>new { id = ticket.Id }</code> fornece o valor para <code>{id:int}</code>. O terceiro argumento é o corpo da resposta.</p>
+<p>GET continua a devolver 200 quando encontra um pedido. POST passa de 405, observado na aula 2, para 201 ou 400 conforme a entrada. Repetir um POST válido cria outro pedido nesta versão: ainda não existe um mecanismo para reconhecer repetições da mesma intenção.</p>
+<h3>3.6. Uma lista partilhada e pedidos simultâneos</h3>
+<p>Um array tem tamanho fixo; <code>List&lt;Ticket&gt;</code> permite acrescentar elementos com <code>Add</code>. A contagem da lista chama-se <code>Count</code>, enquanto o array tinha <code>Length</code>.</p>
+<p>Vários pedidos HTTP podem executar ao mesmo tempo. Uma lista comum não deve ser lida enquanto outra operação a modifica sem coordenação. Usaremos um objeto partilhado <code>TicketsLock</code> e <code>lock</code> nas leituras e na criação. Só uma dessas regiões pode executar de cada vez para o mesmo objeto de sincronização.</p>
+<p>O ID e a inserção ficam na mesma região protegida, evitando que duas criações escolham o mesmo ID. Na listagem copiamos os elementos para um array com <code>ToArray()</code> enquanto temos o lock; depois o framework pode serializar esse resultado sem percorrer a lista que está a crescer.</p>
+<p>É uma solução curta para este laboratório, com leituras e criação num único processo e sem alterações aos objetos já criados. <code>lock</code> não guarda dados no disco nem coordena duas instâncias da aplicação. Na aula 4 vamos retirar estas responsabilidades do controller.</p>
+<h2>4. Exemplo guiado: receber uma mensagem sem a guardar</h2>
+<p><strong>Objetivo:</strong> observar o percurso JSON → objeto C# → resposta antes de acrescentar armazenamento e validação.</p>
+<h3>4.1. Definir o objeto recebido</h3>
+<p><strong>Ficheiro novo:</strong> <code>C:\Users\Pedro Moreira\Documents\Projectos\AI Projects\SupportDesk-AI\experiencias\aula-01\WebLab\Models\EchoRequest.cs</code>.</p>
+<p><strong>Visual Studio:</strong> abre o WebLab existente, cria a pasta <code>Models</code> e usa <strong>Add → Class</strong> para criar <code>EchoRequest.cs</code>. <strong>Alternativa:</strong> cria a pasta pelo Explorador de Ficheiros e o ficheiro no editor. Escreve:</p>
+<pre><code class="language-csharp">namespace WebLab.Models;
+
+public class EchoRequest
+{
+    public string Text { get; set; } = string.Empty;
+}
+</code></pre>
+<p>Este tipo descreve uma propriedade de texto. Não tem regras de validação do produto; é apenas um eco para observar o corpo de um pedido.</p>
+<h3>4.2. Acrescentar o endpoint</h3>
+<p><strong>Ficheiro a alterar:</strong> <code>C:\Users\Pedro Moreira\Documents\Projectos\AI Projects\SupportDesk-AI\experiencias\aula-01\WebLab\Program.cs</code>.</p>
+<p>No topo, acrescenta <code>using WebLab.Models;</code>. Antes de <code>app.Run()</code>, mantendo as rotas anteriores, acrescenta:</p>
+<pre><code class="language-csharp">app.MapPost(&quot;/eco-mensagem&quot;, (EchoRequest request) =&gt; new
+{
+    recebida = request.Text
+});
+</code></pre>
+<p><code>MapPost</code> responde a POST. O parâmetro é um objeto vindo do corpo JSON; a função devolve outro objeto. Nenhuma coleção é alterada.</p>
+<p><strong>Antes de executar:</strong> com o corpo abaixo, que texto esperas em <code>recebida</code>? Isto cria um pedido de suporte?</p>
+<div class="answer"><label for="aula-03-answer-7">A minha previsão</label><textarea id="aula-03-answer-7" data-save="aula-03-answer-7" rows="2" placeholder="Escreve aqui…"></textarea></div>
+
+<p><strong>Visual Studio:</strong> executa WebLab com o perfil <code>http</code> e F5. Acrescenta ao seu ficheiro <code>.http</code>:</p>
+<pre><code class="language-http">POST http://localhost:5023/eco-mensagem
+Content-Type: application/json
+
+{ &quot;text&quot;: &quot;Teste enviado pelo cliente&quot; }
+</code></pre>
+<p>Na configuração inspecionada, WebLab usa <strong>5023</strong> e SupportDesk.Web usa <strong>5011</strong>. Confirma a porta efetiva ao arrancar. Clica <strong>Send Request</strong>. Depois de prever, observa o corpo e o estado: este eco devolve <strong>200</strong>, porque não estamos a anunciar a criação de um recurso.</p>
+<p><strong>Alternativa PowerShell — para arrancar, raiz SupportDesk-AI:</strong></p>
+<pre><code class="language-powershell">Set-Location -LiteralPath &#39;C:\Users\Pedro Moreira\Documents\Projectos\AI Projects\SupportDesk-AI&#39;
+dotnet run --project experiencias/aula-01/WebLab --launch-profile http
+</code></pre>
+<p><strong>Pedido num segundo PowerShell — qualquer pasta:</strong></p>
+<pre><code class="language-powershell">$echoResponse = Invoke-WebRequest -UseBasicParsing -Method Post -Uri &#39;http://localhost:5023/eco-mensagem&#39; -ContentType &#39;application/json&#39; -Body &#39;{&quot;text&quot;:&quot;Teste enviado pelo cliente&quot;}&#39;
+$echoResponse.StatusCode
+$echoResponse.Content
+</code></pre>
+<p><strong>Ponto de verificação P2:</strong> altera apenas o valor de <code>text</code>, envia novamente e identifica o que mudou no cliente e no servidor. A resposta esperada está no apoio final.</p>
+<div class="answer"><label for="aula-03-answer-8">A minha explicação</label><textarea id="aula-03-answer-8" data-save="aula-03-answer-8" rows="2" placeholder="Escreve aqui…"></textarea></div>
+
+
+<p>Para o WebLab com Shift+F5, ou Ctrl+C no terminal que o iniciou. Volta a <code>SupportDesk.sln</code>.</p>
+<h2>5. Construção no projeto, passo a passo</h2>
+<h3>Passo 1 — Fechar a revisão da aula 2</h3>
+<p><strong>Objetivo:</strong> começar com as rotas anteriores funcionais e declarações coerentes. <strong>Ficheiros:</strong> <code>src\SupportDesk.Web\Models\Ticket.cs</code> e <code>src\SupportDesk.Web\Controllers\TicketsController.cs</code>, dentro da raiz indicada no início.</p>
+<p>Tenta primeiro as pistas da secção 2. Depois confirma estes resultados, sem substituir o corpo das actions nesta etapa:</p>
+<table>
+<thead>
+<tr>
+<th>Local</th>
+<th>Declaração pretendida</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Propriedade Title de Ticket</td>
+<td><code>public string Title { get; set; } = string.Empty;</code></td>
+</tr>
+<tr>
+<td>Consulta por ID</td>
+<td><code>public ActionResult&lt;Ticket&gt; GetById(int id)</code></td>
+</tr>
+<tr>
+<td>Consulta do título</td>
+<td><code>public IActionResult GetTitleById(int id)</code></td>
+</tr>
+<tr>
+<td>Contagem</td>
+<td><code>public IActionResult CountTickets()</code></td>
+</tr>
+</tbody></table>
+<p><strong>Visual Studio:</strong> guarda tudo, compila com Ctrl+Shift+B e confirma que o aviso CS8618 desapareceu. Seleciona <strong>SupportDesk.Web</strong>, perfil <strong>http</strong>, executa com F5 e abre <code>http://localhost:5011/api/tickets</code>. Deves ver os três pedidos. Se estiver parado num breakpoint, F5 retoma a execução.</p>
+<p>Se ainda houver 404, testa <code>/api/health</code> no mesmo endereço. Confirma que estás no produto, que guardaste e reiniciaste o projeto correto e que os atributos do controller e <code>MapControllers()</code> correspondem ao caderno. Não acrescentes uma rota duplicada para contornar o diagnóstico.</p>
+<p><strong>Alternativa PowerShell — raiz SupportDesk-AI:</strong></p>
+<pre><code class="language-powershell">Set-Location -LiteralPath &#39;C:\Users\Pedro Moreira\Documents\Projectos\AI Projects\SupportDesk-AI&#39;
+dotnet build SupportDesk.sln
+dotnet run --project src/SupportDesk.Web --launch-profile http
+</code></pre>
+<p>Não executes este arranque em simultâneo com F5. Depois de verificar, para a aplicação. Guarda as correções e os exercícios anteriores num commit: <strong>Git Changes → Stage → Commit Staged</strong>. Pelo PowerShell, <strong>na raiz</strong>:</p>
+<pre><code class="language-powershell">git diff -- src/SupportDesk.Web/Models/Ticket.cs src/SupportDesk.Web/Controllers/TicketsController.cs
+git add -- src/SupportDesk.Web/Models/Ticket.cs src/SupportDesk.Web/Controllers/TicketsController.cs
+git diff --cached
+git commit -m &#39;Concluir consultas e rever tipos da aula 2&#39;
+</code></pre>
+<p><strong>Verificação:</strong> o diff selecionado contém o teu código esperado; <code>git log -1 --oneline</code> mostra a versão guardada. Se já fizeste esse commit, não precisas de o repetir.</p>
+<h3>Passo 2 — Descrever a entrada e acrescentar a descrição ao pedido</h3>
+<p><strong>Objetivo:</strong> separar os dados enviados pelo cliente do pedido que o servidor cria.</p>
+<p><strong>Ficheiro novo:</strong> <code>C:\Users\Pedro Moreira\Documents\Projectos\AI Projects\SupportDesk-AI\src\SupportDesk.Web\Contracts\CreateTicketRequest.cs</code>.</p>
+<p><strong>Visual Studio:</strong> cria a pasta <code>Contracts</code> em SupportDesk.Web, depois <strong>Add → Class → CreateTicketRequest.cs</strong>. Escreve:</p>
+<pre><code class="language-csharp">using System.ComponentModel.DataAnnotations;
+
+namespace SupportDesk.Web.Contracts;
+
+public class CreateTicketRequest
+{
+    [Required(ErrorMessage = &quot;O título é obrigatório.&quot;)]
+    [StringLength(120, MinimumLength = 5,
+        ErrorMessage = &quot;O título deve ter entre 5 e 120 caracteres.&quot;)]
+    public string Title { get; set; } = string.Empty;
+
+    [StringLength(2000, ErrorMessage = &quot;A descrição pode ter no máximo 2000 caracteres.&quot;)]
+    public string? Description { get; set; }
+}
+</code></pre>
+<p><code>string?</code> permite que a descrição seja <code>null</code>, por exemplo quando é omitida. O título deve existir e respeitar os limites. <code>[Required]</code> rejeita também um texto só com espaços. As mensagens são os textos que queremos associar às regras.</p>
+<p><strong>Alternativa para criar a pasta — PowerShell, raiz SupportDesk-AI:</strong></p>
+<pre><code class="language-powershell">New-Item -ItemType Directory -Path &#39;.\src\SupportDesk.Web\Contracts&#39; -Force
+</code></pre>
+<p>Cria o ficheiro no editor; o comando só cria a pasta. Não precisas de recriar o projeto.</p>
+<p><strong>Ficheiro a alterar:</strong> <code>C:\Users\Pedro Moreira\Documents\Projectos\AI Projects\SupportDesk-AI\src\SupportDesk.Web\Models\Ticket.cs</code>. Acrescenta esta propriedade dentro de <code>Ticket</code>, mantendo Id, Title e Status:</p>
+<pre><code class="language-csharp">public string Description { get; set; } = string.Empty;
+</code></pre>
+<p>Os pedidos iniciais passam a ter descrição vazia por predefinição. <strong>Verificação:</strong> compila. <strong>Resultado esperado:</strong> o projeto continua a compilar sem avisos; ainda não existe uma action POST.</p>
+<h3>Passo 3 — Preparar a coleção que pode crescer</h3>
+<p><strong>Objetivo:</strong> guardar criações durante a execução atual. <strong>Ficheiro a alterar:</strong> <code>C:\Users\Pedro Moreira\Documents\Projectos\AI Projects\SupportDesk-AI\src\SupportDesk.Web\Controllers\TicketsController.cs</code>.</p>
+<p>No topo, acrescenta <code>using SupportDesk.Web.Contracts;</code>. Dentro da classe, substitui o campo <code>Ticket[] Tickets</code> por estes campos, mantendo os três pedidos que já tens:</p>
+<pre><code class="language-csharp">    private static readonly List&lt;Ticket&gt; Tickets = new()
+    {
+        new Ticket { Id = 1, Title = &quot;Não consigo entrar&quot;, Status = &quot;Open&quot; },
+        new Ticket { Id = 2, Title = &quot;Fatura com valor incorreto&quot;, Status = &quot;InProgress&quot; },
+        new Ticket { Id = 3, Title = &quot;Impressora indisponível&quot;, Status = &quot;Open&quot; }
+    };
+
+    private static readonly object TicketsLock = new();
+    private static int NextId = 4;
+</code></pre>
+<p><code>List&lt;Ticket&gt;</code> vem de <code>System.Collections.Generic</code>, já disponível neste projeto. <code>new()</code> usa o tipo declarado à esquerda. Os campos são <code>static</code> para serem partilhados pelas instâncias do controller dentro do processo. Sem essa partilha, criar uma coleção nova para cada pedido HTTP faria desaparecer o estado entre chamadas.</p>
+<p><code>NextId</code> começa em 4 porque os dados iniciais têm os IDs 1, 2 e 3. Se alterares esses dados no código, ajusta o início para um número superior ao maior ID inicial. <code>readonly</code> protege a referência à lista, não impede <code>Add</code>.</p>
+<p><strong>Verificação intermédia:</strong> se compilares agora, podes ver um erro na antiga utilização de <code>Tickets.Length</code>. É a diferença esperada entre array e lista; o passo seguinte atualiza as leituras. Não ignores o erro e tentes correr uma compilação antiga.</p>
+<h3>Passo 4 — Adaptar as consultas existentes</h3>
+<p><strong>Objetivo:</strong> preservar a aula 2 e coordenar leituras com futuras inserções. <strong>Ficheiro:</strong> o mesmo <code>TicketsController.cs</code>.</p>
+<p>Substitui cada action existente pelo bloco correspondente. <strong>Não acrescentes uma segunda cópia da mesma action ou rota.</strong> As mudanças são pequenas: lock, cópia da lista e Count.</p>
+<pre><code class="language-csharp">    [HttpGet]
+    public ActionResult&lt;Ticket[]&gt; GetAll()
+    {
+        lock (TicketsLock)
+        {
+            return Ok(Tickets.ToArray());
+        }
+    }
+</code></pre>
+<p>A resposta continua a ser um array, por isso <code>ActionResult&lt;Ticket[]&gt;</code> faz sentido. <code>ToArray()</code> cria a cópia sob proteção; a serialização acontece depois. Nesta aula não alteramos os objetos já criados, apenas acrescentamos objetos novos.</p>
+<pre><code class="language-csharp">    [HttpGet(&quot;{id:int}&quot;)]
+    public ActionResult&lt;Ticket&gt; GetById(int id)
+    {
+        lock (TicketsLock)
+        {
+            var ticket = Tickets.FirstOrDefault(ticket =&gt; ticket.Id == id);
+            if (ticket is null)
+            {
+                return NotFound();
+            }
+
+            return Ok(ticket);
+        }
+    }
+</code></pre>
+<p>O lock também é libertado quando o código faz <code>return</code>; não precisas de o libertar manualmente. Mantemos a distinção entre encontrar e não encontrar.</p>
+<pre><code class="language-csharp">    [HttpGet(&quot;{id:int}/title&quot;)]
+    public IActionResult GetTitleById(int id)
+    {
+        lock (TicketsLock)
+        {
+            var ticket = Tickets.FirstOrDefault(ticket =&gt; ticket.Id == id);
+            if (ticket is null)
+            {
+                return NotFound();
+            }
+
+            return Ok(new { id = ticket.Id, title = ticket.Title });
+        }
+    }
+</code></pre>
+<pre><code class="language-csharp">    [HttpGet(&quot;count&quot;)]
+    public IActionResult CountTickets()
+    {
+        lock (TicketsLock)
+        {
+            return Ok(new { total = Tickets.Count });
+        }
+    }
+</code></pre>
+<p><strong>Verificação — Visual Studio:</strong> guarda, compila, executa e repete lista, detalhe, título e contagem. <strong>PowerShell — raiz:</strong> <code>dotnet build SupportDesk.sln</code>, seguido do arranque habitual. <strong>Resultado esperado:</strong> continuam a responder como na aula 2, com o campo <code>description</code> adicional no pedido completo. Para a aplicação antes de continuar.</p>
+<p><strong>Ponto de verificação P3:</strong> porque não basta proteger apenas <code>Tickets.Add(...)</code>, deixando a atribuição do ID e a listagem sem coordenação?</p>
+<div class="answer"><label for="aula-03-answer-9">A minha explicação</label><textarea id="aula-03-answer-9" data-save="aula-03-answer-9" rows="2" placeholder="Escreve aqui…"></textarea></div>
+
+<h3>Passo 5 — Criar o pedido e responder 201</h3>
+<p><strong>Objetivo:</strong> ligar entrada válida, criação e resposta HTTP. <strong>Ficheiro:</strong> <code>TicketsController.cs</code>, dentro da classe, após as actions anteriores.</p>
+<p>Vamos normalizar o título antes de mexer no armazenamento. <code>ModelState</code> reúne erros de entrada. <code>ValidationProblem(...)</code> produz uma resposta 400 com esses erros. Depois construímos um objeto novo, escolhemos o ID e acrescentamo-lo à lista na mesma região protegida.</p>
+<p>Acrescenta esta action:</p>
+<pre><code class="language-csharp">    [HttpPost]
+    public ActionResult&lt;Ticket&gt; Create([FromBody] CreateTicketRequest request)
+    {
+        var title = request.Title.Trim();
+        if (title.Length &lt; 5)
+        {
+            ModelState.AddModelError(nameof(request.Title),
+                &quot;O título deve ter pelo menos 5 caracteres depois de remover espaços nas extremidades.&quot;);
+            return ValidationProblem(ModelState);
+        }
+
+        Ticket ticket;
+        lock (TicketsLock)
+        {
+            ticket = new Ticket
+            {
+                Id = NextId++,
+                Title = title,
+                Description = request.Description?.Trim() ?? string.Empty,
+                Status = &quot;Open&quot;
+            };
+            Tickets.Add(ticket);
+        }
+
+        return CreatedAtAction(nameof(GetById), new { id = ticket.Id }, ticket);
+    }
+</code></pre>
+<p><code>NextId++</code> usa o valor atual e incrementa-o para a criação seguinte. <code>?.</code> só chama Trim se a descrição não for nula; <code>?? string.Empty</code> escolhe texto vazio quando for nula. O objeto é novo e o estado é atribuído pelo servidor.</p>
+<p>Se o corpo omitir o título, tiver <code>null</code>, um título vazio ou demasiado comprido, <code>[ApiController]</code> e os atributos rejeitam a entrada antes desta action. O <code>if</code> trata a regra adicional depois de Trim. Não precisas de acrescentar um segundo teste genérico <code>ModelState.IsValid</code> para repetir a validação automática.</p>
+<p>Mantém <code>[ApiController]</code>, <code>[Route(&quot;api/tickets&quot;)]</code>, <code>AddControllers()</code> e <code>MapControllers()</code> como estavam. <strong>Verificação:</strong> guarda tudo e compila; depois executa o produto no perfil <code>http</code>. O próximo passo verifica tanto a resposta como a alteração real dos dados.</p>
+<p><strong>Ponto de verificação P4:</strong> em <code>CreatedAtAction</code>, o que representam <code>nameof(GetById)</code>, <code>new { id = ticket.Id }</code> e o último <code>ticket</code>? Explica antes de testar.</p>
+<div class="answer"><label for="aula-03-answer-10">A minha explicação</label><textarea id="aula-03-answer-10" data-save="aula-03-answer-10" rows="2" placeholder="Escreve aqui…"></textarea></div>
+
+<h3>Passo 6 — Testar pelo Visual Studio</h3>
+<p><strong>Objetivo:</strong> provar que criaste um recurso consultável e que rejeitas entradas inválidas. <strong>Ficheiro:</strong> <code>C:\Users\Pedro Moreira\Documents\Projectos\AI Projects\SupportDesk-AI\src\SupportDesk.Web\SupportDesk.http</code>.</p>
+<p>Abre esse ficheiro ou cria-o com <strong>Add → New Item → HTTP File</strong>. Usa apenas uma declaração <code>@baseUrl</code> no ficheiro. Confirma a porta real; a configuração inspecionada continua a usar 5011.</p>
+<pre><code class="language-http">@baseUrl = http://localhost:5011
+
+### Observar a contagem antes
+GET {{baseUrl}}/api/tickets/count
+
+### Criar um pedido válido
+POST {{baseUrl}}/api/tickets
+Content-Type: application/json
+
+{
+  &quot;title&quot;: &quot;Impressora da receção sem ligação&quot;,
+  &quot;description&quot;: &quot;A impressão deixou de funcionar esta manhã.&quot;
+}
+
+### Consultar o criado: substitui 4 pelo ID recebido
+GET {{baseUrl}}/api/tickets/4
+
+### Entrada inválida
+POST {{baseUrl}}/api/tickets
+Content-Type: application/json
+
+{ &quot;title&quot;: &quot;&quot; }
+
+### Espaços que escondem um título demasiado curto
+POST {{baseUrl}}/api/tickets
+Content-Type: application/json
+
+{ &quot;title&quot;: &quot;  a  &quot; }
+
+### Voltar a observar a contagem
+GET {{baseUrl}}/api/tickets/count
+</code></pre>
+<p>Executa um pedido de cada vez com <strong>Send Request</strong>. Depois de um arranque novo, a contagem começa em 3. O primeiro POST válido recebe 201, <code>id: 4</code> e <code>status: &quot;Open&quot;</code>. Abre <strong>Headers</strong> na resposta e encontra <code>Location</code>; faz GET nesse endereço e compara o ID com o corpo do POST.</p>
+<p>Se já enviaste outros POST válidos, o ID pode ser diferente. Usa sempre o recebido; não assumas que será 4 em todas as tentativas. Os dois POST inválidos devem dar 400. Compara a contagem antes e depois deles: não deve mudar.</p>
+<p>Experimenta também um POST com título válido e os campos extra <code>&quot;id&quot;:999</code> e <code>&quot;status&quot;:&quot;Resolved&quot;</code>. Na configuração atual, são ignorados: o servidor atribui o próximo ID e <code>Open</code>. Esse teste <strong>cria um pedido válido</strong>, portanto aumenta a contagem. Não o contes como um teste de rejeição.</p>
+<p><strong>Ponto de verificação P5:</strong> envia duas vezes o mesmo POST válido. Prevê primeiro se haverá um pedido ou dois, e justifica. O comportamento fica explicado no apoio final.</p>
+<div class="answer"><label for="aula-03-answer-11">A minha previsão e observação</label><textarea id="aula-03-answer-11" data-save="aula-03-answer-11" rows="2" placeholder="Escreve aqui…"></textarea></div>
+
+<h3>Passo 7 — A mesma verificação em PowerShell</h3>
+<p><strong>Objetivo:</strong> compreender o pedido independentemente da ferramenta. <strong>Pasta: qualquer uma.</strong> Mantém SupportDesk.Web a correr no Visual Studio ou noutro terminal.</p>
+<pre><code class="language-powershell">$baseUrl = &#39;http://localhost:5011&#39;
+$before = Invoke-RestMethod -Uri &quot;$baseUrl/api/tickets/count&quot;
+
+$json = @{
+    title = &#39;Impressora da receção sem ligação&#39;
+    description = &#39;A impressão deixou de funcionar esta manhã.&#39;
+} | ConvertTo-Json
+
+$body = [System.Text.Encoding]::UTF8.GetBytes($json)
+$response = Invoke-WebRequest -UseBasicParsing -Method Post -Uri &quot;$baseUrl/api/tickets&quot; -ContentType &#39;application/json; charset=utf-8&#39; -Body $body
+
+$response.StatusCode
+$response.Headers[&#39;Location&#39;]
+$created = $response.Content | ConvertFrom-Json
+$created
+
+$detail = Invoke-RestMethod -Uri &quot;$baseUrl/api/tickets/$($created.id)&quot;
+$detail
+$after = Invoke-RestMethod -Uri &quot;$baseUrl/api/tickets/count&quot;
+$after.total - $before.total
+</code></pre>
+<p>O bloco <code>@{ ... }</code> é uma tabela de propriedades PowerShell. <code>ConvertTo-Json</code> gera o texto e UTF8 produz os bytes, preservando os acentos também no Windows PowerShell 5.1. <code>Invoke-RestMethod</code> interpreta automaticamente o JSON recebido; <code>Invoke-WebRequest</code> permite observar facilmente o estado e os cabeçalhos. <code>$(...)</code> avalia <code>created.id</code> dentro da string da URL.</p>
+<p><strong>Resultado esperado:</strong> 201, cabeçalho Location, o pedido criado com <code>Open</code>, o mesmo pedido no GET e diferença de contagem igual a 1. Se fizeste o teste pelo Visual Studio e depois este, criaste dois pedidos: escolhe uma ferramenta ou contabiliza as duas criações.</p>
+<p>Para observar um erro de validação, <strong>em qualquer pasta</strong>:</p>
+<pre><code class="language-powershell">try {
+    Invoke-WebRequest -UseBasicParsing -Method Post -Uri &quot;$baseUrl/api/tickets&quot; -ContentType &#39;application/json&#39; -Body &#39;{&quot;title&quot;:&quot;&quot;}&#39;
+}
+catch {
+    if ($null -ne $_.Exception.Response) {
+        [int]$_.Exception.Response.StatusCode
+        $_.ErrorDetails.Message
+    }
+    else {
+        $_.Exception.Message
+    }
+}
+</code></pre>
+<p>O resultado HTTP esperado é 400. O conteúdo detalhado mostrado pelo PowerShell pode variar com a versão; podes inspecionar o JSON de erro no painel de resposta do ficheiro <code>.http</code>. Confirma sempre a contagem depois de uma entrada inválida; uma mensagem de erro sozinha não prova que não houve uma alteração.</p>
+<h3>Passo 8 — Verificar limites e guardar a versão</h3>
+<p><strong>Objetivo:</strong> confirmar o contrato antes do commit. <strong>Ficheiros:</strong> os que alteraste no produto; não há uma nova solução nem configuração de base de dados.</p>
+<table>
+<thead>
+<tr>
+<th>Entrada ou ação</th>
+<th>Resultado esperado nesta versão</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Título válido; descrição omitida</td>
+<td>201; descrição guardada como texto vazio.</td>
+</tr>
+<tr>
+<td>Título com espaços nas extremidades, mas válido após Trim</td>
+<td>201; título guardado sem esses espaços.</td>
+</tr>
+<tr>
+<td>Título omitido, <code>null</code>, vazio ou só com espaços</td>
+<td>400; contagem inalterada.</td>
+</tr>
+<tr>
+<td>Título com 4 caracteres ou 121 caracteres</td>
+<td>400; contagem inalterada.</td>
+</tr>
+<tr>
+<td>Título <code>&quot;  a  &quot;</code></td>
+<td>400 pela regra após Trim; contagem inalterada.</td>
+</tr>
+<tr>
+<td>Descrição com 2001 caracteres</td>
+<td>400; contagem inalterada.</td>
+</tr>
+<tr>
+<td>JSON incompleto, por exemplo sem a chaveta final</td>
+<td>400; a action não recebe um objeto válido.</td>
+</tr>
+<tr>
+<td>Corpo JSON enviado como <code>text/plain</code></td>
+<td>415 Unsupported Media Type; formato de conteúdo não aceite por esta action.</td>
+</tr>
+<tr>
+<td>GET no endereço Location de uma criação</td>
+<td>200; mesmo ID e dados.</td>
+</tr>
+<tr>
+<td>Parar e voltar a executar</td>
+<td>Reaparecem apenas os três pedidos iniciais; os criados em memória desaparecem.</td>
+</tr>
+</tbody></table>
+<p>Para gerar um caso comprido em PowerShell, usa <code>(&#39;x&#39; * 121)</code> como valor de <code>title</code> na tabela de propriedades do passo 7. Não coloques essa expressão literalmente dentro de um ficheiro JSON; é uma expressão PowerShell que gera texto.</p>
+<p>Mantém lista, detalhe, título, contagem, página inicial e <code>/api/health</code> a funcionar. Reinicia de propósito no fim para comprovar a limitação da memória. Um separador antigo do navegador pode continuar a mostrar uma resposta anterior: faz um novo pedido.</p>
+<p><strong>Visual Studio:</strong> revê o diff em Git Changes e seleciona apenas as alterações que pretendes guardar. <strong>PowerShell — raiz SupportDesk-AI:</strong></p>
+<pre><code class="language-powershell">Set-Location -LiteralPath &#39;C:\Users\Pedro Moreira\Documents\Projectos\AI Projects\SupportDesk-AI&#39;
+git status
+git diff -- src/SupportDesk.Web
+git add -- src/SupportDesk.Web
+git diff --cached
+git commit -m &#39;Aula 3: criar pedidos com validação&#39;
+git log -1 --oneline
+</code></pre>
+<p><strong>Resultado esperado:</strong> um commit com o DTO, o modelo, o controller e o ficheiro de pedidos que escreveste. O WebLab pode ser guardado num commit separado. As regras do teu <code>.gitignore</code> continuam a excluir <code>bin</code>, <code>obj</code> e o estado do Visual Studio.</p>
+<h2>6. Pontos de verificação</h2>
+<p>Confirma estes pontos antes dos exercícios. Se uma resposta te custar, faz uma experiência pequena e regista o resultado.</p>
+<table>
+<thead>
+<tr>
+<th>Ponto</th>
+<th>O que deves conseguir mostrar</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>P1</td>
+<td>Uma entrada inválida não obtém ID nem entra na coleção.</td>
+</tr>
+<tr>
+<td>P2</td>
+<td>Um POST transporta dados no corpo até um objeto C#.</td>
+</tr>
+<tr>
+<td>P3</td>
+<td>Atribuir o ID e inserir pertencem à mesma região protegida; leituras também precisam de coordenação.</td>
+</tr>
+<tr>
+<td>P4</td>
+<td>Location aponta para o recurso criado, não para uma página escolhida ao acaso.</td>
+</tr>
+<tr>
+<td>P5</td>
+<td>Repetir um POST cria novos pedidos nesta versão.</td>
+</tr>
+</tbody></table>
+<p><strong>Experiência adicional:</strong> coloca um breakpoint no início de <code>Create</code>. Compara um título vazio e <code>&quot;  a  &quot;</code>. Um pode ser rejeitado antes da action e o outro pela regra escrita dentro dela. Usa F5 para continuar quando o depurador parar; depois remove o breakpoint.</p>
+<div class="answer"><label for="aula-03-answer-12">O que observei no depurador</label><textarea id="aula-03-answer-12" data-save="aula-03-answer-12" rows="2" placeholder="Escreve aqui…"></textarea></div>
+
+<div class="answer"><label for="aula-03-answer-13">O conceito que ainda preciso de rever</label><textarea id="aula-03-answer-13" data-save="aula-03-answer-13" rows="2" placeholder="Escreve aqui…"></textarea></div>
+
+<h2>7. Exercícios com apoio progressivamente menor</h2>
+<p>Mantém o ID e o estado sob controlo do servidor. Os testes inválidos devem sempre preservar a contagem. As pistas e as soluções estão recolhidas no final do HTML.</p>
+<h3>Exercício A — Acompanhado: um limite mais curto</h3>
+<p>Altera o máximo do título para <strong>80 caracteres</strong>, mantendo o mínimo 5. Atualiza a mensagem de erro para corresponder à regra. A pista está no atributo que já conheces.</p>
+<p><strong>Aceitação:</strong> um título com exatamente 80 caracteres cria; um com 81 dá 400 e não altera a contagem. Um título com 4 continua inválido. Usa texto sem espaços nas extremidades nestes testes de limite.</p>
+<div class="answer"><label for="aula-03-answer-14">Alteração e resultados</label><textarea id="aula-03-answer-14" data-save="aula-03-answer-14" rows="2" placeholder="Escreve aqui…"></textarea></div>
+
+<h3>Exercício B — Menos ajuda: exigir uma descrição útil</h3>
+<p>A descrição passa a ser obrigatória, com mínimo de <strong>10 caracteres depois de Trim</strong> e máximo de <strong>2000 caracteres na entrada</strong>. Podes manter <code>string?</code> no DTO para representar a possibilidade de receber <code>null</code>; a validação deve rejeitá-lo.</p>
+<p><strong>Aceitação:</strong> descrição omitida, <code>null</code>, vazia, só espaços, com nove caracteres ou que fique com menos de dez após Trim dá 400. Uma descrição válida é guardada limpa. Um erro não acrescenta um pedido. Explica porque um atributo de comprimento, sozinho, pode não bastar depois da normalização.</p>
+<div class="answer"><label for="aula-03-answer-15">A minha estratégia</label><textarea id="aula-03-answer-15" data-save="aula-03-answer-15" rows="2" placeholder="Escreve aqui…"></textarea></div>
+
+<h3>Exercício C — Autónomo: prioridade validada</h3>
+<p>Acrescenta <code>Priority</code> como inteiro ao DTO e ao modelo. Permite apenas <strong>1, 2 ou 3</strong> e usa <strong>2</strong> por predefinição quando a propriedade é omitida. Copia o valor validado para o pedido criado. Nesta aula a prioridade é escolhida pelo cliente; o estado continua a ser escolhido pelo servidor.</p>
+<p>Para definir um intervalo numérico, existe o atributo <code>[Range(minimo, maximo)]</code> no mesmo namespace das validações anteriores. Aplica-o à propriedade correta e tenta primeiro sem abrir a solução.</p>
+<p><strong>Aceitação:</strong> omitir prioridade cria com 2; enviar 1 ou 3 preserva esse valor; enviar 0 ou 4 dá 400 e mantém a contagem. Confirma o valor tanto no corpo de criação como no GET pelo ID. Se fizeste o exercício B, envia também uma descrição válida nestes testes.</p>
+<div class="answer"><label for="aula-03-answer-16">Como garanti que o valor chega ao GET</label><textarea id="aula-03-answer-16" data-save="aula-03-answer-16" rows="2" placeholder="Escreve aqui…"></textarea></div>
+
+<h2>8. Erros frequentes e como os investigar</h2>
+<table>
+<thead>
+<tr>
+<th>Sintoma</th>
+<th>Causa provável</th>
+<th>Como investigar e corrigir</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>CS8618 em <code>Ticket.Title</code></td>
+<td>Propriedade não anulável sem inicialização.</td>
+<td>Revê a declaração do passo 1. Inicializar não substitui as regras do DTO.</td>
+</tr>
+<tr>
+<td><code>List&lt;Ticket&gt;</code> não contém <code>Length</code></td>
+<td>Ficou código do array anterior.</td>
+<td>Usa Count para a lista e procura outras utilizações antigas no controller.</td>
+</tr>
+<tr>
+<td><code>CreateTicketRequest</code> ou os atributos não são reconhecidos</td>
+<td>Namespace ou ficheiro incorreto.</td>
+<td>Confirma <code>Contracts</code>, o namespace e os dois <code>using</code> apresentados. Não acrescentes pacotes sem identificar a causa.</td>
+</tr>
+<tr>
+<td>GET funciona, mas POST dá 405</td>
+<td>Processo antigo ou action sem <code>[HttpPost]</code>.</td>
+<td>Guarda, recompila, reinicia a aplicação correta e confirma o método no cliente.</td>
+</tr>
+<tr>
+<td>POST dá 404</td>
+<td>URL, porta ou rota incorreta.</td>
+<td>Confirma o mesmo endereço base em que GET <code>/api/tickets</code> funciona. O POST não usa o caminho de uma pasta.</td>
+</tr>
+<tr>
+<td>O pedido parece ficar à espera</td>
+<td>Servidor pausado num breakpoint ou sem responder.</td>
+<td>Confirma o estado do depurador e usa F5 para continuar. Depois compara o endereço e o processo em execução.</td>
+</tr>
+<tr>
+<td>Resposta 415</td>
+<td>Content-Type ausente ou inadequado para o corpo.</td>
+<td>Usa <code>application/json</code> e a linha vazia antes do corpo no ficheiro <code>.http</code>.</td>
+</tr>
+<tr>
+<td>Resposta 400 sem entrar na action</td>
+<td>Falha de leitura ou validação automática.</td>
+<td>Lê <code>errors</code>, confirma o JSON, os nomes e os limites do DTO. Isso pode ser o comportamento correto.</td>
+</tr>
+<tr>
+<td>O título normalizado fica demasiado curto</td>
+<td>Validaste só o texto antes de Trim.</td>
+<td>Faz a verificação do passo 5 antes de alterar a coleção.</td>
+</tr>
+<tr>
+<td>POST dá 500 com «No route matches the supplied values»</td>
+<td><code>CreatedAtAction</code> não conseguiu construir o endereço.</td>
+<td>Confirma <code>nameof(GetById)</code>, a rota <code>{id:int}</code> e a propriedade <code>id</code> nos valores fornecidos. O problema pode surgir ao formatar a resposta, depois da inserção; consulta a lista antes de repetir pedidos.</td>
+</tr>
+<tr>
+<td>Dois cliques criam dois pedidos</td>
+<td>Enviaste dois POST válidos.</td>
+<td>Este é o contrato atual; observa os IDs distintos. Não há reconhecimento de duplicados nesta aula.</td>
+</tr>
+<tr>
+<td>Os pedidos criados desaparecem</td>
+<td>Reiniciaste o processo ou criaste dados noutra instância.</td>
+<td>Confirma o endereço e a limitação da memória. Commit guarda código, não os objetos vivos da aplicação.</td>
+</tr>
+<tr>
+<td>A contagem cresce depois de devolver 400</td>
+<td>Inserção feita antes de validar.</td>
+<td>Coloca os caminhos de rejeição antes da atribuição do ID e de Add.</td>
+</tr>
+<tr>
+<td>O servidor guardou o estado enviado pelo cliente</td>
+<td>Aceitaste ou copiaste campos indevidos.</td>
+<td>Mantém o DTO só com a entrada autorizada e atribui Open no novo Ticket.</td>
+</tr>
+</tbody></table>
+<div class="answer"><label for="aula-03-answer-17">O meu diagnóstico: sintoma, hipótese, teste e resultado</label><textarea id="aula-03-answer-17" data-save="aula-03-answer-17" rows="2" placeholder="Escreve aqui…"></textarea></div>
+
+<h2>9. Revisão sem consultar</h2>
+<ol>
+<li><p>Porque recebemos <code>CreateTicketRequest</code> e construímos um novo <code>Ticket</code>, em vez de aceitar o modelo inteiro?</p>
+<div class="answer"><label for="aula-03-answer-18">A minha resposta</label><textarea id="aula-03-answer-18" data-save="aula-03-answer-18" rows="2" placeholder="Escreve aqui…"></textarea></div>
+</li>
+<li><p>Como pode uma entrada devolver 400 sem executar a primeira linha da action? Em que caso da aula a action é necessária para rejeitar o título?</p>
+<div class="answer"><label for="aula-03-answer-19">A minha resposta</label><textarea id="aula-03-answer-19" data-save="aula-03-answer-19" rows="2" placeholder="Escreve aqui…"></textarea></div>
+</li>
+<li><p>Qual é a diferença entre inicializar uma string, validar o seu tamanho e aplicar Trim?</p>
+<div class="answer"><label for="aula-03-answer-20">A minha resposta</label><textarea id="aula-03-answer-20" data-save="aula-03-answer-20" rows="2" placeholder="Escreve aqui…"></textarea></div>
+</li>
+<li><p>Que informação acrescentam 201 e Location? Como verificas se o endereço corresponde ao pedido criado?</p>
+<div class="answer"><label for="aula-03-answer-21">A minha resposta</label><textarea id="aula-03-answer-21" data-save="aula-03-answer-21" rows="2" placeholder="Escreve aqui…"></textarea></div>
+</li>
+<li><p>Porque usamos estado estático e lock nesta versão? O que continua a falhar se reiniciarmos ou executarmos dois processos separados?</p>
+<div class="answer"><label for="aula-03-answer-22">A minha resposta</label><textarea id="aula-03-answer-22" data-save="aula-03-answer-22" rows="2" placeholder="Escreve aqui…"></textarea></div></li>
+</ol>
+<h3>Reconstrução curta</h3>
+<p>Sem copiar, escreve num rascunho o DTO com as regras do título e uma sequência de passos para Create: validar, normalizar, verificar, atribuir ID, guardar e responder. Indica quais acontecem antes da action. Compara depois com o código e identifica uma diferença concreta. Não registes uma segunda action com a mesma rota para experimentar.</p>
+<div class="answer"><label for="aula-03-answer-23">O que reconstruí e o que precisei de rever</label><textarea id="aula-03-answer-23" data-save="aula-03-answer-23" rows="2" placeholder="Escreve aqui…"></textarea></div>
+
+<h2>10. Critérios de conclusão</h2>
+<h3>Consigo fazer</h3>
+<ul>
+<li><input disabled="" type="checkbox"> Compilar o produto sem o aviso CS8618 identificado na revisão. Se não: passo 1.</li>
+<li><input disabled="" type="checkbox"> Enviar um POST JSON válido e receber 201. Se não: passos 2 e 5–7.</li>
+<li><input disabled="" type="checkbox"> Consultar o recurso indicado em Location e confirmar os mesmos dados. Se não: passos 5–6.</li>
+<li><input disabled="" type="checkbox"> Confirmar que dados inválidos devolvem 400 e não mudam a contagem. Se não: passos 6–8.</li>
+<li><input disabled="" type="checkbox"> Manter lista, detalhe, título, contagem e endpoints anteriores a funcionar. Se não: passo 4.</li>
+<li><input disabled="" type="checkbox"> Guardar num commit apenas a versão que verifiquei. Se não: passo 8.</li>
+</ul>
+<h3>Consigo explicar</h3>
+<ul>
+<li><input disabled="" type="checkbox"> A diferença entre DTO de entrada e modelo de pedido. Se não: secção 3.2.</li>
+<li><input disabled="" type="checkbox"> Quem decide o ID e o estado e porque não os copio do cliente. Se não: passo 5.</li>
+<li><input disabled="" type="checkbox"> A diferença entre validação automática e verificação depois de Trim. Se não: secções 3.3–3.4.</li>
+<li><input disabled="" type="checkbox"> O significado de 201, 400 e 415 neste contrato. Se não: passos 6–8.</li>
+<li><input disabled="" type="checkbox"> Porque lock protege o acesso simultâneo mas não oferece persistência. Se não: secção 3.6.</li>
+<li><input disabled="" type="checkbox"> Porque repetir um POST válido pode criar outro pedido. Se não: P5.</li>
+</ul>
+<p>Se saltares exercícios, indica quais na próxima revisão. Vamos distinguir a funcionalidade construída das decisões que já consegues explicar.</p>
+<h2>11. Resumo e revisão posterior</h2>
+<p>O cliente envia uma entrada delimitada pelo DTO. O framework lê e valida os dados; a action normaliza e aplica regras adicionais antes de alterar o estado. O servidor escolhe ID e estado, guarda temporariamente o pedido e devolve 201 com um endereço de consulta. GET e os exercícios anteriores continuam disponíveis.</p>
+<p><strong>Amanhã — 10 minutos:</strong> faz um POST válido e outro inválido, compara as contagens e segue Location. Explica por que motivo um <code>status</code> extra enviado no JSON não muda o estado inicial.</p>
+<p><strong>Daqui a uma semana — 15 minutos:</strong> reconstrói o DTO sem consultar, testa um valor no limite e outro fora dele, e explica o que se perde ao reiniciar. Mostra no histórico o commit da aula.</p>
+<p><strong>Ligação à aula 4:</strong> o controller está a acumular leitura HTTP, armazenamento e regras. Vamos introduzir serviços e injeção de dependências, reorganizar o código e acrescentar estados e comentários. O comportamento HTTP que acabaste de verificar servirá de referência para confirmar que a reorganização não o estragou.</p>
+<div class="answer"><label for="aula-03-answer-24">Dúvidas que quero trazer</label><textarea id="aula-03-answer-24" data-save="aula-03-answer-24" rows="2" placeholder="Escreve aqui…"></textarea></div>
+
+<h2>Apoio final — Pistas e soluções comentadas</h2>
+<p>Abre depois da tua tentativa. São alterações aos ficheiros existentes, não novos controllers nem novas rotas.</p>
+<h3>Revisão e pontos de verificação</h3>
+<ul>
+<li>GET consulta; POST solicita uma operação de criação neste contrato. Um 404 é uma resposta do servidor, não uma ligação recusada. <code>Ticket</code> representa um objeto; <code>Ticket[]</code> representa uma coleção. Guardar no editor não faz commit.</li>
+<li><strong>P1:</strong> validar antes de atribuir ID e inserir. Uma entrada rejeitada não deve alterar a coleção.</li>
+<li><strong>Exemplo guiado:</strong> o eco devolve <code>{&quot;recebida&quot;:&quot;Teste enviado pelo cliente&quot;}</code> com 200. Não cria um pedido de suporte.</li>
+<li><strong>P2:</strong> mudou o valor no corpo do pedido e, consequentemente, a propriedade Text do objeto recebido; a lógica compilada permaneceu igual.</li>
+<li><strong>P3:</strong> coordenar só Add não impede duas chamadas de escolher o mesmo ID, nem protege uma leitura enquanto outra chamada altera a lista.</li>
+<li><strong>P4:</strong> <code>nameof</code> identifica a action, os valores preenchem a rota e o último argumento é o corpo da resposta. O GET em Location deve devolver o mesmo pedido.</li>
+<li><strong>P5:</strong> duas chamadas válidas criam dois objetos com IDs distintos. Um POST repetido não é automaticamente reconhecido como a mesma criação.</li>
+<li>No depurador, um título vazio é rejeitado pela validação automática; <code>&quot;  a  &quot;</code> passa o comprimento da entrada e é rejeitado depois de Trim na action.</li>
+</ul>
+<h3>Exercício A — Pista e solução</h3>
+<p><strong>Pista:</strong> altera a regra declarada no DTO e a mensagem que explica essa mesma regra.</p>
+<pre><code class="language-csharp">[StringLength(80, MinimumLength = 5,
+    ErrorMessage = &quot;O título deve ter entre 5 e 80 caracteres.&quot;)]
+</code></pre>
+<p>Mantém <code>[Required]</code>. A verificação do mínimo após Trim continua a ser 5. Testa 80 e 81, porque um único caso «normal» não confirma o limite.</p>
+<h3>Exercício B — Pista e solução</h3>
+<p><strong>Pista:</strong> combina a exigência de um valor com o intervalo na entrada e verifica o tamanho do texto normalizado antes de inserir.</p>
+<p>Substitui os atributos da descrição no DTO por:</p>
+<pre><code class="language-csharp">[Required(ErrorMessage = &quot;A descrição é obrigatória.&quot;)]
+[StringLength(2000, MinimumLength = 10,
+    ErrorMessage = &quot;A descrição deve ter entre 10 e 2000 caracteres.&quot;)]
+public string? Description { get; set; }
+</code></pre>
+<p>Na action Create, depois da verificação do título e <strong>antes de <code>Ticket ticket;</code></strong>, acrescenta:</p>
+<pre><code class="language-csharp">        var description = request.Description?.Trim() ?? string.Empty;
+        if (description.Length &lt; 10)
+        {
+            ModelState.AddModelError(nameof(request.Description),
+                &quot;A descrição deve ter pelo menos 10 caracteres depois de remover espaços nas extremidades.&quot;);
+            return ValidationProblem(ModelState);
+        }
+</code></pre>
+<p>No inicializador do novo Ticket, substitui a atribuição da descrição por <code>Description = description,</code>. A regra é aplicada antes de modificar a coleção. Continuas a validar no servidor mesmo que uma futura página também impeça entradas vazias.</p>
+<h3>Exercício C — Pista e solução</h3>
+<p><strong>Pista:</strong> são necessárias três peças: entrada validada, propriedade no modelo e atribuição na criação. Alterar apenas o DTO não guarda o valor.</p>
+<p>Dentro de <code>CreateTicketRequest</code>, acrescenta:</p>
+<pre><code class="language-csharp">[Range(1, 3, ErrorMessage = &quot;A prioridade deve ser 1, 2 ou 3.&quot;)]
+public int Priority { get; set; } = 2;
+</code></pre>
+<p>Dentro de <code>Ticket</code>, acrescenta:</p>
+<pre><code class="language-csharp">public int Priority { get; set; } = 2;
+</code></pre>
+<p>No inicializador da action Create, acrescenta <code>Priority = request.Priority,</code>. O valor inicial 2 é usado quando a propriedade é omitida; valores explícitos 0 ou 4 são rejeitados pelo atributo. Os pedidos iniciais também terão 2 por predefinição.</p>
+<h3>Revisão final — Ideias essenciais</h3>
+<ol>
+<li>O DTO descreve a entrada; o modelo inclui dados definidos pelo servidor. A criação liga os dois explicitamente.</li>
+<li><code>[ApiController]</code> devolve erros de leitura/validação antes da action. As regras sobre o texto normalizado são verificadas depois.</li>
+<li>Inicializar evita um valor inicial nulo; validar verifica condições; normalizar transforma o texto.</li>
+<li>201 comunica criação e Location permite consultar o resultado. Compara ID, título e estado no POST e no GET.</li>
+<li>A lista e o contador estáticos vivem no processo. O lock coordena acesso nesse processo. Nenhum dos dois oferece armazenamento persistente ou partilha entre processos.</li>
+</ol>
+<h2>Notas livres</h2>
+<div class="answer"><label for="aula-03-answer-25">Notas</label><textarea id="aula-03-answer-25" data-save="aula-03-answer-25" rows="3" placeholder="Escreve aqui…"></textarea></div>
+
+<h2>Referências oficiais para aprofundar</h2>
+<p>O conteúdo necessário está explicado no caderno. Estas referências permitem confirmar as APIs usadas:</p>
+<ul>
+<li><a href="https://learn.microsoft.com/en-us/aspnet/core/web-api/?view=aspnetcore-10.0">APIs com controllers, entrada e respostas de validação</a>.</li>
+<li><a href="https://learn.microsoft.com/en-us/aspnet/core/mvc/models/validation?view=aspnetcore-10.0">Validação de modelos em ASP.NET Core</a>.</li>
+<li><a href="https://learn.microsoft.com/en-us/aspnet/core/web-api/action-return-types?view=aspnetcore-10.0">Resultados de actions, incluindo CreatedAtAction</a>.</li>
+<li><a href="https://learn.microsoft.com/en-us/dotnet/api/system.componentmodel.dataannotations.requiredattribute?view=net-10.0">Required</a>, <a href="https://learn.microsoft.com/en-us/dotnet/api/system.componentmodel.dataannotations.stringlengthattribute?view=net-10.0">StringLength</a> e <a href="https://learn.microsoft.com/en-us/dotnet/api/system.componentmodel.dataannotations.rangeattribute?view=net-10.0">Range</a>.</li>
+<li><a href="https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/statements/lock">Sincronização com lock em C#</a>.</li>
+<li><a href="https://learn.microsoft.com/en-us/aspnet/core/test/http-files?view=aspnetcore-10.0">Pedidos em ficheiros .http no Visual Studio</a>.</li>
+</ul>
+<h2>Nota de verificação deste material</h2>
+<p>Preparado em 28 de setembro de 2026. A avaliação da aula 2 foi feita numa cópia dos teus ficheiros: compilação com um aviso CS8618, 16 verificações HTTP no produto e quatro no WebLab. Foi lido o estado do Git, sem alterar os teus commits ou a seleção de ficheiros. O código do aluno não foi corrigido automaticamente.</p>
+<p>Os exemplos e as soluções desta aula foram extraídos do caderno e compilados em cópias separadas com o SDK .NET 10.0.401, sem erros nem avisos. Os testes confirmaram criação com 201, Location consultável, campos controlados pelo servidor, limites de entrada, normalização, respostas 400 e 415 sem inserção, IDs distintos em criações simultâneas e perda dos dados temporários ao reiniciar. Foram também verificados o eco do WebLab e os três exercícios, incluindo prioridade e descrição obrigatória.</p>
+<p>O HTML foi verificado com três aulas, navegação, soluções recolhidas, respostas independentes, exportação/importação e os 120 identificadores de respostas anteriores preservados. Nenhum código dos exercícios, correção ou commit foi aplicado à tua aplicação. A sequência de menus do Visual Studio não foi executada na tua instalação. As verificações técnicas não comprovam, por si só, a compreensão das respostas teóricas.</p>
+</article>
+      <footer class="lesson-end"><span class="eyebrow">QUANDO ESTIVERES PRONTO</span><h2>Mostra o que acontece com dados válidos e inválidos.</h2><p>Na próxima revisão, traz os resultados, o código e as decisões que consegues explicar.</p><a href="#percurso">Voltar ao percurso <span aria-hidden="true">↗</span></a></footer>
     </section>
   </main>
   <footer class="site-footer"><span>SupportDesk AI · Cadernos de estudo</span><span>Conteúdo disponível sem ligação à internet</span></footer>
@@ -2056,7 +2959,13 @@ git status
   qsa('a[href^="http"]').forEach(a=>{a.target='_blank';a.rel='noopener noreferrer';});
   const controls=qsa('[data-save]');
   function applyState(){controls.forEach(el=>{const value=state[el.dataset.save];if(el.type==='checkbox')el.checked=value===true;else el.value=typeof value==='string'?value:'';});updateProgress();}
-  function updateProgress(){lessonPages.forEach(page=>{const checks=qsa('input[type="checkbox"]',page);const count=checks.filter(x=>x.checked).length;qs('progress',page).max=checks.length;qs('progress',page).value=count;qs('.study-progress strong',page).textContent=`${count} de ${checks.length} marcados`;});}
+  function updateProgress(){lessonPages.forEach(page=>{
+    const checks=qsa('input[type="checkbox"]',page);const count=checks.filter(x=>x.checked).length;
+    qs('progress',page).max=checks.length;qs('progress',page).value=count;qs('.study-progress strong',page).textContent=`${count} de ${checks.length} marcados`;
+    const mapProgress=qs(`[data-map-progress="${page.id}"]`);const mapCount=qs(`[data-map-count="${page.id}"]`);
+    if(mapProgress){mapProgress.max=checks.length;mapProgress.value=count;}
+    if(mapCount)mapCount.textContent=`${count} / ${checks.length} critérios assinalados`;
+  });}
   function snapshot(){const result={...state};controls.forEach(el=>result[el.dataset.save]=el.type==='checkbox'?el.checked:el.value);return result;}
   let timer;
   function save(){state=snapshot();try{localStorage.setItem(storageKey,JSON.stringify(state));persistenceAvailable=true;setStatus('Respostas guardadas neste navegador. Exporta uma cópia para as conservar.');}catch{persistenceAvailable=false;setStatus('O navegador não permite guardar automaticamente. Exporta as respostas antes de fechar.');}}
@@ -2088,10 +2997,24 @@ git status
 
   const sidebar=qs('.sidebar');const menu=qs('.menu-toggle');menu.addEventListener('click',()=>{const open=sidebar.classList.toggle('is-open');menu.setAttribute('aria-expanded',String(open));});
   const pages=qsa('[data-page]');
+  const navigationKey='supportdesk-last-lesson-v1';
+  let lastLesson=lessonPages.at(-1).id;
+  try{const saved=localStorage.getItem(navigationKey);if(lessonPages.some(page=>page.id===saved))lastLesson=saved;}catch{}
+  function updateResume(){
+    const card=qs(`[data-lesson-card="${lastLesson}"]`);if(!card)return;
+    const lessonNumber=Number(lastLesson.split('-').at(-1));
+    qs('[data-resume-number]').textContent=`AULA ${String(lessonNumber).padStart(2,'0')}`;
+    qs('[data-resume-title]').textContent=qs('h3',card).textContent;
+    qs('[data-resume-description]').textContent=qs('.lesson-card-description',card).textContent;
+    const link=qs('[data-resume-link]');link.href=`#${lastLesson}`;link.firstChild.textContent=`Abrir aula ${lessonNumber}`;
+  }
   function route(){
     const id=decodeURIComponent(location.hash.slice(1)||'percurso');const target=document.getElementById(id);const page=target?.closest('[data-page]')||qs('#percurso');
     pages.forEach(p=>p.hidden=p!==page);qsa('[data-view-link]').forEach(a=>{if(a.dataset.viewLink===page.id)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current');});
     qs('.lesson-navigation').hidden=page.dataset.page!=='lesson';sidebar.classList.remove('is-open');menu.setAttribute('aria-expanded','false');
+    if(page.dataset.page==='lesson'){lastLesson=page.id;try{localStorage.setItem(navigationKey,lastLesson);}catch{}}
+    updateResume();
+    if(target){let ancestor=target.parentElement;while(ancestor&&ancestor!==page){if(ancestor.tagName==='DETAILS')ancestor.open=true;ancestor=ancestor.parentElement;}}
     buildToc(page);
     document.title=page.dataset.title||'SupportDesk AI — Cadernos de estudo';
     if(target&&target!==page)requestAnimationFrame(()=>target.scrollIntoView({behavior:'instant',block:'start'}));else window.scrollTo({top:0,behavior:'instant'});

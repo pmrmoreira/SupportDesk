@@ -6,11 +6,11 @@
 
 ## O que já existe e o que muda
 
-Na preparação inicial, em 27 de setembro de 2026, a pasta continha `README.md` e o curso anterior de 16 aulas. Na revisão de 28 de setembro já existe `SupportDesk.sln`, o projeto SupportDesk.Web, a página personalizada, os três endpoints JSON da aula 1 e o laboratório WebLab. O código foi avaliado numa cópia isolada. O SDK .NET 10.0.401 está instalado.
+Na preparação inicial, em 27 de setembro de 2026, a pasta continha `README.md` e o curso anterior de 16 aulas. Na revisão de 28 de setembro, o produto já tem a página personalizada, os endpoints da aula 1, um controller com lista, detalhe, título e contagem de pedidos, e um histórico Git inicial. O código da aula 2 foi testado numa cópia isolada; os acertos de tipos, um aviso de nulabilidade e o commit dos últimos exercícios são retomados na aula 3. O SDK .NET 10.0.401 está instalado.
 
 O material anterior fica preservado. Este índice passa a orientar os novos cadernos. Mantemos o produto, a arquitetura simples e os nomes principais. Dividimos algumas aulas para separar conceitos que exigem prática própria: páginas e formulários, login e permissões, classificação e resumos, preparação de documentos e pesquisa, testes e automatização.
 
-**Há 24 aulas previstas e dois cadernos disponíveis.** A aula 2 inclui a avaliação do código da aula 1 e uma revisão curta antes de avançar. Os seguintes serão escritos quando os pedires, considerando o código que realmente construíste e as dificuldades que encontrámos.
+**Há 24 aulas previstas e três cadernos disponíveis.** As aulas 2 e 3 começam pela avaliação do teu trabalho anterior e uma revisão curta. Os seguintes serão escritos quando os pedires, considerando o código que realmente construíste e as dificuldades que encontrámos.
 
 ## Como estudar
 
@@ -90,8 +90,9 @@ Na aula 5, a parte funcional é o modelo de dados executável em SQL. Nas aulas 
 
 1. [Aula 01 — Primeira aplicação web e primeiro endpoint](aula-01-primeira-aplicacao-web.md)
 2. [Aula 02 — HTTP, JSON, controllers e primeiros commits](aula-02-http-json-controllers-git.md)
+3. [Aula 03 — Criar pedidos com POST, DTOs e validação](aula-03-criacao-dtos-validacao.md)
 
-As aulas 3–24 estão planeadas, mas ainda não têm caderno. Não há exercícios implementados por mim na aplicação do aluno.
+As aulas 4–24 estão planeadas, mas ainda não têm caderno. Não há exercícios implementados por mim na aplicação do aluno.
 
 ## Registo de progresso
 
@@ -101,4 +102,4 @@ As aulas 3–24 estão planeadas, mas ainda não têm caderno. Não há exercíc
 | | | | | |
 | | | | | |
 
-**Como pedir continuidade:** «Terminei a aula 2. Estas são as minhas respostas e este é o meu código. Estes foram os exercícios que saltei.» Vamos rever os critérios de conclusão e preparar a aula seguinte quando a pedires.
+**Como pedir continuidade:** «Terminei a aula 3. Estas são as minhas respostas e este é o meu código. Estes foram os exercícios que saltei.» Vamos rever os critérios de conclusão e preparar a aula seguinte quando a pedires.
