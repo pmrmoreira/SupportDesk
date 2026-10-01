@@ -1,0 +1,47 @@
+@baseUrl = http://localhost:5011
+
+### Contagem
+GET {{baseUrl}}/api/tickets/count
+
+### Criar um pedido
+# @name create
+POST {{baseUrl}}/api/tickets
+Content-Type: application/json
+
+{
+	"title": "Impressora da receção sem ligação",
+	"description": "A impressão deixou de funcionar esta manhã."
+	
+}
+### Seguir o Location do pedido criado
+GET {{create.response.headers.Location}}
+
+
+### O cliente tenta recolher o id e o estado
+POST {{baseUrl}}/api/tickets
+Content-Type: application/json
+{"title": "Portátil não liga", "id": 999, "status": "Resolved"}
+
+### Título com uma letra
+POST {{baseUrl}}/api/tickets
+Content-Type: application/json
+
+{ "title": "x" }
+
+### Título vazio
+POST {{baseUrl}}/api/tickets
+Content-Type: application/json
+
+{ "title": "" }
+
+### Corpo sem campos
+POST {{baseUrl}}/api/tickets
+Content-Type: application/json
+
+{}
+
+### Espaços nas pontas de um título válido
+POST {{baseUrl}}/api/tickets
+Content-Type: application/json
+
+{ "title": "   Impressora sem papel   ", "description": "  Na sala 2.  " }
