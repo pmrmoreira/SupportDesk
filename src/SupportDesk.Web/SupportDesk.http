@@ -44,4 +44,44 @@ Content-Type: application/json
 POST {{baseUrl}}/api/tickets
 Content-Type: application/json
 
-{ "title": "   Impressora sem papel   ", "description": "  Na sala 2.  " }
+{ "title": "Impressora sem papel", "description": "  Deixou de funcionar hoje.  ", "priority": -1 }
+
+### Começar a tratar o pedido 1 (open -> InProgress)
+PUT {{baseUrl}}/api/tickets/1/status
+Content-Type: application/json
+
+{"status": "InProgress"}
+
+### Saltar uma etapa (Open -> Resolved)
+PUT {{baseUrl}}/api/tickers/3/status
+Content-Type: application/json
+
+{"status": "Resolved"}
+
+### Estado que não existe
+PUT {{baseUrl}}/api/tickets/1/status
+Content-Type: application/json
+
+{ "status": "Closed" }
+
+### Ver o pedido 1
+GET {{baseUrl}}/api/tickets/1
+
+
+### Comentar o pedido 1
+POST {{baseUrl}}/api/tickets/1/comments
+Content-Type: application/json
+
+{ "author": "Ana (suporte)", "text": "Já pedi ao cliente o print do erro." }
+
+### Comentários do pedido 1
+GET {{baseUrl}}/api/tickets/1/comments
+
+### Comentários de um pedido sem comentários
+GET {{baseUrl}}/api/tickets/2/comments
+
+### Comentar um pedido que não existe
+POST {{baseUrl}}/api/tickets/999/comments
+Content-Type: application/json
+
+{ "author": "Ana", "text": "Olá?" }
