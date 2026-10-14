@@ -23,9 +23,9 @@ public class TicketsController : ControllerBase
         _tickets = tickets;
     }
     [HttpGet]
-    public ActionResult<Ticket[]> GetAll()
+    public ActionResult<Ticket[]> GetAll([FromQuery] TicketStatus? status)
     {
-       return Ok(_tickets.GetAll());
+       return Ok(_tickets.GetAll(status));
     }
 
     [HttpGet("{id:int}")]
@@ -95,13 +95,16 @@ public class TicketsController : ControllerBase
     [HttpPost("{id:int}/comments")]
     public ActionResult<Comment> AddComment(int id, [FromBody] AddCommentRequest request)
     {
-        var comment = _tickets.AddComment(id, request.Author.Trim(), request.Text.Trim());
-        if (comment is null)
+        var (result, comment) = _tickets.AddComment(id, request.Author.Trim(), request.Text.Trim());
+        return result switch
         {
-            return NotFound();
-
-        }
-        return CreatedAtAction(nameof(GetComments), new { id }, comment);
+            AddCommentResult.Added => CreatedAtAction(nameof(GetComments), new { id }, comment),
+            AddCommentResult.TicketNotFound => NotFound(),
+            _ => Problem(
+                statusCode: StatusCodes.Status409Conflict,
+                title: "Pedido Resolvido",
+                detail: "Não é possivel comentar um pedido resolvido. Reabre-o primeiro.")
+        };
     }
     [HttpGet("{id:int}/comments")]
     public ActionResult<Comment[]> GetComments(int id)

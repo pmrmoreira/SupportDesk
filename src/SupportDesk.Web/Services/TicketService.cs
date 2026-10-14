@@ -19,11 +19,11 @@ public class TicketService : ITicketService
 
 
 
-    public Ticket[] GetAll()
+    public Ticket[] GetAll(TicketStatus? status = null)
     {
         lock (_lock)
         {
-            return _tickets.ToArray();
+            return _tickets.Where(t=> status is null || t.Status == status).ToArray();
         }
     }
     public Ticket? GetById(int id)
@@ -91,13 +91,18 @@ public class TicketService : ITicketService
         NotFound,
         NotAllowed
     }
-    public Comment? AddComment(int ticketId, string author, string text)
+    public (AddCommentResult Result, Comment? Comment) AddComment(int ticketId, string author, string text)
     {
         lock (_lock)
         {
-            if (!_tickets.Any(t => t.Id == ticketId))
+            var ticket = _tickets.FirstOrDefault(t => t.Id == ticketId);
+            if (ticket is null)
             {
-                return null;
+                return (AddCommentResult.TicketNotFound, null);
+            }
+            if (ticket.Status == TicketStatus.Resolved)
+            {
+                return (AddCommentResult.TicketResolved, null);
             }
             var comment = new Comment
             {
@@ -108,7 +113,7 @@ public class TicketService : ITicketService
                 CreatedAt = DateTimeOffset.UtcNow
             };
             _comments.Add(comment);
-            return comment;
+            return (AddCommentResult.Added, comment);
         }
     }
     public Comment[] GetComments(int ticketId)
@@ -118,4 +123,11 @@ public class TicketService : ITicketService
             return _comments.Where(c  => c.TicketId == ticketId).ToArray();
         }
     }
+    public enum AddCommentResult
+    {
+        Added,
+        TicketNotFound,
+        TicketResolved
+    }
+
 }

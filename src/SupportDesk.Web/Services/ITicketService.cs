@@ -5,12 +5,12 @@ namespace SupportDesk.Web.Services;
 
 public interface ITicketService
 {
-    Ticket[] GetAll();
+    Ticket[] GetAll(TicketStatus? status = null);
     Ticket? GetById(int id);
     int Count();
     Ticket Create(string title, string description);
     StatusChangeResult ChangeStatus(int id, TicketStatus newStatus);
-    Comment? AddComment(int ticketId, string author, string text);
+    (AddCommentResult Result, Comment? Comment) AddComment(int ticketId, string author, string text);
     Comment[] GetComments(int ticketId);
     
 }

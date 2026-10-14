@@ -85,3 +85,6 @@ POST {{baseUrl}}/api/tickets/999/comments
 Content-Type: application/json
 
 { "author": "Ana", "text": "Olá?" }
+
+### Devolve os pedidos abertos
+GET {{baseUrl}}/api/tickets?status=Open
