@@ -1,3 +1,5 @@
+using Microsoft.EntityFrameworkCore;
+using SupportDesk.Web.Data;
 using SupportDesk.Web.Services;
 using System.Text.Json.Serialization;
 
@@ -5,6 +7,18 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
+
+
+var connectionString = builder.Configuration.GetConnectionString("SupportDesk")
+    ?? throw new InvalidOperationException(
+        "Falta a ligação 'SupportDesk'. Define-a com dotnet user-secrets (aula 6).");
+
+
+builder.Services.AddDbContext<SupportDeskDbContext>(options =>
+    options.UseNpgsql(connectionString)
+        .UseSeeding((context, _) => SeedData.Seed(context))
+        .UseAsyncSeeding((context, _, ct) => SeedData.SeedAsync(context, ct)));
+
 
 builder.Services.AddControllers().AddJsonOptions(options => options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter(allowIntegerValues: false)));
 builder.Services.AddSingleton<ITicketService, TicketService>();

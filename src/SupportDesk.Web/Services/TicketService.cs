@@ -1,80 +1,71 @@
-﻿using SupportDesk.Web.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using SupportDesk.Web.Data;
+using SupportDesk.Web.Models;
 
 namespace SupportDesk.Web.Services;
 
 public class TicketService : ITicketService
 {
-    private readonly List<Ticket> _tickets =
-    [
-        new Ticket {Id = 1, Title = "Não consigo entrar", Status = TicketStatus.Open},
-        new Ticket {Id = 2, Title = "Fatura com valor incorreto", Status = TicketStatus.InProgress},
-        new Ticket {Id = 3, Title = "Impressora indisponível", Status = TicketStatus.Open}
-    ];
-    private readonly Lock _lock = new();
-    private int _nextId = 4;
 
-    private readonly List<Comment> _comments = [];
-    private int _nextCommentId = 1;
+    private readonly SupportDeskDbContext _db;
 
-
-
-
-    public Ticket[] GetAll(TicketStatus? status = null)
+    public TicketService(SupportDeskDbContext db)
     {
-        lock (_lock)
-        {
-            return _tickets.Where(t=> status is null || t.Status == status).ToArray();
-        }
+        _db = db;
     }
-    public Ticket? GetById(int id)
+
+
+
+    public async Task<Ticket[]> GetAllAsync(TicketStatus? status = null, CancellationToken ct = default)
     {
-        lock (_lock)
-        {
-            return _tickets.FirstOrDefault(t => t.Id == id);
-        }
+        return await _db.Tickets
+            .Where(t => status == null || t.Status == status)
+            .OrderBy(t => t.Id)
+            .ToArrayAsync(ct);
     }
-    public int Count()
+    public async Task<Ticket?> GetByIdAsycn(int id, CancellationToken ct = default)
     {
-        lock( _lock)
-        {
-            return _tickets.Count;
-        }
+        return await _db.Tickets.FirstOrDefaultAsync(t => t.Id == id,ct);
     }
-    public Ticket Create(string title, string description)
+    public async Task<int> CountAsync(CancellationToken ct = default)
     {
-        lock(_lock)
-        {
-            var ticket = new Ticket
-            {
-                Id = _nextId++,
-                Title = title,
-                Description = description,
-                Status = TicketStatus.Open
-            };
-            _tickets.Add(ticket);
-            return ticket;
-        }
+        return await _db.Tickets.CountAsync(ct);
     }
-    public StatusChangeResult ChangeStatus(int id, TicketStatus newStatus)
+    public async Task<Ticket> Create(string title, string description, int priority, CancellationToken ct = default)
     {
-        lock (_lock)
+        var ticket = new Ticket
         {
-            var ticket = _tickets.FirstOrDefault(t => t.Id == id);
-            if (ticket == null)
-            {
-                return StatusChangeResult.NotFound;
-            }
-            if (ticket.Status.Equals(newStatus))
-            {
-                return StatusChangeResult.Changed;
-            }
-            if (!IsAllowed(ticket.Status, newStatus))
-            {
-                return StatusChangeResult.NotAllowed;
-            }
-            ticket.Status = newStatus;
+            Title = title,
+            Description = description,
+            Priority = priority,
+            Status = TicketStatus.Open,
+            CreatedAt = DateTimeOffset.UtcNow
+        };
+        _db.Tickets.Add(ticket);
+        await _db.SaveChangesAsync(ct);
+        return ticket;
+    }
+    public async Task<StatusChangeResult> ChangeStatusAsync(int id, TicketStatus newStatus, CancellationToken ct = default)
+    {
+        var ticket = await _db.Tickets.FirstOrDefaultAsync(t =>t.Id == id, ct);
+        if (ticket == null)
+        {
+            return StatusChangeResult.NotFound;
+        }
+        if (ticket.Status == newStatus)
+        {
             return StatusChangeResult.Changed;
         }
+        if (!IsAllowed(ticket.Status, newStatus))
+        {
+            return StatusChangeResult.NotAllowed;
+        }
+        var oldStatus = ticket.Status;
+        ticket.Status = newStatus;
+        _db.Comments.Add(NewComment(id, "Sistema", $"Estado alterado de {oldStatus} para {newStatus}."));
+        await _db.SaveChangesAsync(ct);
+        return StatusChangeResult.Changed;
+            
     }
     private static bool IsAllowed(TicketStatus from, TicketStatus to) => (from, to) switch
     {
@@ -85,44 +76,47 @@ public class TicketService : ITicketService
         _ => false
     };
 
+
     public enum StatusChangeResult
     {
         Changed,
         NotFound,
         NotAllowed
     }
-    public (AddCommentResult Result, Comment? Comment) AddComment(int ticketId, string author, string text)
+    public async Task<(AddCommentResult Result, Comment? Comment)> AddCommentAsync(int ticketId, string author, string text, CancellationToken ct = default)
     {
-        lock (_lock)
+        
+        
+        var ticket = await _db.Tickets.FirstOrDefaultAsync(t => t.Id == ticketId,ct);
+        if (ticket is null)
         {
-            var ticket = _tickets.FirstOrDefault(t => t.Id == ticketId);
-            if (ticket is null)
-            {
-                return (AddCommentResult.TicketNotFound, null);
-            }
-            if (ticket.Status == TicketStatus.Resolved)
-            {
-                return (AddCommentResult.TicketResolved, null);
-            }
-            var comment = new Comment
-            {
-                Id = _nextCommentId++,
-                TicketId = ticketId,
-                Author = author,
-                Text = text,
-                CreatedAt = DateTimeOffset.UtcNow
-            };
-            _comments.Add(comment);
-            return (AddCommentResult.Added, comment);
+            return (AddCommentResult.TicketNotFound, null);
         }
+        if (ticket.Status == TicketStatus.Resolved)
+        {
+            return (AddCommentResult.TicketResolved, null);
+        }
+        var comment = NewComment(ticketId, author, text);
+        _db.Comments.Add(comment);
+        await _db.SaveChangesAsync(ct);
+        return (AddCommentResult.Added, comment);
+        
     }
-    public Comment[] GetComments(int ticketId)
+    public async Task<Comment[]> GetCommentsAsync(int ticketId, CancellationToken ct = default)
     {
-        lock (_lock)
-        {
-            return _comments.Where(c  => c.TicketId == ticketId).ToArray();
-        }
+        return await _db.Comments
+            .Where(c => c.TicketId == ticketId)
+            .OrderBy(c => c.CreatedAt)
+            .ThenBy(c => c.Id)
+            .ToArrayAsync(ct);
     }
+    private static Comment NewComment(int ticketId, string author, string text) => new()
+    {
+        TicketId = ticketId,
+        Author = author,
+        Text = text,
+        CreatedAt = DateTimeOffset.UtcNow
+    };
     public enum AddCommentResult
     {
         Added,

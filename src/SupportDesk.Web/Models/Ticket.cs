@@ -13,5 +13,6 @@ namespace SupportDesk.Web.Models
 
         public string Description { get; set; } = string.Empty;
         public int Priority { get; set; }
+        public DateTimeOffset CreatedAt { get; set; }
     }
 }
