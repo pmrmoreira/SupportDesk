@@ -32,12 +32,22 @@ public class SeedData
         }
     ];
 
+    // Exercício C da aula 6: numa base nova, os pedidos iniciais também ficam com UpdatedAt = CreatedAt.
+    private static Ticket[] WithUpdatedAt(Ticket[] tickets)
+    {
+        foreach (var ticket in tickets)
+        {
+            ticket.UpdatedAt = ticket.CreatedAt;
+        }
+        return tickets;
+    }
+
     public static void Seed(DbContext context)
     {
         var tickets = context.Set<Ticket>();
         if (!tickets.Any())
         {
-            tickets.AddRange(InitialTickets());
+            tickets.AddRange(WithUpdatedAt(InitialTickets()));
             context.SaveChanges();
         }
     }
@@ -46,7 +56,7 @@ public class SeedData
         var tickets = context.Set<Ticket>();
         if (!await tickets.AnyAsync(ct))
         {
-            tickets.AddRange(InitialTickets());
+            tickets.AddRange(WithUpdatedAt(InitialTickets()));
             await context.SaveChangesAsync(ct);
         }
     }

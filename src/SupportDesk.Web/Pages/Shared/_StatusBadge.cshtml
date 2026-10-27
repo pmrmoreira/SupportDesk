@@ -1,0 +1,10 @@
+﻿@model TicketStatus
+@{
+    var css = Model switch
+    {
+        TicketStatus.Open => "text-bg-primary",
+        TicketStatus.InProgress => "text-bg-warning",
+        _ => "text-bg-success"
+    };
+}
+<span class="badge @css">@DisplayFormat.Status(Model)</span>

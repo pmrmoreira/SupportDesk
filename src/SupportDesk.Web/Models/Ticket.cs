@@ -1,18 +1,17 @@
-﻿using Microsoft.Extensions.Primitives;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.ComponentModel.DataAnnotations;
 
-namespace SupportDesk.Web.Models
+namespace SupportDesk.Web.Models;
+
+public class Ticket
 {
-    public class Ticket
-    {
-        public int Id { get; set; }
-        public string Title { get; set; } = string.Empty;
-        public TicketStatus Status { get; set; } = TicketStatus.Open;
+    public int Id { get; set; }
+    public string Title { get; set; } = string.Empty;
+    public string Description { get; set; } = string.Empty;
+    public TicketStatus Status { get; set; } = TicketStatus.Open;
+    public int Priority { get; set; } = 2;
+    public DateTimeOffset CreatedAt { get; set; }
+    public DateTimeOffset UpdatedAt { get; set; }
 
-        public string Description { get; set; } = string.Empty;
-        public int Priority { get; set; }
-        public DateTimeOffset CreatedAt { get; set; }
-    }
+    [Timestamp]
+    public uint Version { get; set; }
 }

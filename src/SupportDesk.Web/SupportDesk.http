@@ -1,90 +1,52 @@
-@baseUrl = http://localhost:5011
+﻿@baseUrl = http://localhost:5011
+### Primeira página (mais recentes primeiro, 10 de cada vez)
+GET {{baseUrl}}/api/tickets
 
-### Contagem
-GET {{baseUrl}}/api/tickets/count
+### Segunda página, 2 de cada vez
+GET {{baseUrl}}/api/tickets?page=2&pageSize=2
 
-### Criar um pedido
-# @name create
+### Pesquisar no título e na descrição (maiúsculas não contam)
+GET {{baseUrl}}/api/tickets?search=impressora
+
+### Filtros combinados
+GET {{baseUrl}}/api/tickets?status=Open&search=entrar
+
+### Página grande demais (400)
+GET {{baseUrl}}/api/tickets?pageSize=500
+
+### Criar um pedido (envia várias vezes para teres mais de 10 e veres a paginação)
+# @name criarPedido
 POST {{baseUrl}}/api/tickets
 Content-Type: application/json
 
 {
-	"title": "Impressora da receção sem ligação",
-	"description": "A impressão deixou de funcionar esta manhã."
-	
+  "title": "VPN não liga {{$randomInt 1 1000}}",
+  "description": "Desde hoje de manhã que a VPN não liga.\nJá reiniciei o portátil e continua igual.",
+  "priority": 1
 }
-### Seguir o Location do pedido criado
-GET {{create.response.headers.Location}}
 
-
-### O cliente tenta recolher o id e o estado
-POST {{baseUrl}}/api/tickets
-Content-Type: application/json
-{"title": "Portátil não liga", "id": 999, "status": "Resolved"}
-
-### Título com uma letra
-POST {{baseUrl}}/api/tickets
+### Comentar o último pedido criado (envia primeiro o de cima)
+POST {{baseUrl}}/api/tickets/{{criarPedido.response.body.$.id}}/comments
 Content-Type: application/json
 
-{ "title": "x" }
+{
+  "author": "Pedro",
+  "text": "Experimentei noutra rede e acontece o mesmo."
+}
 
-### Título vazio
-POST {{baseUrl}}/api/tickets
+### Pôr o último pedido criado em curso (gera um comentário do Sistema)
+PUT {{baseUrl}}/api/tickets/{{criarPedido.response.body.$.id}}/status
 Content-Type: application/json
 
-{ "title": "" }
+{
+  "status": "InProgress"
+}
 
-### Corpo sem campos
+### Título com HTML: no detalhe tem de aparecer como texto, sem correr
 POST {{baseUrl}}/api/tickets
 Content-Type: application/json
 
-{}
-
-### Espaços nas pontas de um título válido
-POST {{baseUrl}}/api/tickets
-Content-Type: application/json
-
-{ "title": "Impressora sem papel", "description": "  Deixou de funcionar hoje.  ", "priority": -1 }
-
-### Começar a tratar o pedido 1 (open -> InProgress)
-PUT {{baseUrl}}/api/tickets/1/status
-Content-Type: application/json
-
-{"status": "InProgress"}
-
-### Saltar uma etapa (Open -> Resolved)
-PUT {{baseUrl}}/api/tickers/3/status
-Content-Type: application/json
-
-{"status": "Resolved"}
-
-### Estado que não existe
-PUT {{baseUrl}}/api/tickets/1/status
-Content-Type: application/json
-
-{ "status": "Closed" }
-
-### Ver o pedido 1
-GET {{baseUrl}}/api/tickets/1
-
-
-### Comentar o pedido 1
-POST {{baseUrl}}/api/tickets/1/comments
-Content-Type: application/json
-
-{ "author": "Ana (suporte)", "text": "Já pedi ao cliente o print do erro." }
-
-### Comentários do pedido 1
-GET {{baseUrl}}/api/tickets/1/comments
-
-### Comentários de um pedido sem comentários
-GET {{baseUrl}}/api/tickets/2/comments
-
-### Comentar um pedido que não existe
-POST {{baseUrl}}/api/tickets/999/comments
-Content-Type: application/json
-
-{ "author": "Ana", "text": "Olá?" }
-
-### Devolve os pedidos abertos
-GET {{baseUrl}}/api/tickets?status=Open
+{
+  "title": "<script>alert(1)</script>",
+  "description": "Teste da codificação HTML do Razor."
+}

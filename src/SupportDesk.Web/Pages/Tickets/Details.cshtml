@@ -1,0 +1,44 @@
+﻿@page "{id:int}"
+@model SupportDesk.Web.Pages.Tickets.DetailsModel
+@{
+    ViewData["Title"] = $"Pedido {Model.Ticket.Id}";
+}
+
+<p><a asp-page="./Index">← Pedidos</a></p>
+
+<h1>@Model.Ticket.Title</h1>
+<p>
+    <partial name="_StatusBadge" model="Model.Ticket.Status" />
+    <span class="ms-2">Prioridade @DisplayFormat.Priority(Model.Ticket.Priority)</span>
+    <span class="ms-2 text-muted">Criado a @DisplayFormat.DateTime(Model.Ticket.CreatedAt)</span>
+</p>
+
+@if (string.IsNullOrWhiteSpace(Model.Ticket.Description))
+{
+    <p class="text-muted">Sem descrição.</p>
+}
+else
+{
+    <p style="white-space: pre-line">@Model.Ticket.Description</p>
+}
+
+<h2 class="h4 mt-4">Comentários (@Model.Comments.Length)</h2>
+
+@if (Model.Comments.Length == 0)
+{
+    <p class="text-muted">Ainda não há comentários.</p>
+}
+else
+{
+    <ul class="list-unstyled">
+        @foreach (var comment in Model.Comments)
+        {
+            var system = comment.Author == "Sistema";
+            <li class="border rounded p-2 mb-2 @(system ? "bg-light text-muted small" : "")">
+                <strong>@comment.Author</strong>
+                <span class="text-muted small">· @DisplayFormat.DateTime(comment.CreatedAt)</span>
+                <div style="white-space: pre-line">@comment.Text</div>
+            </li>
+        }
+    </ul>
+}

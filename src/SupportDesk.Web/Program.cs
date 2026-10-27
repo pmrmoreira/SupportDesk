@@ -1,34 +1,43 @@
 using Microsoft.EntityFrameworkCore;
 using SupportDesk.Web.Data;
+using SupportDesk.Web.Infrastructure;
 using SupportDesk.Web.Services;
 using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
 builder.Services.AddRazorPages();
-
 
 var connectionString = builder.Configuration.GetConnectionString("SupportDesk")
     ?? throw new InvalidOperationException(
         "Falta a ligação 'SupportDesk'. Define-a com dotnet user-secrets (aula 6).");
 
-
 builder.Services.AddDbContext<SupportDeskDbContext>(options =>
+{
     options.UseNpgsql(connectionString)
         .UseSeeding((context, _) => SeedData.Seed(context))
-        .UseAsyncSeeding((context, _, ct) => SeedData.SeedAsync(context, ct)));
+        .UseAsyncSeeding((context, _, ct) => SeedData.SeedAsync(context, ct));
 
+    // Exercício A da aula 6: valores dos parâmetros no SQL da consola, só em Development.
+    if (builder.Environment.IsDevelopment())
+    {
+        options.EnableSensitiveDataLogging();
+    }
+});
 
-builder.Services.AddControllers().AddJsonOptions(options => options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter(allowIntegerValues: false)));
-builder.Services.AddSingleton<ITicketService, TicketService>();
+builder.Services.AddControllers().AddJsonOptions(options =>
+    options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter(allowIntegerValues: false)));
+builder.Services.AddScoped<ITicketService, TicketService>();
+
+// Aula 7, ciclo 3: erros inesperados em ProblemDetails.
+builder.Services.AddProblemDetails();
+builder.Services.AddExceptionHandler<ApiExceptionHandler>();
+
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (!app.Environment.IsDevelopment())
-{
-    app.UseExceptionHandler("/Error");
-}
+// Corre sempre (também em Development): a API responde com ProblemDetails
+// (ApiExceptionHandler) e as páginas mostram /Error.
+app.UseExceptionHandler("/Error");
 
 app.UseRouting();
 

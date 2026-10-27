@@ -5,10 +5,11 @@ namespace SupportDesk.Web.Data;
 
 public class SupportDeskDbContext : DbContext
 {
-    public SupportDeskDbContext(DbContextOptions<SupportDeskDbContext> options) : base(options)
+    public SupportDeskDbContext(DbContextOptions<SupportDeskDbContext> options)
+        : base(options)
     {
-
     }
+
     public DbSet<Ticket> Tickets => Set<Ticket>();
     public DbSet<Comment> Comments => Set<Comment>();
 
@@ -21,18 +22,18 @@ public class SupportDeskDbContext : DbContext
             ticket.Property(t => t.Status).HasConversion<string>().HasMaxLength(20);
             ticket.ToTable(t =>
             {
-                t.HasCheckConstraint("CK_Tickets_Status", "\"Status\" IN ('Open','InProgress','Resolved')");
+                t.HasCheckConstraint("CK_Tickets_Status", "\"Status\" IN ('Open', 'InProgress', 'Resolved')");
                 t.HasCheckConstraint("CK_Tickets_Priority", "\"Priority\" BETWEEN 1 AND 3");
-
             });
         });
+
         modelBuilder.Entity<Comment>(comment =>
         {
             comment.Property(c => c.Author).HasMaxLength(80);
             comment.Property(c => c.Text).HasMaxLength(2000);
             comment.HasOne<Ticket>()
                 .WithMany()
-                .HasForeignKey(t => t.TicketId)
+                .HasForeignKey(c => c.TicketId)
                 .OnDelete(DeleteBehavior.Restrict);
         });
     }
