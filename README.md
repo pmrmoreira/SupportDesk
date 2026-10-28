@@ -183,4 +183,63 @@ dotnet run --project src/SupportDesk.Web
 | Erro | Causa | Solução |
 |---|---|---|
 | `Falta a ligação 'SupportDesk'` ao arrancar | A ligação à base não está nos user-secrets | Corre o `dotnet user-secrets set` de cima |
-| `28P01:
+| `28P01: password authentication failed` | Palavra-passe errada nos user-secrets | Volta a correr o `user-secrets set` com a certa |
+| `42703: column … does not exist` | Há migrações por aplicar | `dotnet ef database update --project src/SupportDesk.Web` |
+
+</details>
+
+## 🔌 API
+
+| Método | Caminho | Respostas | O que faz |
+|---|---|---|---|
+| `GET` | `/api/tickets` | 200 · 400 | Lista paginada, com filtros |
+| `GET` | `/api/tickets/{id}` | 200 · 404 | Um pedido |
+| `GET` | `/api/tickets/stats` | 200 | Número de pedidos por estado |
+| `POST` | `/api/tickets` | 201 · 400 | Cria um pedido |
+| `PUT` | `/api/tickets/{id}/status` | 204 · 400 · 404 · 409 | Muda o estado |
+| `GET` | `/api/tickets/{id}/comments` | 200 · 404 | Comentários de um pedido |
+| `POST` | `/api/tickets/{id}/comments` | 201 · 400 · 404 · 409 | Acrescenta um comentário |
+
+Filtros da lista: `status` (`Open`, `InProgress`, `Resolved`), `priority` (1 a 3), `search` (no título e na descrição), `sort` (`Newest`, `Oldest`, `Priority`, `Activity`), `page` e `pageSize` (1 a 50, 10 por omissão).
+
+O 409 aparece quando a mudança de estado não é permitida, quando se tenta comentar um pedido resolvido, ou quando outra pessoa alterou o pedido ao mesmo tempo.
+
+**Exemplo: criar um pedido**
+
+```http
+POST /api/tickets
+Content-Type: application/json
+
+{
+  "title": "VPN não liga",
+  "description": "Desde hoje de manhã que a VPN não liga.",
+  "priority": 1
+}
+```
+
+Resposta `201 Created`, com `Location: /api/tickets/4`:
+
+```json
+{
+  "id": 4,
+  "title": "VPN não liga",
+  "description": "Desde hoje de manhã que a VPN não liga.",
+  "status": "Open",
+  "priority": 1,
+  "createdAt": "2026-10-28T18:30:12.48+00:00",
+  "updatedAt": "2026-10-28T18:30:12.48+00:00"
+}
+```
+
+Para mudar o estado: `PUT /api/tickets/4/status` com `{ "status": "InProgress" }`. Para comentar: `POST /api/tickets/4/comments` com `{ "author": "Ana", "text": "Já reiniciei o portátil." }`.
+
+## 🧭 Roadmap
+
+| Fase | O que entra | Estado |
+|---|---|---|
+| 1. Fundamentos e API | Pedidos, estados, comentários e validação | ✅ Concluída |
+| 2. Dados e interface | PostgreSQL, EF Core, filtros e paginação, Razor Pages e formulários | ✅ Concluída |
+| 3. Segurança e testes | Contas com Identity, clientes e técnicos, testes unitários e de integração | 🔄 A seguir |
+| 4. IA aplicada | Modelo local com Ollama, classificação de pedidos e resumo de conversas | ⏳ Planeada |
+| 5. Conhecimento e avaliação | Base de conhecimento, pesquisa semântica, RAG com fontes, avaliação da IA e observabilidade | ⏳ Planeada |
+| 6. Entrega | Docker, GitHub Actions e publicação | ⏳ Planeada |
