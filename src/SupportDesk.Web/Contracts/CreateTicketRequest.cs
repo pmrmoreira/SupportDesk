@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace SupportDesk.Web.Contracts;
 
-public class CreateTicketRequest
+public class CreateTicketRequest : IValidatableObject
 {
     [Required(ErrorMessage = "O título é obrigatório.")]
     [StringLength(120, MinimumLength = 5, ErrorMessage = "O título deve ter entre 5 a 120 caracteres.")]
@@ -15,4 +15,14 @@ public class CreateTicketRequest
     // e a base recusava-o (CK_Tickets_Priority) com um erro 500.
     [Range(1, 3, ErrorMessage = "A prioridade deve ser 1, 2 ou 3.")]
     public int Priority { get; set; } = 2;
+
+    public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+    {
+        if (Title.Trim().Length < 5)
+        {
+            yield return new ValidationResult(
+                "O título deve ter pelo menos 5 caracteres, sem contar os espaços nas pontas.",
+                [nameof(Title)]);
+        }
+    }
 }

@@ -13,6 +13,16 @@
     <span class="ms-2 text-muted">Criado a @DisplayFormat.DateTime(Model.Ticket.CreatedAt)</span>
 </p>
 
+<div class="d-flex flex-wrap gap-2 mb-3">
+    @foreach (var next in TicketWorkflow.NextStatuses(Model.Ticket.Status))
+    {
+        <form method="post" asp-page-handler="Status" asp-route-id="@Model.Ticket.Id">
+            <input type="hidden" name="status" value="@next" />
+            <button type="submit" class="btn btn-outline-primary btn-sm">@DisplayFormat.Transition(Model.Ticket.Status, next)</button>
+        </form>
+    }
+</div>
+
 @if (string.IsNullOrWhiteSpace(Model.Ticket.Description))
 {
     <p class="text-muted">Sem descrição.</p>
@@ -41,4 +51,24 @@ else
             </li>
         }
     </ul>
+}
+
+<h2 class="h5 mt-4">Novo comentário</h2>
+<form method="post" asp-page-handler="Comment" asp-route-id="@Model.Ticket.Id" class="col-lg-8">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="mb-2">
+        <label asp-for="NewComment.Author" class="form-label">O teu nome</label>
+        <input asp-for="NewComment.Author" class="form-control" />
+        <span asp-validation-for="NewComment.Author" class="text-danger"></span>
+    </div>
+    <div class="mb-2">
+        <label asp-for="NewComment.Text" class="form-label">Comentário</label>
+        <textarea asp-for="NewComment.Text" class="form-control" rows="3"></textarea>
+        <span asp-validation-for="NewComment.Text" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">Comentar</button>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
 }

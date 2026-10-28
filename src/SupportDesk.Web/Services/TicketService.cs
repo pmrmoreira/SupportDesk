@@ -114,10 +114,11 @@ public class TicketService : ITicketService
         {
             return StatusChangeResult.Changed; // nada para mudar
         }
-        if (!IsAllowed(ticket.Status, newStatus))
+        if (!TicketWorkflow.CanChange(ticket.Status, newStatus))
         {
             return StatusChangeResult.NotAllowed;
         }
+
 
         var oldStatus = ticket.Status;
         ticket.Status = newStatus;
@@ -136,15 +137,6 @@ public class TicketService : ITicketService
         }
         return StatusChangeResult.Changed;
     }
-
-    private static bool IsAllowed(TicketStatus from, TicketStatus to) => (from, to) switch
-    {
-        (TicketStatus.Open, TicketStatus.InProgress) => true,
-        (TicketStatus.InProgress, TicketStatus.Resolved) => true,
-        (TicketStatus.InProgress, TicketStatus.Open) => true,
-        (TicketStatus.Resolved, TicketStatus.Open) => true,
-        _ => false
-    };
 
     // Devolve CommentResponse? no tuplo (antes era Comment?: outro erro de compilação).
     public async Task<(AddCommentResult Result, CommentResponse? Comment)> AddCommentAsync(int ticketId, string author, string text, CancellationToken ct = default)

@@ -21,6 +21,15 @@ public static class DisplayFormat
         3 => "Baixa",
         _ => priority.ToString()
     };
+    // O texto do botão que muda o pedido de um estado para outro.
+    public static string Transition(TicketStatus from, TicketStatus to) => (from, to) switch
+    {
+        (_, TicketStatus.InProgress) => "Começar a tratar",
+        (_, TicketStatus.Resolved) => "Marcar como resolvido",
+        (TicketStatus.Resolved, TicketStatus.Open) => "Reabrir",
+        _ => "Devolver à fila"
+    };
+
 
     public static string DateTime(DateTimeOffset value) =>
         TimeZoneInfo.ConvertTime(value, Lisbon).ToString("dd/MM/yyyy HH:mm");

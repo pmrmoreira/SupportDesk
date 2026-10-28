@@ -15,7 +15,7 @@ public class TicketsController : ControllerBase
         _tickets = tickets;
     }
 
-    // GET /api/tickets?status=Open&priority=1&search=impressora&sort=oldest&page=1&pageSize=10
+    
     [HttpGet]
     public async Task<ActionResult<PagedResult<TicketListItem>>> Search([FromQuery] TicketQuery query, CancellationToken ct)
     {
@@ -54,17 +54,9 @@ public class TicketsController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<TicketDetails>> Create([FromBody] CreateTicketRequest request, CancellationToken ct)
     {
-        var title = request.Title.Trim();
-        if (title.Length < 5)
-        {
-            ModelState.AddModelError(
-                nameof(request.Title),
-                "O título deve ter pelo menos 5 caracteres, sem contar os espaços nas pontas.");
-            return ValidationProblem(ModelState);
-        }
 
         var ticket = await _tickets.CreateAsync(
-            title,
+            request.Title.Trim(),
             request.Description?.Trim() ?? string.Empty,
             request.Priority,
             ct);
