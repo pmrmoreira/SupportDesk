@@ -2,14 +2,14 @@ using SupportDesk.Web.Models;
 
 namespace SupportDesk.Web.Contracts;
 
-// Contratos de saída da API (aula 7, ciclo 1): o JSON deixa de ser a entidade da base.
+
 public record TicketListItem(
     int Id,
     string Title,
     TicketStatus Status,
     int Priority,
     DateTimeOffset CreatedAt,
-    DateTimeOffset UpdatedAt,   // era "UpdateAt": o JSON saía com outro nome
+    DateTimeOffset UpdatedAt,   
     int CommentCount);
 
 public record TicketDetails(
@@ -19,6 +19,9 @@ public record TicketDetails(
     TicketStatus Status,
     int Priority,
     DateTimeOffset CreatedAt,
-    DateTimeOffset UpdatedAt);
+    DateTimeOffset UpdatedAt,
+    uint Version,
+    string? CreatedById,
+    string? CreatedByName);   // aula 10: null nos pedidos criados antes de haver contas
 
 public record CommentResponse(int Id, string Author, string Text, DateTimeOffset CreatedAt);

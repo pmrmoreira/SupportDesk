@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using SupportDesk.Web.Contracts;
+using SupportDesk.Web.Infrastructure;
 using SupportDesk.Web.Models;
 using SupportDesk.Web.Services;
 
@@ -35,6 +36,6 @@ public class IndexModel : PageModel
             Page = Math.Max(PageNumber, 1),
             PageSize = 10
         };
-        Result = await _tickets.SearchAsync(query, ct);
+        Result = await _tickets.SearchAsync(query, User.OwnerFilter(), ct);
     }
 }

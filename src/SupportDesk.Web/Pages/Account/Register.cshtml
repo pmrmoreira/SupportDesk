@@ -1,0 +1,36 @@
+﻿@page
+@model SupportDesk.Web.Pages.Account.RegisterModel
+@{
+    ViewData["Title"] = "Criar conta";
+}
+
+<h1>Criar conta</h1>
+
+<form method="post" class="col-lg-6">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="mb-3">
+        <label asp-for="Input.DisplayName" class="form-label">Nome</label>
+        <input asp-for="Input.DisplayName" class="form-control" autocomplete="name" />
+        <span asp-validation-for="Input.DisplayName" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Input.Email" class="form-label">Email</label>
+        <input asp-for="Input.Email" class="form-control" autocomplete="username" />
+        <span asp-validation-for="Input.Email" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Input.Password" class="form-label">Palavra-passe</label>
+        <input asp-for="Input.Password" class="form-control" autocomplete="new-password" />
+        <span asp-validation-for="Input.Password" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Input.ConfirmPassword" class="form-label">Repete a palavra-passe</label>
+        <input asp-for="Input.ConfirmPassword" class="form-control" autocomplete="new-password" />
+        <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">Criar conta</button>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

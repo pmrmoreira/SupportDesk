@@ -1,0 +1,32 @@
+﻿@page
+@model SupportDesk.Web.Pages.Account.LoginModel
+@{
+    ViewData["Title"] = "Entrar";
+}
+
+<h1>Entrar</h1>
+
+<form method="post" class="col-lg-6">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input type="hidden" asp-for="ReturnUrl" />
+    <div class="mb-3">
+        <label asp-for="Input.Email" class="form-label">Email</label>
+        <input asp-for="Input.Email" class="form-control" autocomplete="username" />
+        <span asp-validation-for="Input.Email" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Input.Password" class="form-label">Palavra-passe</label>
+        <input asp-for="Input.Password" class="form-control" autocomplete="current-password" />
+        <span asp-validation-for="Input.Password" class="text-danger"></span>
+    </div>
+    <div class="form-check mb-3">
+        <input asp-for="Input.RememberMe" class="form-check-input" />
+        <label asp-for="Input.RememberMe" class="form-check-label">Manter sessão neste computador</label>
+    </div>
+    <button type="submit" class="btn btn-primary">Entrar</button>
+    <a asp-page="./Register" class="btn btn-link">Criar conta</a>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

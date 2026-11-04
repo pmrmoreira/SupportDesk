@@ -7,17 +7,17 @@ public class TicketQuery
 {
     public TicketStatus? Status { get; set; }
 
-    // Exercício B da aula 7: int? = filtro opcional (null quer dizer "todas as prioridades").
+    
     [Range(1, 3, ErrorMessage = "A prioridade tem de ser 1, 2 ou 3.")]
     public int? Priority { get; set; }
 
     [StringLength(100, ErrorMessage = "A pesquisa pode ter no máximo 100 caracteres.")]
     public string? Search { get; set; }
 
-    // Exercício A da aula 7.
+    
     public TicketSort Sort { get; set; } = TicketSort.Newest;
 
-    // Limite superior para (Page - 1) * PageSize nunca passar o máximo de um int.
+   
     [Range(1, 1_000_000, ErrorMessage = "A página começa em 1.")]
     public int Page { get; set; } = 1;
 

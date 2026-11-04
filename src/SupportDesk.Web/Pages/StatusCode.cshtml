@@ -1,0 +1,17 @@
+@page
+@model StatusCodeModel
+@{
+    ViewData["Title"] = Model.Code == 404 ? "Não encontrado" : $"Erro {Model.Code}";
+}
+
+@if (Model.Code == 404)
+{
+    <h1>Não encontrámos o que procuras</h1>
+    <p>O endereço pode estar errado, ou o que procuras já não existe.</p>
+}
+else
+{
+    <h1>Algo correu mal</h1>
+    <p>Não foi possível concluir esta operação (código @Model.Code). Volta atrás e tenta outra vez.</p>
+}
+<p><a asp-page="/Tickets/Index">Voltar aos pedidos</a></p>

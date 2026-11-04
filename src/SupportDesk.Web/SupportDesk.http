@@ -1,52 +1,124 @@
 ﻿@baseUrl = http://localhost:5011
-### Primeira página (mais recentes primeiro, 10 de cada vez)
+
+### Criar conta de cliente pela API (só na primeira vez; depois dá 400 DuplicateUserName)
+POST {{baseUrl}}/api/auth/register
+Content-Type: application/json
+
+{ "email": "rui@exemplo.pt", "password": "Segredo123" }
+
+### Entrar como cliente (Rui)
+# @name login
+POST {{baseUrl}}/api/auth/login
+Content-Type: application/json
+
+{ "email": "rui@exemplo.pt", "password": "Segredo123" }
+
+### Entrar como técnico (a palavra-passe vem dos user-secrets, por http-client.env.json: escolhe o ambiente dev)
+# @name tecnico
+POST {{baseUrl}}/api/auth/login
+Content-Type: application/json
+
+{ "email": "tecnico@supportdesk.local", "password": "{{TechnicianPassword}}" }
+
+### Sem token (401)
+GET {{baseUrl}}/api/tickets/count
+
+### Contagem: o Rui só conta os seus pedidos
+GET {{baseUrl}}/api/tickets/count
+Authorization: Bearer {{login.response.body.$.accessToken}}
+
+### O Rui cria um pedido
+# @name create
+POST {{baseUrl}}/api/tickets
+Authorization: Bearer {{login.response.body.$.accessToken}}
+Content-Type: application/json
+
+{
+  "title": "Impressora da receção sem ligação",
+  "description": "A impressão deixou de funcionar esta manhã."
+}
+
+### Seguir o Location do pedido criado
+GET {{create.response.headers.Location}}
+Authorization: Bearer {{login.response.body.$.accessToken}}
+
+### Título só com espaços (400)
+POST {{baseUrl}}/api/tickets
+Authorization: Bearer {{login.response.body.$.accessToken}}
+Content-Type: application/json
+
+{ "title": "   " }
+
+### O Rui tenta mudar o estado do seu pedido (403: só técnicos)
+PUT {{baseUrl}}/api/tickets/{{create.response.body.$.id}}/status
+Authorization: Bearer {{login.response.body.$.accessToken}}
+Content-Type: application/json
+
+{ "status": "InProgress" }
+
+### O técnico tenta saltar uma etapa: Open → Resolved (409)
+PUT {{baseUrl}}/api/tickets/{{create.response.body.$.id}}/status
+Authorization: Bearer {{tecnico.response.body.$.accessToken}}
+Content-Type: application/json
+
+{ "status": "Resolved" }
+
+### O técnico começa a tratar o pedido do Rui (204)
+PUT {{baseUrl}}/api/tickets/{{create.response.body.$.id}}/status
+Authorization: Bearer {{tecnico.response.body.$.accessToken}}
+Content-Type: application/json
+
+{ "status": "InProgress" }
+
+### Estado que não existe (400)
+PUT {{baseUrl}}/api/tickets/{{create.response.body.$.id}}/status
+Authorization: Bearer {{tecnico.response.body.$.accessToken}}
+Content-Type: application/json
+
+{ "status": "Closed" }
+
+### O Rui comenta o seu pedido
+POST {{baseUrl}}/api/tickets/{{create.response.body.$.id}}/comments
+Authorization: Bearer {{login.response.body.$.accessToken}}
+Content-Type: application/json
+
+{ "text": "Já reiniciei a impressora." }
+
+### Comentários do pedido
+GET {{baseUrl}}/api/tickets/{{create.response.body.$.id}}/comments
+Authorization: Bearer {{login.response.body.$.accessToken}}
+
+### O Rui pede o pedido 3, que não é dele (404, como se não existisse)
+GET {{baseUrl}}/api/tickets/3
+Authorization: Bearer {{login.response.body.$.accessToken}}
+
+### O técnico vê o pedido 3
+GET {{baseUrl}}/api/tickets/3
+Authorization: Bearer {{tecnico.response.body.$.accessToken}}
+
+### Comentar um pedido que não existe (404)
+POST {{baseUrl}}/api/tickets/999/comments
+Authorization: Bearer {{login.response.body.$.accessToken}}
+Content-Type: application/json
+
+{ "text": "Olá?" }
+
+### Lista do Rui (só os dele)
 GET {{baseUrl}}/api/tickets
+Authorization: Bearer {{login.response.body.$.accessToken}}
 
-### Segunda página, 2 de cada vez
-GET {{baseUrl}}/api/tickets?page=2&pageSize=2
-
-### Pesquisar no título e na descrição (maiúsculas não contam)
-GET {{baseUrl}}/api/tickets?search=impressora
-
-### Filtros combinados
-GET {{baseUrl}}/api/tickets?status=Open&search=entrar
+### Lista do técnico (todos), com filtros
+GET {{baseUrl}}/api/tickets?status=Open&search=impressora&page=1&pageSize=5
+Authorization: Bearer {{tecnico.response.body.$.accessToken}}
 
 ### Página grande demais (400)
 GET {{baseUrl}}/api/tickets?pageSize=500
+Authorization: Bearer {{login.response.body.$.accessToken}}
 
-### Criar um pedido (envia várias vezes para teres mais de 10 e veres a paginação)
-# @name criarPedido
-POST {{baseUrl}}/api/tickets
-Content-Type: application/json
+### Só os urgentes, por ordem de prioridade
+GET {{baseUrl}}/api/tickets?priority=1&sort=priority
+Authorization: Bearer {{tecnico.response.body.$.accessToken}}
 
-{
-  "title": "VPN não liga {{$randomInt 1 1000}}",
-  "description": "Desde hoje de manhã que a VPN não liga.\nJá reiniciei o portátil e continua igual.",
-  "priority": 1
-}
-
-### Comentar o último pedido criado (envia primeiro o de cima)
-POST {{baseUrl}}/api/tickets/{{criarPedido.response.body.$.id}}/comments
-Content-Type: application/json
-
-{
-  "author": "Pedro",
-  "text": "Experimentei noutra rede e acontece o mesmo."
-}
-
-### Pôr o último pedido criado em curso (gera um comentário do Sistema)
-PUT {{baseUrl}}/api/tickets/{{criarPedido.response.body.$.id}}/status
-Content-Type: application/json
-
-{
-  "status": "InProgress"
-}
-
-### Título com HTML: no detalhe tem de aparecer como texto, sem correr
-POST {{baseUrl}}/api/tickets
-Content-Type: application/json
-
-{
-  "title": "<script>alert(1)</script>",
-  "description": "Teste da codificação HTML do Razor."
-}
+### Pesquisar "100%" à letra (na URL, % escreve-se %25)
+GET {{baseUrl}}/api/tickets?search=100%25
+Authorization: Bearer {{tecnico.response.body.$.accessToken}}

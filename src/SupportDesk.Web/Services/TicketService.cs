@@ -14,9 +14,14 @@ public class TicketService : ITicketService
         _db = db;
     }
 
-    public async Task<PagedResult<TicketListItem>> SearchAsync(TicketQuery query, CancellationToken ct = default)
+    public async Task<PagedResult<TicketListItem>> SearchAsync(TicketQuery query, string? ownerId, CancellationToken ct = default)
     {
         var tickets = _db.Tickets.AsNoTracking();
+
+        if (ownerId is not null)
+        {
+            tickets = tickets.Where(t => t.CreatedById == ownerId);
+        }
 
         if (query.Status is not null)
         {
@@ -63,19 +68,24 @@ public class TicketService : ITicketService
             .AsNoTracking()
             .Where(t => t.Id == id)
             .Select(t => new TicketDetails(
-                t.Id, t.Title, t.Description, t.Status, t.Priority, t.CreatedAt, t.UpdatedAt))
+                t.Id, t.Title, t.Description, t.Status, t.Priority, t.CreatedAt, t.UpdatedAt, t.Version,
+                t.CreatedById,
+                // Aula 10: o EF Core traduz a navegação num LEFT JOIN com AspNetUsers, na mesma consulta.
+                t.CreatedBy == null ? null
+                    : t.CreatedBy.DisplayName == "" ? t.CreatedBy.Email : t.CreatedBy.DisplayName))
             .FirstOrDefaultAsync(ct);
     }
 
-    public async Task<int> CountAsync(CancellationToken ct = default)
+    public async Task<int> CountAsync(string? ownerId, CancellationToken ct = default)
     {
-        return await _db.Tickets.CountAsync(ct);
+        return await _db.Tickets.CountAsync(t => ownerId == null || t.CreatedById == ownerId, ct);
     }
 
     // Exercício B da aula 6: GROUP BY na base; os estados sem pedidos ficam com 0.
-    public async Task<Dictionary<TicketStatus, int>> CountByStatusAsync(CancellationToken ct = default)
+    public async Task<Dictionary<TicketStatus, int>> CountByStatusAsync(string? ownerId, CancellationToken ct = default)
     {
         var counts = await _db.Tickets
+            .Where(t => ownerId == null || t.CreatedById == ownerId)
             .GroupBy(t => t.Status)
             .Select(g => new { Status = g.Key, Total = g.Count() })
             .ToListAsync(ct);
@@ -86,7 +96,7 @@ public class TicketService : ITicketService
     }
 
     // Devolve o DTO (antes devolvia Task<Ticket>, que não batia com a interface: erro de compilação).
-    public async Task<TicketDetails> CreateAsync(string title, string description, int priority, CancellationToken ct = default)
+    public async Task<TicketDetails> CreateAsync(string title, string description, int priority, string createdById, CancellationToken ct = default)
     {
         var now = DateTimeOffset.UtcNow;
         var ticket = new Ticket
@@ -96,11 +106,43 @@ public class TicketService : ITicketService
             Priority = priority,
             Status = TicketStatus.Open,
             CreatedAt = now,
-            UpdatedAt = now     // exercício C da aula 6
+            UpdatedAt = now,    // exercício C da aula 6
+            CreatedById = createdById
         };
         _db.Tickets.Add(ticket);
         await _db.SaveChangesAsync(ct);
-        return ToDetails(ticket);
+        return ToDetails(ticket, await DisplayNameAsync(createdById, ct));
+    }
+
+    public async Task<UpdateTicketResult> UpdateAsync(int id, string title, string description, int priority, uint version, CancellationToken ct = default)
+    {
+        var ticket = await _db.Tickets.FirstOrDefaultAsync(t => t.Id == id, ct);
+        if (ticket is null)
+        {
+            return UpdateTicketResult.NotFound;
+        }
+        if (ticket.Status == TicketStatus.Resolved)
+        {
+            return UpdateTicketResult.TicketResolved;
+        }
+
+        // O UPDATE compara o xmin com a versão que o formulário trouxe, não com a que acabámos de ler:
+        // assim apanha também quem gravou enquanto a página estava aberta.
+        _db.Entry(ticket).Property(t => t.Version).OriginalValue = version;
+        ticket.Title = title;
+        ticket.Description = description;
+        ticket.Priority = priority;
+        ticket.UpdatedAt = DateTimeOffset.UtcNow;
+
+        try
+        {
+            await _db.SaveChangesAsync(ct);
+        }
+        catch (DbUpdateConcurrencyException)
+        {
+            return UpdateTicketResult.Conflict;
+        }
+        return UpdateTicketResult.Updated;
     }
 
     public async Task<StatusChangeResult> ChangeStatusAsync(int id, TicketStatus newStatus, CancellationToken ct = default)
@@ -139,7 +181,7 @@ public class TicketService : ITicketService
     }
 
     // Devolve CommentResponse? no tuplo (antes era Comment?: outro erro de compilação).
-    public async Task<(AddCommentResult Result, CommentResponse? Comment)> AddCommentAsync(int ticketId, string author, string text, CancellationToken ct = default)
+    public async Task<(AddCommentResult Result, CommentResponse? Comment)> AddCommentAsync(int ticketId, string authorId, string text, CancellationToken ct = default)
     {
         var ticket = await _db.Tickets.FirstOrDefaultAsync(t => t.Id == ticketId, ct);
         if (ticket is null)
@@ -151,7 +193,10 @@ public class TicketService : ITicketService
             return (AddCommentResult.TicketResolved, null);
         }
 
+        // Aula 10: ficam as duas coisas, quem foi (AuthorId) e o nome nesse momento (Author).
+        var author = await DisplayNameAsync(authorId, ct) ?? "?";
         var comment = NewComment(ticketId, author, text);
+        comment.AuthorId = authorId;
         _db.Comments.Add(comment);
         ticket.UpdatedAt = comment.CreatedAt;   // comentar também conta como atividade
 
@@ -190,8 +235,16 @@ public class TicketService : ITicketService
     private static string EscapeLike(string text) =>
         text.Replace(@"\", @"\\").Replace("%", @"\%").Replace("_", @"\_");
 
-    private static TicketDetails ToDetails(Ticket t) =>
-        new(t.Id, t.Title, t.Description, t.Status, t.Priority, t.CreatedAt, t.UpdatedAt);
+    // O nome que aparece nas páginas: o DisplayName, ou o email para quem se registou pela API.
+    private async Task<string?> DisplayNameAsync(string userId, CancellationToken ct) =>
+        await _db.Users
+            .Where(u => u.Id == userId)
+            .Select(u => u.DisplayName == "" ? u.Email : u.DisplayName)
+            .FirstOrDefaultAsync(ct);
+
+    private static TicketDetails ToDetails(Ticket t, string? createdByName) =>
+        new(t.Id, t.Title, t.Description, t.Status, t.Priority, t.CreatedAt, t.UpdatedAt, t.Version,
+            t.CreatedById, createdByName);
 
     private static CommentResponse ToResponse(Comment c) =>
         new(c.Id, c.Author, c.Text, c.CreatedAt);

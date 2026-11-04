@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using SupportDesk.Web.Contracts;
 using SupportDesk.Web.Services;
+using System.Security.Claims;
 
 namespace SupportDesk.Web.Pages.Tickets;
 
@@ -27,7 +28,9 @@ public class CreateModel : PageModel
         {
             return Page();
         }
-        var ticket = await _tickets.CreateAsync(Input.Title.Trim(), Input.Description?.Trim() ?? string.Empty, Input.Priority, ct);
+        // O id de quem tem sessão vem das claims do cookie. O ! diz o que o AuthorizeFolder garante: há sessão.
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
+        var ticket = await _tickets.CreateAsync(Input.Title.Trim(), Input.Description?.Trim() ?? string.Empty, Input.Priority, userId, ct);
 
         TempData["Message"] = "Pedido criado.";
         return RedirectToPage("./Details", new { id = ticket.Id});

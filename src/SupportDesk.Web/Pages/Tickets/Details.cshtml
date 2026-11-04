@@ -10,11 +10,17 @@
 <p>
     <partial name="_StatusBadge" model="Model.Ticket.Status" />
     <span class="ms-2">Prioridade @DisplayFormat.Priority(Model.Ticket.Priority)</span>
-    <span class="ms-2 text-muted">Criado a @DisplayFormat.DateTime(Model.Ticket.CreatedAt)</span>
+    <span class="ms-2 text-muted">Criado a @DisplayFormat.DateTime(Model.Ticket.CreatedAt)
+        @(Model.Ticket.CreatedByName is null ? "" : $"por {Model.Ticket.CreatedByName}")</span>
 </p>
 
 <div class="d-flex flex-wrap gap-2 mb-3">
-    @foreach (var next in TicketWorkflow.NextStatuses(Model.Ticket.Status))
+    @if (Model.CanEdit && Model.Ticket.Status != TicketStatus.Resolved)
+    {
+        <a asp-page="./Edit" asp-route-id="@Model.Ticket.Id" class="btn btn-outline-secondary btn-sm">Editar</a>
+    }
+    @* Aula 10, ciclo 3: sem CanChangeStatus a lista é vazia. Esconder poupa cliques; quem protege é o servidor. *@
+    @foreach (var next in Model.CanChangeStatus ? TicketWorkflow.NextStatuses(Model.Ticket.Status) : [])
     {
         <form method="post" asp-page-handler="Status" asp-route-id="@Model.Ticket.Id">
             <input type="hidden" name="status" value="@next" />
@@ -56,11 +62,6 @@ else
 <h2 class="h5 mt-4">Novo comentário</h2>
 <form method="post" asp-page-handler="Comment" asp-route-id="@Model.Ticket.Id" class="col-lg-8">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-    <div class="mb-2">
-        <label asp-for="NewComment.Author" class="form-label">O teu nome</label>
-        <input asp-for="NewComment.Author" class="form-control" />
-        <span asp-validation-for="NewComment.Author" class="text-danger"></span>
-    </div>
     <div class="mb-2">
         <label asp-for="NewComment.Text" class="form-label">Comentário</label>
         <textarea asp-for="NewComment.Text" class="form-control" rows="3"></textarea>

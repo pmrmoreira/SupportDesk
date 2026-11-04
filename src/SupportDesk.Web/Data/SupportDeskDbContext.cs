@@ -1,9 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using SupportDesk.Web.Models;
 
 namespace SupportDesk.Web.Data;
 
-public class SupportDeskDbContext : DbContext
+public class SupportDeskDbContext : IdentityDbContext<ApplicationUser>
 {
     public SupportDeskDbContext(DbContextOptions<SupportDeskDbContext> options)
         : base(options)
@@ -15,6 +16,11 @@ public class SupportDeskDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        base.OnModelCreating(modelBuilder);
+        modelBuilder.Entity<ApplicationUser>().Property(u => u.DisplayName).HasMaxLength(80);
+
+
+
         modelBuilder.Entity<Ticket>(ticket =>
         {
             ticket.Property(t => t.Title).HasMaxLength(120);
@@ -25,6 +31,7 @@ public class SupportDeskDbContext : DbContext
                 t.HasCheckConstraint("CK_Tickets_Status", "\"Status\" IN ('Open', 'InProgress', 'Resolved')");
                 t.HasCheckConstraint("CK_Tickets_Priority", "\"Priority\" BETWEEN 1 AND 3");
             });
+            ticket.HasOne(t => t.CreatedBy).WithMany().HasForeignKey(t => t.CreatedById).OnDelete(DeleteBehavior.Restrict);
         });
 
         modelBuilder.Entity<Comment>(comment =>
@@ -35,6 +42,7 @@ public class SupportDeskDbContext : DbContext
                 .WithMany()
                 .HasForeignKey(c => c.TicketId)
                 .OnDelete(DeleteBehavior.Restrict);
+            comment.HasOne<ApplicationUser>().WithMany().HasForeignKey(c => c.AuthorId).OnDelete(DeleteBehavior.Restrict);
         });
     }
 }
