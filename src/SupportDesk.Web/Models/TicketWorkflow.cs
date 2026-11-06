@@ -9,6 +9,7 @@ public static class TicketWorkflow
         (TicketStatus.InProgress, TicketStatus.Resolved) => true,
         (TicketStatus.InProgress, TicketStatus.Open) => true,
         (TicketStatus.Resolved, TicketStatus.Open) => true,
+        
         _ => false
     };
 

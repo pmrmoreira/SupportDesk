@@ -22,6 +22,7 @@ public record TicketDetails(
     DateTimeOffset UpdatedAt,
     uint Version,
     string? CreatedById,
-    string? CreatedByName);   // aula 10: null nos pedidos criados antes de haver contas
+    string? CreatedByName
+    );   // aula 10: null nos pedidos criados antes de haver contas
 
 public record CommentResponse(int Id, string Author, string Text, DateTimeOffset CreatedAt);
