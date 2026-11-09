@@ -18,5 +18,5 @@ public static class TestUsers
     public static TicketDetails Ticket(string? createdById, TicketStatus status = TicketStatus.Open) =>
         new(Id: 1, Title: "Pedido de teste", Description: "", Status: status, Priority: 2,
             CreatedAt: DateTimeOffset.UtcNow, UpdatedAt: DateTimeOffset.UtcNow, Version: 1,
-            CreatedById: createdById, CreatedByName: null);
+            CreatedById: createdById, CreatedByName: null, Category: null);
 }

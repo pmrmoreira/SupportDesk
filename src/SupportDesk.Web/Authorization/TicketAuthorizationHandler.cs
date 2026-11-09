@@ -18,6 +18,7 @@ public class TicketAuthorizationHandler : AuthorizationHandler<OperationAuthoriz
             nameof(TicketOperations.Comment) => isTechnician || isOwner,
             nameof(TicketOperations.Edit) => isTechnician || isOwner,
             nameof(TicketOperations.ChangeStatus) => isTechnician,
+            nameof(TicketOperations.Classify) => isTechnician,
             _ => false
         };
 

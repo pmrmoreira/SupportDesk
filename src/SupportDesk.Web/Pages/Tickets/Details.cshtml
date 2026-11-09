@@ -10,6 +10,7 @@
 <p>
     <partial name="_StatusBadge" model="Model.Ticket.Status" />
     <span class="ms-2">Prioridade @DisplayFormat.Priority(Model.Ticket.Priority)</span>
+    <span class="ms-2">Categoria @(Model.Ticket.Category is { } category ? DisplayFormat.Category(category) : "por definir")</span>
     <span class="ms-2 text-muted">Criado a @DisplayFormat.DateTime(Model.Ticket.CreatedAt)
         @(Model.Ticket.CreatedByName is null ? "" : $"por {Model.Ticket.CreatedByName}")</span>
 </p>
@@ -28,6 +29,48 @@
         </form>
     }
 </div>
+
+@* Aula 15, ciclo 2: a sugestão da IA, só para técnicos. Pedir uma sugestão não muda o pedido. *@
+@if (Model.CanClassify)
+{
+    <div class="card mb-3 col-lg-8">
+        <div class="card-body">
+            <h2 class="h6">Sugestão da IA</h2>
+            @if (Model.Suggestion is { } suggestion)
+            {
+                <p class="mb-1"><strong>@DisplayFormat.Category(suggestion.Category)</strong> · prioridade @DisplayFormat.Priority(suggestion.Priority)</p>
+                <p class="mb-1">@suggestion.Summary</p>
+                <p class="small text-muted">@suggestion.Model · @suggestion.InputTokens + @suggestion.OutputTokens tokens · @suggestion.DurationMs ms · @DisplayFormat.DateTime(suggestion.CreatedAt)</p>
+                @if (suggestion.Decision == SuggestionDecision.Pending)
+                {
+                    <div class="d-flex gap-2 mb-2">
+                        <form method="post" asp-page-handler="Decide" asp-route-id="@Model.Ticket.Id">
+                            <input type="hidden" name="suggestionId" value="@suggestion.Id" />
+                            <input type="hidden" name="accept" value="true" />
+                            <button type="submit" class="btn btn-success btn-sm">Aceitar</button>
+                        </form>
+                        <form method="post" asp-page-handler="Decide" asp-route-id="@Model.Ticket.Id">
+                            <input type="hidden" name="suggestionId" value="@suggestion.Id" />
+                            <input type="hidden" name="accept" value="false" />
+                            <button type="submit" class="btn btn-outline-danger btn-sm">Rejeitar</button>
+                        </form>
+                    </div>
+                }
+                else
+                {
+                    <p class="small">@(suggestion.Decision == SuggestionDecision.Accepted ? "Aceite" : "Rejeitada") por @suggestion.DecidedByName em @DisplayFormat.DateTime(suggestion.DecidedAt!.Value).</p>
+                }
+            }
+            else
+            {
+                <p class="small text-muted">Ainda não há sugestões para este pedido.</p>
+            }
+            <form method="post" asp-page-handler="Suggest" asp-route-id="@Model.Ticket.Id">
+                <button type="submit" class="btn btn-outline-secondary btn-sm">Pedir sugestão à IA</button>
+            </form>
+        </div>
+    </div>
+}
 
 @if (string.IsNullOrWhiteSpace(Model.Ticket.Description))
 {

@@ -58,12 +58,15 @@ builder.Services.AddHttpClient("Ollama", (services, http) =>
     http.Timeout = TimeSpan.FromSeconds(options.TimeoutSeconds);
 });
 builder.Services.AddChatClient(services =>
-    {
-        var options = services.GetRequiredService<IOptions<OllamaOptions>>().Value;
-        var http = services.GetRequiredService<IHttpClientFactory>().CreateClient("Ollama");
-        return new OllamaApiClient(http, options.ChatModel);
-    }, ServiceLifetime.Scoped)
+{
+    var options = services.GetRequiredService<IOptions<OllamaOptions>>().Value;
+    var http = services.GetRequiredService<IHttpClientFactory>().CreateClient("Ollama");
+    return new OllamaApiClient(http, options.ChatModel);
+}, ServiceLifetime.Scoped)
     .UseLogging();
+builder.Services.AddScoped<TicketClassifier>();
+builder.Services.AddScoped<ISuggestionService, SuggestionService>();
+
 
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
 {

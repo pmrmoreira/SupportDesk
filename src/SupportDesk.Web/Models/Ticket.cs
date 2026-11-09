@@ -17,4 +17,5 @@ public class Ticket
 
     [Timestamp]
     public uint Version { get; set; }
+    public TicketCategory? Category { get; set; }
 }

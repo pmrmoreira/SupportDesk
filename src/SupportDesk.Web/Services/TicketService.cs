@@ -72,7 +72,8 @@ public class TicketService : ITicketService
                 t.CreatedById,
                 // Aula 10: o EF Core traduz a navegação num LEFT JOIN com AspNetUsers, na mesma consulta.
                 t.CreatedBy == null ? null
-                    : t.CreatedBy.DisplayName == "" ? t.CreatedBy.Email : t.CreatedBy.DisplayName))
+                    : t.CreatedBy.DisplayName == "" ? t.CreatedBy.Email : t.CreatedBy.DisplayName,
+                t.Category))   // aula 15
             .FirstOrDefaultAsync(ct);
     }
 
@@ -242,9 +243,10 @@ public class TicketService : ITicketService
             .Select(u => u.DisplayName == "" ? u.Email : u.DisplayName)
             .FirstOrDefaultAsync(ct);
 
+    // Aula 15: um pedido acabado de criar ainda não tem categoria.
     private static TicketDetails ToDetails(Ticket t, string? createdByName) =>
         new(t.Id, t.Title, t.Description, t.Status, t.Priority, t.CreatedAt, t.UpdatedAt, t.Version,
-            t.CreatedById, createdByName);
+            t.CreatedById, createdByName, Category: null);
 
     private static CommentResponse ToResponse(Comment c) =>
         new(c.Id, c.Author, c.Text, c.CreatedAt);

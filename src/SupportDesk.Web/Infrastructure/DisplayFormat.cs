@@ -29,6 +29,16 @@ public static class DisplayFormat
         (TicketStatus.Resolved, TicketStatus.Open) => "Reabrir",
         _ => "Devolver à fila"
     };
+    public static string Category(TicketCategory category) => category switch
+    {
+        TicketCategory.Access => "Acesso",
+        TicketCategory.Billing => "Faturação",
+        TicketCategory.Hardware => "Equipamento",
+        TicketCategory.Software => "Software",
+        TicketCategory.Network => "Rede",
+        TicketCategory.Other => "Outro",
+        _ => category.ToString()
+    };
 
 
     public static string DateTime(DateTimeOffset value) =>
