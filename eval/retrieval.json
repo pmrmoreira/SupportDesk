@@ -1,0 +1,14 @@
+[
+  { "query": "o computador não arranca", "article": "portatil-nao-liga" },
+  { "query": "esqueci-me da senha", "article": "conta-bloqueada" },
+  { "query": "pagámos a fatura duas vezes", "article": "fatura-valor-incorreto" },
+  { "query": "internet para quem nos visita", "article": "wifi-visitantes" },
+  { "query": "documentos presos na fila de impressão", "article": "impressora-nao-imprime" },
+  { "query": "não consigo enviar emails porque a caixa está cheia", "article": "correio-caixa-cheia" },
+  { "query": "preciso de instalar um programa novo", "article": "instalar-programa" },
+  { "query": "a vpn não liga no hotel", "article": "vpn-sem-ligacao" },
+  { "query": "a bateria não carrega", "article": "portatil-nao-liga" },
+  { "query": "a conta está bloqueada", "article": "conta-bloqueada" },
+  { "query": "código de acesso para convidados", "article": "wifi-visitantes" },
+  { "query": "nota de crédito", "article": "fatura-valor-incorreto" }
+]

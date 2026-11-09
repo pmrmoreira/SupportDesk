@@ -72,6 +72,12 @@
     </div>
 }
 
+@* Aula 19: o rascunho de resposta com fontes tem página própria. *@
+@if (Model.CanDraftReply)
+{
+    <p><a asp-page="./Reply" asp-route-id="@Model.Ticket.Id" class="btn btn-outline-primary btn-sm">Rascunho de resposta (IA)</a></p>
+}
+
 @* Aula 16: o resumo da conversa (IA), só para técnicos. Abrir o pedido lê a base; só o botão chama o modelo. *@
 @if (Model.CanSummarize)
 {

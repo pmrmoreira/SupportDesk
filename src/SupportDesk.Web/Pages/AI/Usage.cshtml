@@ -1,0 +1,32 @@
+@page
+@model SupportDesk.Web.Pages.Ai.UsageModel
+@{
+    ViewData["Title"] = "Uso da IA";
+}
+
+<h1>Uso da IA</h1>
+<p class="text-muted">A partir do que fica gravado: sugestões e rascunhos (todos) e resumos (o último de cada pedido). <a asp-page="./Lab">Voltar ao laboratório</a></p>
+
+<table class="table table-sm col-lg-9">
+    <thead>
+        <tr>
+            <th>Funcionalidade</th>
+            <th class="text-end">Chamadas</th>
+            <th class="text-end">Tokens (entrada + saída)</th>
+            <th class="text-end">Tempo p50</th>
+            <th class="text-end">Tempo p95</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var row in Model.Rows)
+        {
+            <tr>
+                <td>@row.Feature</td>
+                <td class="text-end">@row.Calls</td>
+                <td class="text-end">@row.InputTokens + @row.OutputTokens</td>
+                <td class="text-end">@row.P50Ms ms</td>
+                <td class="text-end">@row.P95Ms ms</td>
+            </tr>
+        }
+    </tbody>
+</table>

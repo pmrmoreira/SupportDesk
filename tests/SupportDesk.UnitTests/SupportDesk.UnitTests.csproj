@@ -20,6 +20,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\SupportDesk.Web\SupportDesk.Web.csproj" />
+    <!-- Exercício B da aula 20: as métricas da ferramenta de avaliação. -->
+    <ProjectReference Include="..\..\tools\SupportDesk.Evaluation\SupportDesk.Evaluation.csproj" />
   </ItemGroup>
 	
 	<ItemGroup>

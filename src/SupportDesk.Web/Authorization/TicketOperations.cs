@@ -12,4 +12,6 @@ public static class TicketOperations
     public static readonly OperationAuthorizationRequirement Classify = new() { Name = nameof(Classify) };
     // Aula 16: pedir e ver o resumo da conversa.
     public static readonly OperationAuthorizationRequirement Summarize = new() { Name = nameof(Summarize) };
+    // Aula 19: pedir, rever e publicar rascunhos de resposta com fontes.
+    public static readonly OperationAuthorizationRequirement DraftReply = new() { Name = nameof(DraftReply) };
 }

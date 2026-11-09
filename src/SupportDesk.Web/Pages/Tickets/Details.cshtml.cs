@@ -43,6 +43,8 @@ public class DetailsModel : PageModel
     // Aula 16: o resumo da conversa, só para técnicos.
     public bool CanSummarize { get; private set; }
     public SummaryResponse? Summary { get; private set; }
+    // Aula 19: a ligação para o rascunho de resposta com fontes (página própria), só para técnicos.
+    public bool CanDraftReply { get; private set; }
 
     // Aula 16, ciclo 3: o pedido mudou (comentário, estado, edição) depois de o resumo ser feito.
     public bool IsSummaryStale => Summary is not null && Summary.SourceUpdatedAt < Ticket.UpdatedAt;
@@ -264,6 +266,8 @@ public class DetailsModel : PageModel
         {
             Summary = await _summaries.GetAsync(id, ct);
         }
+        // Aula 19: a ligação para o rascunho de resposta (página própria).
+        CanDraftReply = await CanAsync(TicketOperations.DraftReply);
         Comments = await _tickets.GetCommentsAsync(id, ct);
         return true;
     }

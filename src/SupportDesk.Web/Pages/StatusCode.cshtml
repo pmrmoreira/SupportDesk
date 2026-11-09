@@ -1,13 +1,19 @@
 @page
 @model StatusCodeModel
 @{
-    ViewData["Title"] = Model.Code == 404 ? "Não encontrado" : $"Erro {Model.Code}";
+    ViewData["Title"] = Model.Code switch { 404 => "Não encontrado", 429 => "Demasiados pedidos", _ => $"Erro {Model.Code}" };
 }
 
 @if (Model.Code == 404)
 {
     <h1>Não encontrámos o que procuras</h1>
     <p>O endereço pode estar errado, ou o que procuras já não existe.</p>
+}
+else if (Model.Code == 429)
+{
+    @* Aula 21: o limite de pedidos à IA por pessoa e por minuto (o OnPost do modelo trata das perguntas recusadas). *@
+    <h1>Demasiados pedidos à IA</h1>
+    <p>Cada pessoa pode fazer um número limitado de pedidos à IA por minuto. Espera um pouco e tenta outra vez.</p>
 }
 else
 {

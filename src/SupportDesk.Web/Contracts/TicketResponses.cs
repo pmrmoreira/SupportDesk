@@ -53,3 +53,22 @@ public record SummaryResponse(
     int OmittedComments,
     DateTimeOffset CreatedAt,
     DateTimeOffset SourceUpdatedAt);
+
+// Aula 19: o rascunho de resposta mais recente de um pedido, com as fontes que o modelo recebeu.
+public record DraftSourceResponse(int Number, string ArticleSlug, string Heading);
+
+public record DraftResponse(
+    int Id,
+    string Reply,
+    bool NeedsClarification,
+    string? ClarifyingQuestion,
+    int InvalidCitations,
+    string Model,
+    long? InputTokens,
+    long? OutputTokens,
+    int DurationMs,
+    DateTimeOffset CreatedAt,
+    DraftStatus Status,
+    string? DecidedByName,
+    DateTimeOffset? DecidedAt,
+    IReadOnlyList<DraftSourceResponse> Sources);

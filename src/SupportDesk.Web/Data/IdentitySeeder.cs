@@ -3,6 +3,7 @@ using SupportDesk.Web.Models;
 
 namespace SupportDesk.Web.Data;
 
+// Em Development (ou com Seed:Enabled, aula 22): cria o papel Tecnico e um técnico de demonstração.
 public static class IdentitySeeder
 {
     public static async Task SeedAsync(IServiceProvider services, IConfiguration configuration, ILogger logger)
@@ -17,12 +18,13 @@ public static class IdentitySeeder
             await roleManager.CreateAsync(new IdentityRole(Roles.Technician));
         }
 
-        // 2. As credenciais vêm da configuração (user-secrets), nunca do código.
+        // 2. As credenciais vêm da configuração, nunca do código: os user-secrets na tua máquina,
+        //    as variáveis de ambiente do docker compose (e o .env) no contentor (aula 22).
         var email = configuration["Seed:TechnicianEmail"];
         var password = configuration["Seed:TechnicianPassword"];
         if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(password))
         {
-            logger.LogWarning("Seed:TechnicianEmail/Seed:TechnicianPassword em falta; técnico de teste não criado.");
+            logger.LogWarning("Sem Seed:TechnicianEmail ou Seed:TechnicianPassword na configuração: o técnico de demonstração não foi criado.");
             return;
         }
 

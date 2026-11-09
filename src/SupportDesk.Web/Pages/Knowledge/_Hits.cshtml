@@ -1,0 +1,21 @@
+@model IReadOnlyList<SupportDesk.Web.Knowledge.KnowledgeHit>
+@using SupportDesk.Web.Knowledge
+
+@* Uma lista de resultados: usada pela pesquisa textual, pela semântica e pela híbrida (aula 18). *@
+@if (Model.Count == 0)
+{
+    <p class="small text-muted">Nenhum trecho encontrado.</p>
+}
+else
+{
+    <ol class="ps-3">
+        @foreach (var hit in Model)
+        {
+            <li class="mb-3">
+                <a asp-page="./Article" asp-route-slug="@hit.ArticleSlug" asp-fragment="trecho-@hit.ChunkId"><strong>@hit.Heading</strong></a>
+                <span class="small text-muted">· @hit.Score.ToString("0.000")</span>
+                <div class="small">@Highlight.ToHtml(hit.Snippet)</div>
+            </li>
+        }
+    </ol>
+}

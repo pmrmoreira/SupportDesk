@@ -1,0 +1,59 @@
+@page
+@model SupportDesk.Web.Pages.Knowledge.IndexModel
+@using SupportDesk.Web.Knowledge
+@{
+    ViewData["Title"] = "Base de conhecimento";
+}
+
+<h1>Base de conhecimento</h1>
+<p class="text-muted">@Model.ArticleCount artigos · @Model.ChunkCount trechos · @Model.EmbeddedCount com embedding de @Model.EmbeddingModel</p>
+<p class="small text-muted">Rascunhos de resposta (aula 19): @Model.DraftStats.Total ·
+    publicados @Model.DraftStats.Published (@Model.DraftStats.PublishedUnchanged sem alterações) ·
+    descartados @Model.DraftStats.Discarded · por decidir @Model.DraftStats.Pending</p>
+
+<div class="d-flex flex-wrap gap-2 mb-3">
+    <form method="post" asp-page-handler="Import">
+        <button type="submit" class="btn btn-outline-secondary btn-sm">Importar artigos</button>
+    </form>
+    <form method="post" asp-page-handler="Embed">
+        <button type="submit" class="btn btn-outline-secondary btn-sm">Gerar embeddings</button>
+    </form>
+</div>
+
+<form method="get" class="row g-2 mb-4 col-lg-8">
+    <div class="col">
+        <label for="q" class="visually-hidden">Pesquisar</label>
+        <input id="q" name="q" value="@Model.Q" class="form-control" placeholder="Ex.: o computador não arranca" />
+    </div>
+    <div class="col-auto">
+        <button type="submit" class="btn btn-primary">Pesquisar</button>
+    </div>
+</form>
+
+@if (!string.IsNullOrWhiteSpace(Model.Q))
+{
+    <div class="row">
+        <div class="col-lg-4">
+            <h2 class="h5">Texto <span class="small text-muted">· palavras</span></h2>
+            <partial name="_Hits" model="Model.TextHits" />
+        </div>
+        <div class="col-lg-4">
+            <h2 class="h5">Significado <span class="small text-muted">· embeddings</span></h2>
+            @if (Model.SemanticError is not null)
+            {
+                <div class="alert alert-warning" role="alert">@Model.SemanticError</div>
+            }
+            else
+            {
+                <partial name="_Hits" model="Model.SemanticHits" />
+            }
+        </div>
+        <div class="col-lg-4">
+            <h2 class="h5">Híbrida <span class="small text-muted">· RRF</span></h2>
+            @if (Model.SemanticError is null)
+            {
+                <partial name="_Hits" model="Model.HybridHits" />
+            }
+        </div>
+    </div>
+}

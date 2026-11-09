@@ -1,0 +1,18 @@
+[
+  { "title": "Não consigo entrar na aplicação", "description": "Diz que a palavra-passe está errada.", "category": "Access", "priority": 1 },
+  { "title": "Conta bloqueada", "description": "Tentei várias vezes e agora não entra.", "category": "Access", "priority": 1 },
+  { "title": "Acesso à pasta de vendas", "description": "Preciso de permissões na pasta partilhada de vendas.", "category": "Access", "priority": 2 },
+  { "title": "Fatura com valor em duplicado", "description": "O valor de setembro aparece duas vezes.", "category": "Billing", "priority": 2 },
+  { "title": "Segunda via de uma fatura", "description": "Preciso da fatura de agosto para a contabilidade.", "category": "Billing", "priority": 3 },
+  { "title": "Cobrança indevida", "description": "Foi cobrado um serviço que cancelámos em julho.", "category": "Billing", "priority": 2 },
+  { "title": "Impressora da receção não imprime", "description": "Os documentos ficam na fila.", "category": "Hardware", "priority": 2 },
+  { "title": "Portátil não liga", "description": "Não acende nenhuma luz, mesmo com o carregador.", "category": "Hardware", "priority": 1 },
+  { "title": "Ecrã com riscas", "description": "O monitor do posto 4 mostra riscas verticais.", "category": "Hardware", "priority": 3 },
+  { "title": "O Excel fecha sozinho", "description": "Sempre que abro o ficheiro de orçamentos, a aplicação fecha.", "category": "Software", "priority": 2 },
+  { "title": "Instalar um programa de desenho", "description": "Preciso de um programa para editar imagens.", "category": "Software", "priority": 3 },
+  { "title": "Erro ao atualizar o Windows", "description": "A atualização falha sempre com um código de erro.", "category": "Software", "priority": 2 },
+  { "title": "Sem internet no 2.º piso", "description": "Ninguém no piso consegue aceder à internet.", "category": "Network", "priority": 1 },
+  { "title": "A VPN não liga em casa", "description": "Fica parada a ligar e depois desiste.", "category": "Network", "priority": 2 },
+  { "title": "Wi-Fi para um visitante", "description": "Amanhã vem um consultor e precisa de rede.", "category": "Network", "priority": 3 },
+  { "title": "Mudança de secretária", "description": "Vou mudar de lugar na próxima semana e preciso de ajuda com os cabos.", "category": "Other", "priority": 3 }
+]

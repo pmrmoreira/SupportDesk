@@ -361,3 +361,20 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+
+# Aula 20: os relatórios da avaliação são gerados (dependem da máquina e dos modelos).
+eval/report*.md
+
+# Aula 22: as palavras-passe do docker compose ficam fora do Git. Neste projeto, o .env.example
+# também tem as palavras-passe de demonstração, por isso também fica de fora.
+.env
+.env.example
+
+# O .http com a palavra-passe do técnico (aula 16).
+src/SupportDesk.Web/Conversas.http
+
+# O código do pgvector que foi clonado para dentro do projeto (aula 18): não faz parte da aplicação.
+pgvector/
+
+# Aula 22, exercício C: a cópia da base (pg_dump) tem os pedidos e as contas, com os hashes das palavras-passe.
+*.dump

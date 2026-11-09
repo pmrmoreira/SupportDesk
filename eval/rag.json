@@ -1,0 +1,8 @@
+[
+  { "title": "A impressora não imprime", "description": "Os documentos ficam na fila e nada sai.", "article": "impressora-nao-imprime" },
+  { "title": "Não consigo entrar", "description": "A conta diz que está bloqueada.", "article": "conta-bloqueada" },
+  { "title": "VPN sem ligação", "description": "Em casa a VPN não liga.", "article": "vpn-sem-ligacao" },
+  { "title": "Valor em duplicado", "description": "A fatura de setembro vem duas vezes.", "article": "fatura-valor-incorreto" },
+  { "title": "Portátil sem carga", "description": "Não carrega com o carregador ligado.", "article": "portatil-nao-liga" },
+  { "title": "Pedido de software", "description": "Quero instalar um programa de desenho.", "article": "instalar-programa" }
+]

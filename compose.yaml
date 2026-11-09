@@ -1,0 +1,49 @@
+# Aula 22: a aplicação e a base de dados com um comando: docker compose up --build
+services:
+  db:
+    image: pgvector/pgvector:pg18
+    environment:
+      POSTGRES_DB: supportdesk
+      POSTGRES_USER: supportdesk
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Falta POSTGRES_PASSWORD no ficheiro .env}
+    ports:
+      # Exercício A: o pgAdmin do Windows chega à base do contentor em localhost:5433 (a 5432 já é do
+      # teu PostgreSQL 18 da aula 5). Dentro da rede do projeto, a base continua a ser db:5432.
+      - "5433:5432"
+    volumes:
+      # No PostgreSQL 18, os dados ficam em /var/lib/postgresql/18/docker: o volume monta a pasta acima.
+      - db-data:/var/lib/postgresql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U supportdesk -d supportdesk"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  web:
+    build: .
+    ports:
+      - "8080:8080"
+    environment:
+      ConnectionStrings__SupportDesk: "Host=db;Database=supportdesk;Username=supportdesk;Password=${POSTGRES_PASSWORD};GSS Encryption Mode=Disable"
+      Database__MigrateOnStartup: "true"
+      Seed__Enabled: "true"
+      # Neste projeto, o IdentitySeeder também lê o email do técnico da configuração (aula 11).
+      Seed__TechnicianEmail: "tecnico@supportdesk.local"
+      Seed__TechnicianPassword: ${TECHNICIAN_PASSWORD:?Falta TECHNICIAN_PASSWORD no ficheiro .env}
+      # Ciclo 3: o Ollama corre no Windows (o anfitrião), fora dos contentores.
+      AI__Ollama__Url: http://host.docker.internal:11434
+      # Exercício B: as chaves que protegem os cookies de sessão ficam num volume (ver o Program.cs).
+      DataProtection__KeysFolder: /keys
+    volumes:
+      - keys:/keys
+    extra_hosts:
+      # O Docker Desktop já conhece este nome; esta linha cria-o também no Docker em Linux.
+      - "host.docker.internal=host-gateway"
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  db-data:
+  # Exercício B: as chaves da Data Protection, que sobrevivem a um contentor web novo.
+  keys:

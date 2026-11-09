@@ -1,0 +1,12 @@
+# Aula 22: o que não vai para o docker build (o contexto).
+**/bin/
+**/obj/
+.vs/
+.git/
+*.user
+.env
+eval/
+tests/
+tools/
+# Exercício C: a cópia da base (supportdesk.dump, na raiz) também não vai para o contexto.
+*.dump

@@ -1,0 +1,74 @@
+@page "{id:int}"
+@model SupportDesk.Web.Pages.Tickets.ReplyModel
+@using SupportDesk.Web.Ai
+@using SupportDesk.Web.Infrastructure
+@using SupportDesk.Web.Models
+@{
+    ViewData["Title"] = $"Responder ao pedido {Model.Ticket.Id}";
+}
+
+<p><a asp-page="./Details" asp-route-id="@Model.Ticket.Id">Voltar ao pedido</a></p>
+<h1>Rascunho de resposta (IA)</h1>
+<p class="text-muted">Pedido @Model.Ticket.Id · @Model.Ticket.Title</p>
+
+<form method="post" asp-page-handler="Generate" asp-route-id="@Model.Ticket.Id" class="mb-3">
+    <button type="submit" class="btn btn-outline-secondary btn-sm">@(Model.Draft is null ? "Gerar rascunho" : "Gerar outro rascunho")</button>
+</form>
+
+@if (Model.Draft is { } draft)
+{
+    <div class="card mb-3 col-lg-9">
+        <div class="card-body">
+            @if (draft.Status != DraftStatus.Pending)
+            {
+                <p class="small">@(draft.Status == DraftStatus.Published ? "Publicado" : "Descartado") por @draft.DecidedByName em @DisplayFormat.DateTime(draft.DecidedAt!.Value).</p>
+            }
+            @if (draft.NeedsClarification)
+            {
+                <div class="alert alert-info py-2" role="status">A IA acha que falta informação para responder. Pergunta sugerida: «@draft.ClarifyingQuestion»</div>
+            }
+            @if (draft.InvalidCitations > 0)
+            {
+                <div class="alert alert-warning py-2" role="status">A IA citou fontes que não lhe foram dadas (@draft.InvalidCitations); essas referências foram retiradas do texto.</div>
+            }
+            @if (!draft.NeedsClarification && CitationCheck.Check(draft.Reply, draft.Sources.Count).Cited.Count == 0)
+            {
+                <div class="alert alert-warning py-2" role="status">O rascunho não cita nenhuma fonte: confirma tudo antes de publicar.</div>
+            }
+
+            @if (draft.Status == DraftStatus.Pending)
+            {
+                <form method="post" asp-route-id="@Model.Ticket.Id">
+                    <input type="hidden" name="draftId" value="@draft.Id" />
+                    <label for="Text" class="form-label">Resposta ao cliente (revê e edita antes de publicar)</label>
+                    <textarea id="Text" name="Text" class="form-control mb-2" rows="8">@Model.BoxText(draft)</textarea>
+                    @if (Model.PublishError is not null)
+                    {
+                        <p class="text-danger small">@Model.PublishError</p>
+                    }
+                    <div class="d-flex gap-2">
+                        <button type="submit" asp-page-handler="Publish" class="btn btn-primary btn-sm">@(Model.AsksQuestion(draft) ? "Enviar pergunta ao cliente" : "Publicar como comentário")</button>
+                        <button type="submit" asp-page-handler="Discard" class="btn btn-outline-danger btn-sm">Descartar</button>
+                    </div>
+                </form>
+            }
+            else
+            {
+                <p style="white-space: pre-line">@draft.Reply</p>
+            }
+
+            <h2 class="h6 mt-3">Fontes enviadas ao modelo</h2>
+            <ol class="small">
+                @foreach (var source in draft.Sources)
+                {
+                    <li value="@source.Number"><a asp-page="/Knowledge/Article" asp-route-slug="@source.ArticleSlug">@source.Heading</a></li>
+                }
+            </ol>
+            <p class="small text-muted mb-0">@draft.Model · @draft.InputTokens + @draft.OutputTokens tokens · @draft.DurationMs ms · @DisplayFormat.DateTime(draft.CreatedAt)</p>
+        </div>
+    </div>
+}
+else
+{
+    <p class="text-muted">Ainda não há rascunho para este pedido.</p>
+}
