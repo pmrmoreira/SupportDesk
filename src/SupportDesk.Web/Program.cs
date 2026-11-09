@@ -7,13 +7,23 @@ using SupportDesk.Web.Services;
 using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Identity;
 using SupportDesk.Web.Models;
+using Microsoft.Extensions.AI;
+using Microsoft.Extensions.Options;
+using OllamaSharp;
+using SupportDesk.Web.Ai;
 
 
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Aula 10: todas as páginas da pasta /Tickets pedem sessão iniciada.
-builder.Services.AddRazorPages(options => options.Conventions.AuthorizeFolder("/Tickets"));
+// Aula 14: /Admin (página de utilizadores da aula 11) e /Ai só para técnicos (política "Tecnico").
+builder.Services.AddRazorPages(options =>
+{
+    options.Conventions.AuthorizeFolder("/Tickets");
+    options.Conventions.AuthorizeFolder("/Admin", "Tecnico");
+    options.Conventions.AuthorizeFolder("/Ai", "Tecnico");
+});
 
 var connectionString = builder.Configuration.GetConnectionString("SupportDesk")
     ?? throw new InvalidOperationException(
@@ -35,6 +45,25 @@ builder.Services.AddDbContext<SupportDeskDbContext>(options =>
 builder.Services.AddControllers().AddJsonOptions(options =>
     options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter(allowIntegerValues: false)));
 builder.Services.AddScoped<ITicketService, TicketService>();
+
+// IA: o Ollama local, por trás da abstração IChatClient (Microsoft.Extensions.AI).
+builder.Services.AddOptions<OllamaOptions>()
+    .Bind(builder.Configuration.GetSection(OllamaOptions.Section))
+    .ValidateDataAnnotations()
+    .ValidateOnStart();
+builder.Services.AddHttpClient("Ollama", (services, http) =>
+{
+    var options = services.GetRequiredService<IOptions<OllamaOptions>>().Value;
+    http.BaseAddress = new Uri(options.Url);
+    http.Timeout = TimeSpan.FromSeconds(options.TimeoutSeconds);
+});
+builder.Services.AddChatClient(services =>
+    {
+        var options = services.GetRequiredService<IOptions<OllamaOptions>>().Value;
+        var http = services.GetRequiredService<IHttpClientFactory>().CreateClient("Ollama");
+        return new OllamaApiClient(http, options.ChatModel);
+    }, ServiceLifetime.Scoped)
+    .UseLogging();
 
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
 {

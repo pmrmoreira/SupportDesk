@@ -1,0 +1,38 @@
+﻿@page
+@model SupportDesk.Web.Pages.Ai.LabModel
+@{
+    ViewData["Title"] = "Laboratório de IA";
+}
+
+<h1>Laboratório de IA</h1>
+<p class="text-muted">Modelo @Model.ChatModel, no Ollama em @Model.OllamaUrl. As respostas são geradas no teu computador.</p>
+
+<form method="post" class="col-lg-8">
+    <div class="mb-3">
+        <label asp-for="Input.Prompt" class="form-label">Pergunta</label>
+        <textarea asp-for="Input.Prompt" class="form-control" rows="4"></textarea>
+        <span asp-validation-for="Input.Prompt" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">Perguntar</button>
+</form>
+
+@if (Model.Error is not null)
+{
+    <div class="alert alert-warning mt-4" role="alert">@Model.Error</div>
+}
+
+@if (Model.Answer is { } answer)
+{
+    <div class="card mt-4 col-lg-8">
+        <div class="card-body">
+            <p class="card-text" style="white-space: pre-line">@answer.Text</p>
+            <p class="card-text small text-muted">
+                @answer.Model · @answer.InputTokens + @answer.OutputTokens tokens · @((int)answer.Elapsed.TotalMilliseconds) ms
+            </p>
+        </div>
+    </div>
+}
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
