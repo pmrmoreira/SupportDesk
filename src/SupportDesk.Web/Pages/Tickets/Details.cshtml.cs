@@ -17,14 +17,19 @@ public class DetailsModel : PageModel
     private readonly IAuthorizationService _authorization;
     private readonly TicketClassifier _classifier;
     private readonly ISuggestionService _suggestions;
+    private readonly TicketSummarizer _summarizer;
+    private readonly ISummaryService _summaries;
 
     public DetailsModel(ITicketService tickets, IAuthorizationService authorization,
-        TicketClassifier classifier, ISuggestionService suggestions)
+        TicketClassifier classifier, ISuggestionService suggestions,
+        TicketSummarizer summarizer, ISummaryService summaries)
     {
         _tickets = tickets;
         _authorization = authorization;
         _classifier = classifier;
         _suggestions = suggestions;
+        _summarizer = summarizer;
+        _summaries = summaries;
     }
 
     public TicketDetails Ticket { get; private set; } = default!;
@@ -35,6 +40,12 @@ public class DetailsModel : PageModel
     // Aula 15, ciclo 2: só técnicos pedem sugestões à IA e veem o cartão.
     public bool CanClassify { get; private set; }
     public SuggestionResponse? Suggestion { get; private set; }
+    // Aula 16: o resumo da conversa, só para técnicos.
+    public bool CanSummarize { get; private set; }
+    public SummaryResponse? Summary { get; private set; }
+
+    // Aula 16, ciclo 3: o pedido mudou (comentário, estado, edição) depois de o resumo ser feito.
+    public bool IsSummaryStale => Summary is not null && Summary.SourceUpdatedAt < Ticket.UpdatedAt;
 
     public async Task<IActionResult> OnGetAsync(int id, CancellationToken ct)
     {
@@ -161,6 +172,71 @@ public class DetailsModel : PageModel
         return RedirectToPage(new { id });
     }
 
+    // Aula 16 — botão "Resumir conversa" (só técnicos): o resumo substitui o anterior.
+    public async Task<IActionResult> OnPostSummarizeAsync(int id, CancellationToken ct)
+    {
+        if (!await LoadAsync(id, ct))
+        {
+            return NotFound();
+        }
+        if (!CanSummarize)
+        {
+            return Forbid();
+        }
+
+        var result = await _summarizer.SummarizeAsync(Ticket, Comments, ct);
+        if (result.Summary is null)
+        {
+            TempData["Error"] = $"A IA não fez o resumo: {result.Error}";
+        }
+        else
+        {
+            // O UpdatedAt lido pelo LoadAsync ANTES de chamar o modelo: um comentário que chegue durante
+            // a chamada deixa o resumo marcado como desatualizado, como deve ser (o modelo não o leu).
+            await _summaries.SaveAsync(id, result.Summary, result, Ticket.UpdatedAt, ct);
+            TempData["Message"] = "Resumo da conversa atualizado.";
+        }
+        return RedirectToPage(new { id });
+    }
+
+    // Aula 16, exercício A: depois de ler o resumo, o técnico guarda-o no pedido.
+    // No curso fica como nota interna; este projeto ainda não tem notas internas (aula 11),
+    // por isso fica como comentário normal, que o cliente também vê.
+    public async Task<IActionResult> OnPostSaveSummaryAsync(int id, CancellationToken ct)
+    {
+        if (!await LoadAsync(id, ct))
+        {
+            return NotFound();
+        }
+        if (!CanSummarize)
+        {
+            return Forbid();
+        }
+        if (Summary is null)
+        {
+            TempData["Error"] = "Ainda não há resumo para guardar.";
+            return RedirectToPage(new { id });
+        }
+
+        // Guarda-se o resumo que o LoadAsync leu da base, o mesmo do ecrã: sem chamar o modelo outra vez.
+        var (result, _) = await _tickets.AddCommentAsync(id, User.GetUserId(), SummaryNote.Format(Summary), ct);
+        switch (result)
+        {
+            case AddCommentResult.Added:
+                TempData["Message"] = "Resumo guardado no pedido como comentário.";
+                break;
+            case AddCommentResult.TicketNotFound:
+                return NotFound();
+            case AddCommentResult.TicketResolved:
+                TempData["Error"] = "Não é possível comentar um pedido resolvido. Reabre-o primeiro.";
+                break;
+            default:
+                TempData["Error"] = "Outra pessoa alterou este pedido ao mesmo tempo. Tenta outra vez.";
+                break;
+        }
+        return RedirectToPage(new { id });
+    }
+
     // Carrega o pedido só se o utilizador o puder ver: um pedido de outro cliente dá 404, como um que não existe.
     private async Task<bool> LoadAsync(int id, CancellationToken ct)
     {
@@ -181,6 +257,12 @@ public class DetailsModel : PageModel
         if (CanClassify)
         {
             Suggestion = await _suggestions.GetLatestAsync(id, ct);
+        }
+        // Aula 16: CanSummarize decide o cartão, o botão e a leitura da base. Para um cliente, nem há consulta.
+        CanSummarize = await CanAsync(TicketOperations.Summarize);
+        if (CanSummarize)
+        {
+            Summary = await _summaries.GetAsync(id, ct);
         }
         Comments = await _tickets.GetCommentsAsync(id, ct);
         return true;

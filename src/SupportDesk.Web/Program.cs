@@ -66,6 +66,10 @@ builder.Services.AddChatClient(services =>
     .UseLogging();
 builder.Services.AddScoped<TicketClassifier>();
 builder.Services.AddScoped<ISuggestionService, SuggestionService>();
+// Aula 16: o resumo da conversa.
+builder.Services.AddScoped<TicketSummarizer>();
+builder.Services.AddScoped<ISummaryService, SummaryService>();
+
 
 
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>

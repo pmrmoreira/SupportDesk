@@ -72,6 +72,65 @@
     </div>
 }
 
+@* Aula 16: o resumo da conversa (IA), só para técnicos. Abrir o pedido lê a base; só o botão chama o modelo. *@
+@if (Model.CanSummarize)
+{
+    <div class="card mb-3 col-lg-8">
+        <div class="card-body">
+            <h2 class="h6">Resumo da conversa (IA)</h2>
+            @if (Model.Summary is { } summary)
+            {
+                @if (Model.IsSummaryStale)
+                {
+                    <div class="alert alert-info py-1 small" role="status">O pedido mudou depois deste resumo.</div>
+                }
+                <p class="mb-1">@summary.Problem</p>
+                @if (summary.ActionsTaken.Count > 0)
+                {
+                    <p class="small mb-0"><strong>Já feito:</strong></p>
+                    <ul class="small">
+                        @foreach (var action in summary.ActionsTaken)
+                        {
+                            <li>@action</li>
+                        }
+                    </ul>
+                }
+                @if (summary.MissingInformation.Count > 0)
+                {
+                    <p class="small mb-0"><strong>Falta saber:</strong></p>
+                    <ul class="small">
+                        @foreach (var missing in summary.MissingInformation)
+                        {
+                            <li>@missing</li>
+                        }
+                    </ul>
+                }
+                <p class="small text-muted">
+                    @summary.Model · @summary.InputTokens + @summary.OutputTokens tokens · @summary.DurationMs ms ·
+                    @summary.IncludedComments comentários@(summary.OmittedComments > 0 ? $" ({summary.OmittedComments} omitidos)" : "") ·
+                    @DisplayFormat.DateTime(summary.CreatedAt)
+                </p>
+            }
+            else
+            {
+                <p class="small text-muted">Ainda não há resumo desta conversa.</p>
+            }
+            <div class="d-flex flex-wrap gap-2">
+                <form method="post" asp-page-handler="Summarize" asp-route-id="@Model.Ticket.Id">
+                    <button type="submit" class="btn btn-outline-secondary btn-sm">@(Model.Summary is null ? "Resumir conversa" : "Resumir outra vez")</button>
+                </form>
+                @* Exercício A: só aparece quando há resumo. *@
+                @if (Model.Summary is not null)
+                {
+                    <form method="post" asp-page-handler="SaveSummary" asp-route-id="@Model.Ticket.Id">
+                        <button type="submit" class="btn btn-outline-primary btn-sm">Guardar como comentário</button>
+                    </form>
+                }
+            </div>
+        </div>
+    </div>
+}
+
 @if (string.IsNullOrWhiteSpace(Model.Ticket.Description))
 {
     <p class="text-muted">Sem descrição.</p>

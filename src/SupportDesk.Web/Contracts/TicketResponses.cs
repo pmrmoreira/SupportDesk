@@ -39,3 +39,17 @@ public record SuggestionResponse(
     DateTimeOffset? DecidedAt);
 
 public record CommentResponse(int Id, string Author, string Text, DateTimeOffset CreatedAt);
+
+// Aula 16: o último resumo da IA de um pedido, como as páginas o leem.
+public record SummaryResponse(
+    string Problem,
+    IReadOnlyList<string> ActionsTaken,
+    IReadOnlyList<string> MissingInformation,
+    string Model,
+    long? InputTokens,
+    long? OutputTokens,
+    int DurationMs,
+    int IncludedComments,
+    int OmittedComments,
+    DateTimeOffset CreatedAt,
+    DateTimeOffset SourceUpdatedAt);

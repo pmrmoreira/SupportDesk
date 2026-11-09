@@ -13,8 +13,9 @@ public class SupportDeskDbContext : IdentityDbContext<ApplicationUser>
 
     public DbSet<Ticket> Tickets => Set<Ticket>();
     public DbSet<Comment> Comments => Set<Comment>();
-    // Aula 15, ciclo 2: com o DbSet, a tabela chama-se "AiSuggestions" (sem ele, o EF usa o nome da classe).
+     
     public DbSet<TicketAiSuggestion> AiSuggestions => Set<TicketAiSuggestion>();
+    public DbSet<TicketAiSummary> AiSummaries => Set<TicketAiSummary>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -60,6 +61,17 @@ public class SupportDeskDbContext : IdentityDbContext<ApplicationUser>
             suggestion.HasOne<ApplicationUser>()
                 .WithMany()
                 .HasForeignKey(s => s.DecidedById)
+                .OnDelete(DeleteBehavior.Restrict);
+        });
+        modelBuilder.Entity<TicketAiSummary>(summary =>
+        {
+            summary.Property(s => s.Problem).HasMaxLength(500);
+            summary.Property(s => s.Model).HasMaxLength(100);
+            // Um resumo por pedido: gerar outro substitui o anterior.
+            summary.HasIndex(s => s.TicketId).IsUnique();
+            summary.HasOne<Ticket>()
+                .WithMany()
+                .HasForeignKey(s => s.TicketId)
                 .OnDelete(DeleteBehavior.Restrict);
         });
     }

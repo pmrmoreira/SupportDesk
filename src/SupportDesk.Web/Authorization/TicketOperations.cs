@@ -10,4 +10,6 @@ public static class TicketOperations
     public static readonly OperationAuthorizationRequirement ChangeStatus = new() { Name = nameof(ChangeStatus) };
     // Aula 15: pedir e decidir sugestões da IA.
     public static readonly OperationAuthorizationRequirement Classify = new() { Name = nameof(Classify) };
+    // Aula 16: pedir e ver o resumo da conversa.
+    public static readonly OperationAuthorizationRequirement Summarize = new() { Name = nameof(Summarize) };
 }

@@ -1,0 +1,289 @@
+﻿@baseUrl = http://localhost:5011
+
+# Aula 16: três pedidos com conversas para testar o resumo da conversa.
+# 1. Arranca a aplicação.
+# 2. Envia os pedidos por ordem, de cima para baixo: cada comentário usa o id do pedido criado mais acima.
+# 3. Depois, entra como técnico no browser, abre cada pedido e carrega em «Resumir conversa».
+
+### Criar a conta do Rui (só se ainda não existir; se der 400 DuplicateUserName, já existe e podes seguir)
+POST {{baseUrl}}/api/auth/register
+Content-Type: application/json
+
+{ "email": "rui@exemplo.pt", "password": "Segredo123" }
+
+### Entrar como cliente (Rui)
+# @name rui
+POST {{baseUrl}}/api/auth/login
+Content-Type: application/json
+
+{ "email": "rui@exemplo.pt", "password": "Segredo123" }
+
+### Entrar como técnico
+# @name tecnico
+POST {{baseUrl}}/api/auth/login
+Content-Type: application/json
+
+{ "email": "tecnico@supportdesk.local", "password": "Tecnico123" }
+
+### Pedido 1 — impressora (conversa média: cabe toda no resumo) · o Rui cria o pedido
+# 9 entradas na conversa, uns 1560 caracteres; com o orçamento de 9216, entram 9 e ficam 0 de fora.
+# @name impressora
+POST {{baseUrl}}/api/tickets
+Authorization: Bearer {{rui.response.body.$.accessToken}}
+Content-Type: application/json
+
+{"title": "Impressora da receção imprime para uns e não para outros", "description": "Desde ontem à tarde, a impressora da receção (RECECAO-01) só imprime a partir do computador da Marta. Do meu computador e do da Sofia, os documentos ficam na fila e nada sai.", "priority": 2}
+
+### O técnico começa a tratar o pedido (fica um comentário do Sistema)
+PUT {{baseUrl}}/api/tickets/{{impressora.response.body.$.id}}/status
+Authorization: Bearer {{tecnico.response.body.$.accessToken}}
+Content-Type: application/json
+
+{"status": "InProgress"}
+
+### impressora · comentário 1 · Técnico
+POST {{baseUrl}}/api/tickets/{{impressora.response.body.$.id}}/comments
+Authorization: Bearer {{tecnico.response.body.$.accessToken}}
+Content-Type: application/json
+
+{"text": "Olá Rui. Consegues dizer-me que estado aparece na fila de impressão do teu computador? «Erro», «A imprimir» ou «Offline»?"}
+
+### impressora · comentário 2 · Rui
+POST {{baseUrl}}/api/tickets/{{impressora.response.body.$.id}}/comments
+Authorization: Bearer {{rui.response.body.$.accessToken}}
+Content-Type: application/json
+
+{"text": "Aparece «Offline». No computador da Marta aparece «Pronta»."}
+
+### impressora · comentário 3 · Técnico
+POST {{baseUrl}}/api/tickets/{{impressora.response.body.$.id}}/comments
+Authorization: Bearer {{tecnico.response.body.$.accessToken}}
+Content-Type: application/json
+
+{"text": "Obrigado. Já reiniciaste o teu computador desde ontem? E a impressora?"}
+
+### impressora · comentário 4 · Rui
+POST {{baseUrl}}/api/tickets/{{impressora.response.body.$.id}}/comments
+Authorization: Bearer {{rui.response.body.$.accessToken}}
+Content-Type: application/json
+
+{"text": "Reiniciei o computador hoje de manhã e continua igual. A impressora não desligámos, porque a Marta precisa dela para as faturas."}
+
+### impressora · comentário 5 · Técnico
+POST {{baseUrl}}/api/tickets/{{impressora.response.body.$.id}}/comments
+Authorization: Bearer {{tecnico.response.body.$.accessToken}}
+Content-Type: application/json
+
+{"text": "Percebo. A impressora da receção liga-se por cabo de rede, que passa por baixo do balcão. Consegues ver se a luz verde ao lado da ficha do cabo está acesa?"}
+
+### impressora · comentário 6 · Rui
+POST {{baseUrl}}/api/tickets/{{impressora.response.body.$.id}}/comments
+Authorization: Bearer {{rui.response.body.$.accessToken}}
+Content-Type: application/json
+
+{"text": "A luz está acesa, mas pisca a laranja de vez em quando. A Sofia diz que ontem mudaram o balcão de sítio por causa das limpezas."}
+
+### impressora · comentário 7 · Técnico
+POST {{baseUrl}}/api/tickets/{{impressora.response.body.$.id}}/comments
+Authorization: Bearer {{tecnico.response.body.$.accessToken}}
+Content-Type: application/json
+
+{"text": "Isso ajuda. Passo pela receção amanhã às 10h para ver o cabo e a configuração. Entretanto, se precisares de imprimir, envia para a impressora do 1.º andar (PISO1-02)."}
+
+### impressora · comentário 8 · Rui
+POST {{baseUrl}}/api/tickets/{{impressora.response.body.$.id}}/comments
+Authorization: Bearer {{rui.response.body.$.accessToken}}
+Content-Type: application/json
+
+{"text": "Combinado. Uma dúvida: a Marta imprime pelo endereço IP antigo da impressora, e eu e a Sofia pelo nome. Pode ter a ver?"}
+
+### Ver os comentários do pedido «impressora»
+GET {{baseUrl}}/api/tickets/{{impressora.response.body.$.id}}/comments
+Authorization: Bearer {{tecnico.response.body.$.accessToken}}
+
+### Pedido 2 — portátil (conversa comprida: passa do orçamento, o cartão mostra omitidos) · o Rui cria o pedido
+# 16 entradas na conversa, uns 10292 caracteres; com o orçamento de 9216, entram 13 e ficam 3 de fora.
+# @name portatil
+POST {{baseUrl}}/api/tickets
+Authorization: Bearer {{rui.response.body.$.accessToken}}
+Content-Type: application/json
+
+{"title": "Portátil lento e a desligar-se sozinho durante o dia", "description": "O meu portátil (Dell Latitude, número de série 7H3K2Q1) está muito lento desde segunda-feira e já se desligou sozinho três vezes durante reuniões. Fica muito quente na parte de baixo.", "priority": 1}
+
+### O técnico começa a tratar o pedido (fica um comentário do Sistema)
+PUT {{baseUrl}}/api/tickets/{{portatil.response.body.$.id}}/status
+Authorization: Bearer {{tecnico.response.body.$.accessToken}}
+Content-Type: application/json
+
+{"status": "InProgress"}
+
+### portatil · comentário 1 · Técnico
+POST {{baseUrl}}/api/tickets/{{portatil.response.body.$.id}}/comments
+Authorization: Bearer {{tecnico.response.body.$.accessToken}}
+Content-Type: application/json
+
+{"text": "Olá Rui, obrigado pelo pedido. Para perceber se é um problema de temperatura ou de software, preciso de algumas informações. 1) Abre o Gestor de Tarefas (Ctrl+Shift+Esc), separador Processos, ordena pela coluna CPU e diz-me os três processos que aparecem em cima quando o portátil está lento. 2) Quando se desliga, o portátil está ligado ao carregador ou só com bateria? 3) Instalaste alguma atualização ou programa novo na semana passada? 4) Onde costumas usar o portátil: em cima da secretária, numa base ou ao colo? Entretanto, evita tapar as grelhas de ventilação, que ficam por baixo e do lado esquerdo."}
+
+### portatil · comentário 2 · Rui
+POST {{baseUrl}}/api/tickets/{{portatil.response.body.$.id}}/comments
+Authorization: Bearer {{rui.response.body.$.accessToken}}
+Content-Type: application/json
+
+{"text": "Olá. Respondo por ordem. 1) No Gestor de Tarefas aparecem o «Antimalware Service Executable» com 35 a 45% de CPU, o Microsoft Teams com uns 25% e o OneDrive com 10 a 15%, mesmo quando não estou a fazer nada. A ventoinha está quase sempre no máximo e faz um barulho que se ouve na sala toda. 2) Das três vezes que se desligou estava ligado ao carregador, sempre a meio da tarde, entre as 14h e as 16h, durante reuniões no Teams com a câmara ligada. Desligou-se de repente, sem aviso e sem ecrã azul: o ecrã ficou preto e as luzes apagaram-se. Quando voltei a ligar, perdi o que estava a escrever no Word. 3) Na sexta-feira passada o Windows instalou atualizações e pediu para reiniciar. Não instalei programas novos. 4) De manhã trabalho na secretária, mas à tarde costumo ir para a sala de reuniões pequena e às vezes ponho o portátil em cima de uma almofada no sofá, porque a mesa de lá é baixa e não tem tomada perto. Reparei também que, quando está lento, o canto inferior esquerdo fica tão quente que quase não se consegue ter a mão em cima, e que a bateria desce muito depressa mesmo com o carregador ligado: ontem estava a 80% às 14h e às 15h30 estava a 52%, sempre ligado. De manhã, com o portátil frio, abre tudo normalmente."}
+
+### portatil · comentário 3 · Técnico
+POST {{baseUrl}}/api/tickets/{{portatil.response.body.$.id}}/comments
+Authorization: Bearer {{tecnico.response.body.$.accessToken}}
+Content-Type: application/json
+
+{"text": "Obrigado, isto ajuda muito. Desligar-se de repente durante chamadas com a câmara, que é quando o portátil trabalha mais, aponta para sobreaquecimento: o portátil desliga-se sozinho para se proteger quando passa de uma temperatura crítica. A almofada tapa as grelhas de ventilação por baixo e piora muito a situação. Para confirmar, preciso que vejas o registo do Windows: carrega em Windows+R, escreve eventvwr e carrega em Enter. Vai a Registos do Windows → Sistema, carrega em «Filtrar registo atual…» à direita e escreve 41,6008 no campo dos IDs de evento. Copia para aqui as linhas dos últimos dias, com a data, a hora, a origem e o texto de cada evento. Se vires avisos amarelos com outras origens à volta das mesmas horas, copia-os também."}
+
+### portatil · comentário 4 · Rui
+POST {{baseUrl}}/api/tickets/{{portatil.response.body.$.id}}/comments
+Authorization: Bearer {{rui.response.body.$.accessToken}}
+Content-Type: application/json
+
+{"text": "Aqui estão os eventos filtrados (copiei a data, a origem, o ID e a mensagem):\n\n03/11/2026 15:12:44 · Kernel-Power · 41 · O sistema reiniciou sem ser encerrado corretamente primeiro. Este erro pode ser causado pelo facto de o sistema ter deixado de responder, ter falhado ou ter perdido energia inesperadamente.\n03/11/2026 15:12:40 · EventLog · 6008 · O encerramento anterior do sistema às 15:09:58 em 03/11/2026 foi inesperado.\n05/11/2026 14:37:02 · Kernel-Power · 41 · O sistema reiniciou sem ser encerrado corretamente primeiro. (BugcheckCode 0, PowerButtonTimestamp 0)\n05/11/2026 14:36:58 · EventLog · 6008 · O encerramento anterior do sistema às 14:34:11 em 05/11/2026 foi inesperado.\n06/11/2026 15:51:20 · Kernel-Power · 41 · O sistema reiniciou sem ser encerrado corretamente primeiro. (BugcheckCode 0, PowerButtonTimestamp 0)\n06/11/2026 15:51:16 · EventLog · 6008 · O encerramento anterior do sistema às 15:48:37 em 06/11/2026 foi inesperado.\n\nTambém apareceram muitos avisos amarelos com a origem Kernel-Processor-Power e o ID 37: «A velocidade do processador 0 no grupo 0 está a ser limitada pelo firmware do sistema. O processador esteve neste estado de desempenho reduzido durante 71 segundos desde o último relatório.» Há dezenas destes por dia, sobretudo à tarde, e quase sempre logo antes de cada encerramento inesperado. Alguns exemplos de hoje:\n09/11/2026 14:02:11 · Kernel-Processor-Power · 37 · desempenho reduzido durante 64 segundos\n09/11/2026 14:09:47 · Kernel-Processor-Power · 37 · desempenho reduzido durante 118 segundos\n09/11/2026 14:21:30 · Kernel-Processor-Power · 37 · desempenho reduzido durante 203 segundos\n\nNão sei se isto ajuda."}
+
+### portatil · comentário 5 · Técnico
+POST {{baseUrl}}/api/tickets/{{portatil.response.body.$.id}}/comments
+Authorization: Bearer {{tecnico.response.body.$.accessToken}}
+Content-Type: application/json
+
+{"text": "Ajuda muito, obrigado. Os três Kernel-Power 41 com BugcheckCode 0, sem ecrã azul, juntos com o 6008, são encerramentos forçados, e não falhas do Windows. Os avisos Kernel-Processor-Power 37 dizem que o firmware está a limitar a velocidade do processador: é isso que torna o portátil lento. As duas coisas acontecem quando o processador aquece demais ou quando a alimentação não chega para o que ele está a fazer. Já verifiquei na consola de gestão que o teu portátil tem o BIOS 1.14.0 e que a Dell publicou a versão 1.21.0, que corrige o controlo das ventoinhas neste modelo. Peço-te duas coisas: deixa de usar o portátil em cima da almofada e diz-me o que está escrito na etiqueta do carregador que estás a usar (a potência, em W)."}
+
+### portatil · comentário 6 · Rui
+POST {{baseUrl}}/api/tickets/{{portatil.response.body.$.id}}/comments
+Authorization: Bearer {{rui.response.body.$.accessToken}}
+Content-Type: application/json
+
+{"text": "Combinado, já não uso a almofada. Sobre o carregador: o meu avariou há umas duas semanas e estou a usar um emprestado pela Inês, da contabilidade. Na etiqueta diz 45W, 20V 2,25A. Ela tem um portátil mais pequeno e disse que o dela nunca teve problemas."}
+
+### portatil · comentário 7 · Técnico
+POST {{baseUrl}}/api/tickets/{{portatil.response.body.$.id}}/comments
+Authorization: Bearer {{tecnico.response.body.$.accessToken}}
+Content-Type: application/json
+
+{"text": "Aí está uma parte importante do problema. O teu Latitude precisa de um carregador de 65 W. Com 45 W, quando o portátil trabalha mais (chamadas com câmara e partilha de ecrã), o carregador não dá energia suficiente, o portátil vai buscar o resto à bateria e o firmware limita o processador para não passar do limite: daí a lentidão. Já pedi um carregador de 65 W ao armazém, que deve chegar na quinta-feira. Entretanto, hoje às 17h faço uma sessão remota para atualizar o BIOS para a 1.21.0 e os controladores do chipset. Deixa o portátil ligado ao carregador e não o desligues durante a atualização, que demora uns 15 minutos."}
+
+### portatil · comentário 8 · Rui
+POST {{baseUrl}}/api/tickets/{{portatil.response.body.$.id}}/comments
+Authorization: Bearer {{rui.response.body.$.accessToken}}
+Content-Type: application/json
+
+{"text": "Ok, às 17h estou cá. Já agora, posso continuar a trabalhar normalmente até lá? Tenho uma apresentação às 15h com partilha de ecrã para a direção e tenho medo que se desligue a meio."}
+
+### portatil · comentário 9 · Técnico
+POST {{baseUrl}}/api/tickets/{{portatil.response.body.$.id}}/comments
+Authorization: Bearer {{tecnico.response.body.$.accessToken}}
+Content-Type: application/json
+
+{"text": "Podes. Para a apresentação das 15h, liga o portátil ao carregador, fecha o OneDrive e as aplicações que não estás a usar e, se possível, desliga a câmara enquanto partilhas o ecrã. Põe o portátil em cima da mesa, com as grelhas livres. Se se desligar, liga-o outra vez e diz-me a hora aqui."}
+
+### portatil · comentário 10 · Técnico
+POST {{baseUrl}}/api/tickets/{{portatil.response.body.$.id}}/comments
+Authorization: Bearer {{tecnico.response.body.$.accessToken}}
+Content-Type: application/json
+
+{"text": "Sessão remota concluída às 17h25. Fiz o seguinte: atualizei o BIOS de 1.14.0 para 1.21.0; atualizei os controladores do chipset Intel e o controlador gráfico; mudei o plano de energia de «Desempenho máximo» para «Equilibrado»; e agendei a verificação do antivírus para a hora de almoço, para não coincidir com as reuniões. Antes da atualização, o processador estava a 78 °C em repouso; depois, desceu para 61 °C, e a ventoinha ficou mais silenciosa. Também corri o relatório da bateria (powercfg /batteryreport): a capacidade de origem é de 63 000 mWh e a capacidade atual com carga completa é de 41 200 mWh, ou seja, a bateria já perdeu cerca de um terço. Não é a causa dos encerramentos, mas explica porque descarrega tão depressa quando o carregador não chega. Ainda falta trocar o carregador (quinta-feira). Se a lentidão continuar depois disso, o próximo passo é abrir o portátil para limpar o pó das ventoinhas e trocar a pasta térmica, o que obriga a ficarmos com ele um dia."}
+
+### portatil · comentário 11 · Rui
+POST {{baseUrl}}/api/tickets/{{portatil.response.body.$.id}}/comments
+Authorization: Bearer {{rui.response.body.$.accessToken}}
+Content-Type: application/json
+
+{"text": "Obrigado! Ontem à tarde não se desligou nenhuma vez, o que já é uma grande melhoria, e a apresentação correu bem. Mas continua lento nas chamadas do Teams quando tenho a câmara ligada e partilho o ecrã ao mesmo tempo: a imagem dos outros congela e o rato fica aos saltos. Sem câmara está melhor. A ventoinha continua a fazer barulho nesses momentos."}
+
+### portatil · comentário 12 · Técnico
+POST {{baseUrl}}/api/tickets/{{portatil.response.body.$.id}}/comments
+Authorization: Bearer {{tecnico.response.body.$.accessToken}}
+Content-Type: application/json
+
+{"text": "Ótimo que não se tenha desligado. A lentidão com câmara e partilha de ecrã ainda pode ser o carregador de 45 W, por isso vamos esperar pelo de 65 W antes de abrir o portátil. Para eu poder comparar, aponta durante dois dias a hora de cada vez que ficar lento, quantas pessoas estavam na chamada e se tinhas a câmara ligada. Quando o carregador chegar, diz-me se notas diferença."}
+
+### portatil · comentário 13 · Rui
+POST {{baseUrl}}/api/tickets/{{portatil.response.body.$.id}}/comments
+Authorization: Bearer {{rui.response.body.$.accessToken}}
+Content-Type: application/json
+
+{"text": "Vou apontar. Hoje às 10h05 e às 14h20 voltou a ficar lento, as duas vezes em chamadas com mais de oito pessoas e com a câmara ligada. Às 11h30, numa chamada só com a minha chefe, sem câmara, correu tudo bem."}
+
+### portatil · comentário 14 · Rui
+POST {{baseUrl}}/api/tickets/{{portatil.response.body.$.id}}/comments
+Authorization: Bearer {{rui.response.body.$.accessToken}}
+Content-Type: application/json
+
+{"text": "Registo dos dois dias, como pediste:\nTerça 10h05 · lento · chamada de equipa, 9 pessoas · câmara ligada · partilha de ecrã\nTerça 11h30 · normal · chamada com a chefe, 2 pessoas · sem câmara\nTerça 14h20 · lento · reunião de projeto, 11 pessoas · câmara ligada\nTerça 16h45 · normal · sozinho, só Excel e Outlook\nQuarta 09h40 · normal · chamada com um fornecedor, 3 pessoas · câmara ligada\nQuarta 14h10 · muito lento · formação, 14 pessoas · câmara ligada · partilha de ecrã · a ventoinha no máximo\nQuarta 15h05 · lento · a mesma formação, depois de desligar a câmara melhorou um pouco\nParece que só acontece com muitas pessoas e com a câmara ligada, sobretudo à tarde."}
+
+### portatil · comentário 15 · Técnico
+POST {{baseUrl}}/api/tickets/{{portatil.response.body.$.id}}/comments
+Authorization: Bearer {{tecnico.response.body.$.accessToken}}
+Content-Type: application/json
+
+{"text": "Obrigado pelo registo, é muito útil: o padrão (muitas pessoas, câmara ligada, à tarde) bate certo com falta de energia e calor. O carregador de 65 W chegou hoje ao armazém e deixei-o na receção, num envelope com o teu nome. Devolve o de 45 W à Inês. Amanhã, numa chamada grande com a câmara ligada, vê se continua lento e diz-me aqui. Se melhorar, fecho o pedido; se não, marcamos a limpeza das ventoinhas e a troca da pasta térmica, e confirmo antes se tens um portátil de substituição para esse dia."}
+
+### Ver os comentários do pedido «portatil»
+GET {{baseUrl}}/api/tickets/{{portatil.response.body.$.id}}/comments
+Authorization: Bearer {{tecnico.response.body.$.accessToken}}
+
+### Pedido 3 — VPN (conversa curta, acaba resolvido: «Guardar como comentário» dá o erro de pedido resolvido) · o Rui cria o pedido
+# 7 entradas na conversa, uns 1106 caracteres; com o orçamento de 9216, entram 7 e ficam 0 de fora.
+# @name vpn
+POST {{baseUrl}}/api/tickets
+Authorization: Bearer {{rui.response.body.$.accessToken}}
+Content-Type: application/json
+
+{"title": "VPN desliga-se ao fim de poucos minutos", "description": "Quando trabalho de casa, a VPN liga, mas desliga-se ao fim de 5 a 10 minutos e perco o acesso às pastas partilhadas.", "priority": 2}
+
+### O técnico começa a tratar o pedido (fica um comentário do Sistema)
+PUT {{baseUrl}}/api/tickets/{{vpn.response.body.$.id}}/status
+Authorization: Bearer {{tecnico.response.body.$.accessToken}}
+Content-Type: application/json
+
+{"status": "InProgress"}
+
+### vpn · comentário 1 · Técnico
+POST {{baseUrl}}/api/tickets/{{vpn.response.body.$.id}}/comments
+Authorization: Bearer {{tecnico.response.body.$.accessToken}}
+Content-Type: application/json
+
+{"text": "Olá Rui. Ligas-te por Wi-Fi ou por cabo? E acontece também se usares a partilha de dados do telemóvel?"}
+
+### vpn · comentário 2 · Rui
+POST {{baseUrl}}/api/tickets/{{vpn.response.body.$.id}}/comments
+Authorization: Bearer {{rui.response.body.$.accessToken}}
+Content-Type: application/json
+
+{"text": "Por Wi-Fi. Com a partilha de dados do telemóvel aguentou mais de uma hora sem desligar."}
+
+### vpn · comentário 3 · Técnico
+POST {{baseUrl}}/api/tickets/{{vpn.response.body.$.id}}/comments
+Authorization: Bearer {{tecnico.response.body.$.accessToken}}
+Content-Type: application/json
+
+{"text": "Então deve ser a poupança de energia do adaptador Wi-Fi. Abre o Gestor de Dispositivos → Adaptadores de rede → o teu adaptador Wi-Fi → Gestão de energia e desmarca «Permitir que o computador desligue este dispositivo para poupar energia»."}
+
+### vpn · comentário 4 · Rui
+POST {{baseUrl}}/api/tickets/{{vpn.response.body.$.id}}/comments
+Authorization: Bearer {{rui.response.body.$.accessToken}}
+Content-Type: application/json
+
+{"text": "Fiz isso ontem e esta manhã a VPN ficou ligada três horas seguidas. Parece resolvido!"}
+
+### vpn · comentário 5 · Técnico
+POST {{baseUrl}}/api/tickets/{{vpn.response.body.$.id}}/comments
+Authorization: Bearer {{tecnico.response.body.$.accessToken}}
+Content-Type: application/json
+
+{"text": "Ótimo. Vou marcar o pedido como resolvido. Se voltar a acontecer, reabre-o e diz-me a hora."}
+
+### O técnico marca o pedido como resolvido (fica um comentário do Sistema)
+PUT {{baseUrl}}/api/tickets/{{vpn.response.body.$.id}}/status
+Authorization: Bearer {{tecnico.response.body.$.accessToken}}
+Content-Type: application/json
+
+{"status": "Resolved"}
+
+### Ver os comentários do pedido «vpn»
+GET {{baseUrl}}/api/tickets/{{vpn.response.body.$.id}}/comments
+Authorization: Bearer {{tecnico.response.body.$.accessToken}}
