@@ -378,3 +378,15 @@ pgvector/
 
 # Aula 22, exercício C: a cópia da base (pg_dump) tem os pedidos e as contas, com os hashes das palavras-passe.
 *.dump
+
+# Scripts de ajuda das aulas: só serviam nesta máquina, não fazem parte da aplicação.
+Terminar*.bat
+aula*-terminar.ps1
+
+# Restos do ciclo 1 da aula 22: o Dockerfile e o .dockerignore a sério estão na raiz.
+src/SupportDesk.Web/Dockerfile.txt
+src/SupportDesk.Web/.dockerignore
+
+# O curso e as experiências da aula 1 não são a aplicação.
+curso/
+experiencias/
