@@ -1,245 +1,219 @@
-<div align="center">
-
 # SupportDesk AI
 
-**Pedidos de suporte com páginas web e API REST, a caminho de uma IA local que ajuda os técnicos a responder.**
+Aplicação de pedidos de suporte informático com um assistente de IA local. Os clientes abrem pedidos, os técnicos tratam-nos, e um modelo de linguagem a correr na própria máquina classifica pedidos, resume conversas e escreve rascunhos de resposta com fontes citadas.
 
-![.NET 10](https://img.shields.io/badge/.NET-10-512BD4?logo=dotnet&logoColor=white)
-![ASP.NET Core](https://img.shields.io/badge/ASP.NET_Core-Razor_Pages_%2B_API-512BD4?logo=dotnet&logoColor=white)
-![EF Core 10](https://img.shields.io/badge/EF_Core-10-512BD4?logo=dotnet&logoColor=white)
-![PostgreSQL 18](https://img.shields.io/badge/PostgreSQL-18-4169E1?logo=postgresql&logoColor=white)
-![Bootstrap 5.3](https://img.shields.io/badge/Bootstrap-5.3-7952B3?logo=bootstrap&logoColor=white)
-![Estado](https://img.shields.io/badge/estado-em_desenvolvimento-F59E0B)
+A IA sugere e o técnico decide: nenhuma resposta chega ao cliente sem ser revista por uma pessoa, e os dados dos pedidos não saem para serviços externos.
 
-</div>
-
-O SupportDesk AI é uma aplicação para abrir, acompanhar e resolver pedidos de suporte informático. Os pedidos ficam numa base PostgreSQL e podem ser geridos pelas páginas web ou por uma API REST, que usam o mesmo serviço e as mesmas regras.
-
-É um projeto pessoal de aprendizagem e portefólio, construído por fases. A base da aplicação está feita; a seguir vêm as contas de utilizador, os testes e a IA.
-
-## 🎯 Objetivo
-
-Uma aplicação de suporte em que os clientes abrem pedidos e os técnicos os tratam com a ajuda de um modelo de IA que corre na própria máquina (Ollama), para os dados não saírem para um serviço externo.
-
-> **A IA sugere; o técnico decide.** Nenhuma resposta chega ao cliente sem ser revista por uma pessoa.
-
-No fim, a aplicação vai ter:
-
-- contas e permissões: o cliente vê só os seus pedidos, e o técnico trata de todos;
-- classificação sugerida pela IA (categoria, prioridade e resumo) e resumo de conversas longas;
-- uma base de conhecimento com pesquisa por palavras e por significado (embeddings);
-- rascunhos de resposta com fontes citadas (RAG), sempre revistos por um técnico;
-- avaliação da qualidade da IA com casos de teste e métricas;
-- testes automáticos, Docker e integração contínua no GitHub Actions.
-
-## ✨ O que já faz
+## Funcionalidades
 
 **Pedidos**
-- Criar pedidos com título, descrição e prioridade (Alta, Normal ou Baixa).
-- Acompanhar o estado (Aberto, Em curso, Resolvido), com regras de transição e reabertura.
-- Comentar. Cada mudança de estado fica registada como comentário do «Sistema», e um pedido resolvido só aceita comentários depois de reaberto.
 
-**Páginas web**
-- Lista com filtro por estado, pesquisa no título e na descrição, e paginação que mantém os filtros.
-- Detalhe de cada pedido, com os comentários e botões só com as mudanças de estado permitidas.
-- Formulários com validação no browser e no servidor, mensagens de confirmação e datas na hora de Lisboa.
+- Criar, editar, comentar e acompanhar pedidos, com estados (Aberto, Em curso, Resolvido) e regras de transição.
+- Lista com filtro por estado, pesquisa, ordenação e paginação.
+- Concorrência otimista: duas alterações simultâneas ao mesmo pedido não se sobrepõem.
 
-**API REST**
-- As mesmas operações em JSON, com filtros, ordenação e paginação.
-- Erros em ProblemDetails, com códigos HTTP previsíveis.
+**Contas e permissões**
 
-**Robustez**
-- Concorrência otimista: duas alterações ao mesmo pedido, ao mesmo tempo, não se apagam uma à outra.
-- Proteção contra CSRF nos formulários e contra XSS nas páginas.
+- Registo e início de sessão com ASP.NET Core Identity.
+- Clientes veem e comentam apenas os seus pedidos; técnicos tratam de todos.
+- Páginas autenticadas por cookie e API autenticada por token Bearer.
 
-## 🧱 Arquitetura
+**IA**
+
+- Classificação: sugestão de categoria, prioridade e resumo, que o técnico aceita ou rejeita.
+- Resumo de conversas: problema, ações já feitas e informação em falta, com orçamento de contexto para conversas longas.
+- Rascunhos de resposta (RAG): o modelo responde apenas com trechos da base de conhecimento e cita a fonte de cada frase. As citações são verificadas pelo código, e o técnico edita e publica ou descarta.
+- Cada chamada fica registada com o modelo, os tokens e a duração.
+
+**Base de conhecimento**
+
+- Artigos em Markdown, importados para o PostgreSQL e divididos em trechos.
+- Pesquisa textual (tsvector, configuração `portuguese`), pesquisa semântica (pgvector) e pesquisa híbrida por Reciprocal Rank Fusion.
+
+**Operação**
+
+- Resiliência nas chamadas ao modelo: tempo limite, repetições com espera exponencial e disjuntor.
+- Limite de pedidos à IA por utilizador e por minuto.
+- Endpoint `/health` com o estado da base de dados e do Ollama.
+- Página de utilização da IA e traços OpenTelemetry opcionais.
+- Avaliação da qualidade da IA com casos de teste e métricas.
+
+## Arquitetura
 
 ```mermaid
-flowchart LR
+flowchart TB
     Browser(["Browser"])
     Client(["Cliente HTTP"])
 
     subgraph App["SupportDesk.Web · ASP.NET Core 10"]
-        Pages["Razor Pages<br/>PageModels"]
-        Api["API REST<br/>TicketsController"]
-        Service["TicketService<br/>consultas e regras"]
-        Workflow["TicketWorkflow<br/>transições de estado"]
-        Context["SupportDeskDbContext<br/>EF Core"]
+        Pages["Razor Pages"]
+        Api["API REST"]
+        Services["Serviços e regras<br/>Services · Authorization · TicketWorkflow"]
+        Data["Dados<br/>EF Core · KnowledgeSearch"]
+        Ai["IA<br/>IChatClient · IEmbeddingGenerator"]
     end
 
-    Db[("PostgreSQL 18")]
+    Db[("PostgreSQL 18<br/>pgvector")]
+    Ollama[["Ollama<br/>gemma3:4b · bge-m3"]]
 
-    Browser -- "HTML e formulários" --> Pages
-    Client -- "JSON em /api" --> Api
-    Pages --> Service
-    Api --> Service
-    Service --> Workflow
-    Service --> Context
-    Context -- "Npgsql" --> Db
+    Browser -- "HTML · cookie" --> Pages
+    Client -- "JSON · token Bearer" --> Api
+    Pages --> Services
+    Api --> Services
+    Services --> Data
+    Services --> Ai
+    Data --> Db
+    Ai --> Ollama
 ```
 
-As páginas e a API são dois clientes do mesmo serviço: a consulta, os filtros e as regras escrevem-se uma vez, e só muda a forma de responder (HTML ou JSON).
+As páginas e a API são dois clientes dos mesmos serviços: as consultas e as regras escrevem-se uma vez. O código de IA depende apenas das interfaces do Microsoft.Extensions.AI; o Ollama é registado num único ponto (`AddOllamaAi`) e pode ser substituído por outro fornecedor.
 
-| Pasta | O que tem |
+| Pasta | Conteúdo |
 |---|---|
-| `Pages/` | Razor Pages: lista, detalhe e criação de pedidos. Cada página tem a vista (`.cshtml`) e o PageModel |
-| `Controllers/` | A API REST, em `/api/tickets` |
-| `Contracts/` | DTOs de entrada e saída, com as regras de validação |
-| `Services/` | `TicketService`: consultas, regras e gravação, usado pelas páginas e pela API |
-| `Models/` | Entidades (`Ticket`, `Comment`) e as regras de estado (`TicketWorkflow`) |
-| `Data/` | `SupportDeskDbContext` (EF Core) e os dados de exemplo |
-| `Migrations/` | A evolução do esquema da base, migração a migração |
-| `Infrastructure/` | Erros da API em ProblemDetails e a formatação dos dados nas páginas |
+| `src/SupportDesk.Web/Pages` | Razor Pages: pedidos, base de conhecimento, laboratório de IA e contas |
+| `src/SupportDesk.Web/Controllers` | API REST em `/api/tickets` |
+| `src/SupportDesk.Web/Contracts` | DTO de entrada e saída, com validação |
+| `src/SupportDesk.Web/Services` | Regras de negócio e acesso aos dados |
+| `src/SupportDesk.Web/Authorization` | Autorização por pedido e por operação |
+| `src/SupportDesk.Web/AI` | Classificação, resumo, rascunhos, verificação de citações e resiliência |
+| `src/SupportDesk.Web/Knowledge` | Importação de artigos, embeddings e pesquisa |
+| `src/SupportDesk.Web/Articles` | Artigos da base de conhecimento, em Markdown |
+| `src/SupportDesk.Web/Data`, `Models`, `Migrations` | EF Core: contexto, entidades e migrações |
+| `tests/SupportDesk.UnitTests` | Testes unitários |
+| `tools/SupportDesk.Evaluation` | Ferramenta de avaliação da IA |
+| `eval` | Casos de avaliação |
 
-O código está em `src/SupportDesk.Web`. Na raiz, `experiencias/` e `01-schema.sql` são exercícios de aprendizagem e não fazem parte da aplicação.
-
-### Ciclo de vida de um pedido
-
-```mermaid
-stateDiagram-v2
-    direction LR
-    state "Aberto" as Open
-    state "Em curso" as InProgress
-    state "Resolvido" as Resolved
-
-    [*] --> Open : criado
-    Open --> InProgress : Começar a tratar
-    InProgress --> Resolved : Marcar como resolvido
-    InProgress --> Open : Devolver à fila
-    Resolved --> Open : Reabrir
-```
-
-As transições permitidas estão num só sítio, o `TicketWorkflow`. A página usa-as para mostrar só os botões possíveis, e o serviço volta a verificá-las antes de gravar: uma página desatualizada, ou um pedido HTTP feito à mão, não passam.
-
-### Modelo de dados
-
-```mermaid
-erDiagram
-    Tickets ||--o{ Comments : "tem"
-    Tickets {
-        int Id PK
-        varchar Title "até 120"
-        varchar Description "até 2000"
-        varchar Status "CHECK: Open, InProgress, Resolved"
-        int Priority "CHECK: 1 a 3"
-        timestamptz CreatedAt
-        timestamptz UpdatedAt "última atividade"
-        xid xmin "versão, para a concorrência"
-    }
-    Comments {
-        int Id PK
-        int TicketId FK
-        varchar Author "até 80"
-        varchar Text "até 2000"
-        timestamptz CreatedAt
-    }
-```
-
-## 🧠 Decisões técnicas
-
-- **Um serviço, dois clientes.** As páginas e a API chamam o mesmo `ITicketService`. Não há lógica duplicada entre o HTML e o JSON.
-- **DTOs na fronteira.** A API e os formulários recebem e devolvem DTOs, nunca as entidades. Um cliente não consegue mexer em campos como o `Id` ou o `Status`, e a base pode mudar sem partir o contrato da API.
-- **Regras num só sítio.** As transições de estado vivem no `TicketWorkflow`, e a validação do título (sem contar os espaços nas pontas) vive no DTO, com `IValidatableObject`. A API e as páginas usam as mesmas.
-- **A base também se defende.** O estado e a prioridade têm restrições `CHECK` no PostgreSQL, e o estado guarda-se como texto, legível numa consulta SQL.
-- **Concorrência otimista com `xmin`.** O PostgreSQL guarda em cada linha o id da transação que a escreveu, e o EF Core usa-o como versão. Se outra pessoa gravou entretanto, o `UPDATE` não afeta nenhuma linha e a aplicação avisa (409 na API), em vez de apagar a alteração dela. Não é preciso nenhuma coluna extra.
-- **Post/Redirect/Get.** Depois de gravar, as páginas redirecionam: carregar F5 não repete a gravação, e a mensagem de confirmação passa pelo `TempData`.
-- **Erros previsíveis.** A API responde sempre em ProblemDetails, sem detalhes internos: 400 com os erros por campo, 404, 409, e 503 quando a base não responde.
-- **UTC na base, Lisboa no ecrã.** As datas guardam-se em UTC e só são convertidas na apresentação, com as regras da hora de verão.
-- **Segredos fora do Git.** A ligação à base fica nos user-secrets; o repositório não tem palavras-passe.
-
-## 🧰 Tecnologias
+## Tecnologias
 
 | Camada | Tecnologia |
 |---|---|
 | Plataforma | .NET 10, C# |
-| Web | ASP.NET Core 10: Razor Pages e Web API (controllers) |
-| Dados | EF Core 10 com Npgsql, PostgreSQL 18 |
-| Interface | Bootstrap 5.3, validação no browser com jQuery Validation |
-| Ferramentas | `dotnet-ef` (migrações), user-secrets, ficheiros `.http` |
+| Web | ASP.NET Core: Razor Pages e Web API |
+| Identidade | ASP.NET Core Identity |
+| Dados | EF Core 10 com Npgsql, PostgreSQL 18, pgvector |
+| IA | Microsoft.Extensions.AI, OllamaSharp, Ollama (`gemma3:4b`, `bge-m3`) |
+| Resiliência e observabilidade | Microsoft.Extensions.Http.Resilience (Polly), health checks, OpenTelemetry |
+| Entrega | Docker, Docker Compose |
+| Testes | xUnit |
 
-## 🚀 Como correr
+## Como correr
 
-**Precisas de:** .NET SDK 10 e PostgreSQL 18.
+### Com Docker Compose
+
+Requisitos: Docker Desktop e, para as funcionalidades de IA, o Ollama instalado no anfitrião.
 
 ```powershell
 git clone https://github.com/pmrmoreira/SupportDesk.git
 cd SupportDesk
+ollama pull gemma3:4b
+ollama pull bge-m3
+```
+
+Na raiz, cria um ficheiro `.env` com as duas palavras-passe (o ficheiro não vai para o Git):
+
+```
+POSTGRES_PASSWORD=uma-palavra-passe
+TECHNICIAN_PASSWORD=OutraPalavraPasse1
+```
+
+A palavra-passe do técnico precisa de pelo menos 8 caracteres, com maiúsculas, minúsculas e algarismos.
+
+```powershell
+docker compose up --build -d
+```
+
+A aplicação fica em http://localhost:8080. No primeiro arranque, aplica as migrações, insere três pedidos de exemplo e cria o técnico de demonstração `tecnico@supportdesk.local`, com a palavra-passe definida no `.env`.
+
+Para preparar a base de conhecimento, entra como técnico, abre **Base de conhecimento**, e usa **Importar artigos** e **Gerar embeddings**.
+
+Se `/health` indicar que não é possível ligar ao Ollama com ele a correr, define `OLLAMA_HOST=0.0.0.0` nas variáveis de ambiente do anfitrião e reinicia o Ollama, para que aceite ligações vindas do contentor.
+
+### Em desenvolvimento
+
+Requisitos: .NET SDK 10, PostgreSQL 18 com a extensão pgvector, e Ollama.
+
+```powershell
 dotnet tool restore
 dotnet user-secrets set "ConnectionStrings:SupportDesk" "Host=localhost;Port=5432;Database=supportdesk;Username=postgres;Password=A_TUA_PALAVRA_PASSE" --project src/SupportDesk.Web
+dotnet user-secrets set "Seed:TechnicianEmail" "tecnico@supportdesk.local" --project src/SupportDesk.Web
+dotnet user-secrets set "Seed:TechnicianPassword" "UmaPalavraPasse1" --project src/SupportDesk.Web
 dotnet ef database update --project src/SupportDesk.Web
 dotnet run --project src/SupportDesk.Web
 ```
 
-1. `dotnet tool restore` instala o `dotnet-ef` na versão fixada no repositório.
-2. `user-secrets` guarda a ligação à base fora do repositório. Troca `A_TUA_PALAVRA_PASSE` pela tua; se tiver `$`, usa aspas simples.
-3. `database update` cria a base, as tabelas e três pedidos de exemplo.
-4. `dotnet run` arranca a aplicação em **http://localhost:5011**.
+A aplicação fica em http://localhost:5011.
 
-**Experimentar:** as páginas estão em http://localhost:5011/Tickets. Para a API, abre `src/SupportDesk.Web/SupportDesk.http` no Visual Studio: tem pedidos prontos para listar, criar, comentar e mudar o estado.
+## Configuração
 
-<details>
-<summary><b>Problemas comuns</b></summary>
+Os valores por omissão estão em `src/SupportDesk.Web/appsettings.json`. Qualquer chave pode ser substituída por uma variável de ambiente, com `__` no lugar de `:` (por exemplo, `AI__Ollama__Url`).
 
-| Erro | Causa | Solução |
+| Chave | Descrição | Por omissão |
 |---|---|---|
-| `Falta a ligação 'SupportDesk'` ao arrancar | A ligação à base não está nos user-secrets | Corre o `dotnet user-secrets set` de cima |
-| `28P01: password authentication failed` | Palavra-passe errada nos user-secrets | Volta a correr o `user-secrets set` com a certa |
-| `42703: column … does not exist` | Há migrações por aplicar | `dotnet ef database update --project src/SupportDesk.Web` |
+| `ConnectionStrings:SupportDesk` | Ligação ao PostgreSQL | Obrigatória |
+| `AI:Ollama:Enabled` | Liga ou desliga a IA; o resto da aplicação continua a funcionar | `true` |
+| `AI:Ollama:Url` | Endereço do Ollama | `http://localhost:11434` |
+| `AI:Ollama:ChatModel` | Modelo de texto | `gemma3:4b` |
+| `AI:Ollama:EmbeddingModel` | Modelo de embeddings (1024 dimensões) | `bge-m3` |
+| `AI:Ollama:TimeoutSeconds` | Tempo total de uma chamada, com repetições | `120` |
+| `AI:Ollama:ContextTokens` | Janela de contexto pedida ao modelo | `4096` |
+| `AI:Ollama:RequestsPerMinute` | Pedidos à IA por utilizador e por minuto | `10` |
+| `Knowledge:Folder` | Pasta dos artigos | `Articles` |
+| `Seed:Enabled` | Cria o técnico de demonstração fora de Development | `false` |
+| `Database:MigrateOnStartup` | Aplica as migrações no arranque | `false` |
+| `DataProtection:KeysFolder` | Pasta das chaves que protegem os cookies | Sem valor |
+| `Telemetry:Console` | Escreve os traços das chamadas à IA na consola | `false` |
 
-</details>
+## API
 
-## 🔌 API
+A API exige um token Bearer. Obtém-se em `POST /api/auth/login`, com o email e a palavra-passe; `POST /api/auth/register` cria uma conta.
 
-| Método | Caminho | Respostas | O que faz |
-|---|---|---|---|
-| `GET` | `/api/tickets` | 200 · 400 | Lista paginada, com filtros |
-| `GET` | `/api/tickets/{id}` | 200 · 404 | Um pedido |
-| `GET` | `/api/tickets/stats` | 200 | Número de pedidos por estado |
-| `POST` | `/api/tickets` | 201 · 400 | Cria um pedido |
-| `PUT` | `/api/tickets/{id}/status` | 204 · 400 · 404 · 409 | Muda o estado |
-| `GET` | `/api/tickets/{id}/comments` | 200 · 404 | Comentários de um pedido |
-| `POST` | `/api/tickets/{id}/comments` | 201 · 400 · 404 · 409 | Acrescenta um comentário |
+| Método | Caminho | Descrição |
+|---|---|---|
+| `GET` | `/api/tickets` | Lista paginada, com filtros |
+| `GET` | `/api/tickets/count` | Número de pedidos visíveis para o utilizador |
+| `GET` | `/api/tickets/stats` | Número de pedidos por estado |
+| `GET` | `/api/tickets/{id}` | Um pedido |
+| `POST` | `/api/tickets` | Cria um pedido |
+| `PUT` | `/api/tickets/{id}/status` | Muda o estado (só técnicos) |
+| `GET` | `/api/tickets/{id}/comments` | Comentários de um pedido |
+| `POST` | `/api/tickets/{id}/comments` | Acrescenta um comentário |
+| `GET` | `/health` | Estado da base de dados e do Ollama |
 
-Filtros da lista: `status` (`Open`, `InProgress`, `Resolved`), `priority` (1 a 3), `search` (no título e na descrição), `sort` (`Newest`, `Oldest`, `Priority`, `Activity`), `page` e `pageSize` (1 a 50, 10 por omissão).
+Filtros da lista: `status`, `search`, `sort`, `page` e `pageSize`. Os erros seguem o formato ProblemDetails. Um pedido que não pertence ao utilizador responde 404.
 
-O 409 aparece quando a mudança de estado não é permitida, quando se tenta comentar um pedido resolvido, ou quando outra pessoa alterou o pedido ao mesmo tempo.
+O ficheiro `src/SupportDesk.Web/SupportDesk.http` tem pedidos prontos a usar no Visual Studio.
 
-**Exemplo: criar um pedido**
+## Testes e avaliação
 
-```http
-POST /api/tickets
-Content-Type: application/json
-
-{
-  "title": "VPN não liga",
-  "description": "Desde hoje de manhã que a VPN não liga.",
-  "priority": 1
-}
+```powershell
+dotnet test
 ```
 
-Resposta `201 Created`, com `Location: /api/tickets/4`:
+Os testes unitários cobrem as regras que não dependem da base de dados nem do modelo: transições de estado, autorização, validação, divisão de artigos em trechos, fusão de resultados, verificação de citações e métricas.
 
-```json
-{
-  "id": 4,
-  "title": "VPN não liga",
-  "description": "Desde hoje de manhã que a VPN não liga.",
-  "status": "Open",
-  "priority": 1,
-  "createdAt": "2026-10-28T18:30:12.48+00:00",
-  "updatedAt": "2026-10-28T18:30:12.48+00:00"
-}
+A qualidade da IA mede-se à parte, com casos em `eval/` e a base de conhecimento já preparada:
+
+```powershell
+dotnet run --project tools/SupportDesk.Evaluation
+dotnet run --project tools/SupportDesk.Evaluation -- retrieval
 ```
 
-Para mudar o estado: `PUT /api/tickets/4/status` com `{ "status": "InProgress" }`. Para comentar: `POST /api/tickets/4/comments` com `{ "author": "Ana", "text": "Já reiniciei o portátil." }`.
+O relatório, em Markdown, inclui a taxa de acerto da classificação, hit@1, hit@3 e MRR para os três modos de pesquisa, a percentagem de rascunhos que citam o artigo esperado, e os tempos p50 e p95.
 
-## 🧭 Roadmap
+## Decisões técnicas
 
-| Fase | O que entra | Estado |
-|---|---|---|
-| 1. Fundamentos e API | Pedidos, estados, comentários e validação | ✅ Concluída |
-| 2. Dados e interface | PostgreSQL, EF Core, filtros e paginação, Razor Pages e formulários | ✅ Concluída |
-| 3. Segurança e testes | Contas com Identity, clientes e técnicos, testes unitários e de integração | 🔄 A seguir |
-| 4. IA aplicada | Modelo local com Ollama, classificação de pedidos e resumo de conversas | ⏳ Planeada |
-| 5. Conhecimento e avaliação | Base de conhecimento, pesquisa semântica, RAG com fontes, avaliação da IA e observabilidade | ⏳ Planeada |
-| 6. Entrega | Docker, GitHub Actions e publicação | ⏳ Planeada |
+- **Um serviço, dois clientes.** As páginas e a API chamam os mesmos serviços, sem lógica duplicada entre HTML e JSON.
+- **DTO na fronteira.** A API e os formulários nunca expõem as entidades.
+- **Regras num só sítio.** As transições de estado estão no `TicketWorkflow`, e a autorização por pedido no `TicketAuthorizationHandler`.
+- **Saída estruturada e validada.** O modelo responde em JSON com um esquema definido, e o código valida os valores antes de os gravar.
+- **Dados não são instruções.** O texto dos clientes e das fontes vai entre etiquetas, com a indicação de que deve ser tratado como dados, para reduzir o risco de injeção de prompt.
+- **Decisão humana.** Sugestões e rascunhos ficam pendentes até um técnico decidir; a decisão e o texto publicado ficam registados.
+- **Falhas previstas.** As falhas do modelo são convertidas em mensagens para o utilizador e não derrubam a página; sem Ollama, a pesquisa textual continua disponível.
+- **Segredos fora do repositório.** As palavras-passe ficam em user-secrets ou no `.env`.
+
+## Limitações
+
+- As chamadas ao modelo são síncronas com o pedido HTTP, sem fila de trabalho em segundo plano.
+- Não há testes de integração nem integração contínua.
+- As migrações no arranque e as chaves de Data Protection sem encriptação são adequadas a uma demonstração, não a produção.
+- Os casos de avaliação são poucos e não medem a correção do texto das respostas.
